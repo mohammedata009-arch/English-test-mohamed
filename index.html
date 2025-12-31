@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master English Present Tenses</title>
+    <style>
+        :root { --primary: #2c3e50; --success: #27ae60; --error: #e74c3c; --bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 15px; color: #333; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: var(--primary); border-bottom: 3px solid var(--primary); padding-bottom: 10px; }
+        .lesson-box { background: #eef2f7; padding: 15px; border-radius: 10px; margin-bottom: 25px; font-size: 0.9em; line-height: 1.6; }
+        .lesson-box h3 { margin-top: 0; color: #1a252f; }
+        .question-card { background: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: left; transition: 0.3s; }
+        .question-card p { font-weight: 600; margin-bottom: 10px; color: #2c3e50; font-size: 1.05em; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button.opt { padding: 12px; border: 1px solid #3498db; background: #fff; border-radius: 6px; cursor: pointer; font-size: 0.95em; transition: 0.2s; }
+        button.opt:hover { background: #3498db; color: white; }
+        button.correct { background: var(--success) !important; color: white; border-color: var(--success); }
+        button.wrong { background: var(--error) !important; color: white; border-color: var(--error); }
+        #score-zone { display: none; text-align: center; padding: 20px; background: var(--primary); color: white; border-radius: 10px; margin-top: 20px; }
+        .btn-finish { display: block; width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 1.2em; cursor: pointer; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>إتقان أنواع المضارع الأربعة 🚀</h1>
+
+    <div class="lesson-box">
+        <h3>💡 مراجعة سريعة قبل البدء:</h3>
+        <ul>
+            <li><b>Simple:</b> حقائق وعادات (S + V1/s). الكلمات: <i>Always, Often.</i></li>
+            <li><b>Continuous:</b> حدث الآن (am/is/are + V-ing). الكلمات: <i>Now, Look.</i></li>
+            <li><b>Perfect:</b> حدث تم أو خبرة (have/has + V3). الكلمات: <i>Ever, Just, Yet.</i></li>
+            <li><b>Perfect Continuous:</b> حدث بدأ ومازال مستمراً (have/has + been + V-ing). الكلمات: <i>For, Since.</i></li>
+        </ul>
+    </div>
+
+    <div id="quiz-area"></div>
+
+    <button class="btn-finish" onclick="showTotal()">عرض النتيجة النهائية</button>
+
+    <div id="score-zone">
+        <h2 id="final-text"></h2>
+        <p>استمر في الممارسة لتحقيق الإتقان الكامل!</p>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        // Present Simple
+        { q: "Water _______ at 100 degrees Celsius.", a: ["boils", "is boiling"], c: 0 },
+        { q: "My brother _______ English every night.", a: ["studies", "is studying"], c: 0 },
+        { q: "They _______ normally go to the gym on Fridays.", a: ["do", "does"], c: 0 },
+        { q: "The Earth _______ around the Sun.", a: ["revolve", "revolves"], c: 1 },
+        { q: "Cats _______ milk.", a: ["likes", "like"], c: 1 },
+        // Present Continuous
+        { q: "Be quiet! The baby _______ now.", a: ["sleeps", "is sleeping"], c: 1 },
+        { q: "Look! It _______ to rain.", a: ["starts", "is starting"], c: 1 },
+        { q: "I _______ a very interesting book these days.", a: ["am reading", "read"], c: 0 },
+        { q: "Why _______ you _______ at me like that?", a: ["do/look", "are/looking"], c: 1 },
+        { q: "Listen! Someone _______ the trumpet.", a: ["is playing", "plays"], c: 0 },
+        // Present Perfect
+        { q: "I _______ my keys. I can't find them!", a: ["lost", "have lost"], c: 1 },
+        { q: "_______ you ever _______ to Japan?", a: ["Have/been", "Did/be"], c: 0 },
+        { q: "She _______ already _______ her lunch.", a: ["is/eating", "has/eaten"], c: 1 },
+        { q: "We _______ each other for ten years.", a: ["have known", "know"], c: 0 },
+        { q: "They _______ haven't finished the project _______.", a: ["already", "yet"], c: 1 },
+        // Present Perfect Continuous
+        { q: "I _______ for you for two hours!", a: ["have been waiting", "am waiting"], c: 0 },
+        { q: "It _______ since early morning.", a: ["is raining", "has been raining"], c: 1 },
+        { q: "Your eyes are red. _______ you _______?", a: ["Have/been crying", "Are/crying"], c: 0 },
+        { q: "He _______ in this company for 5 years.", a: ["has been working", "works"], c: 0 },
+        { q: "How long _______ you _______ English?", a: ["are/learning", "have/been learning"], c: 1 }
+    ];
+
+    let userScore = 0;
+    const quizArea = document.getElementById('quiz-area');
+
+    quizData.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `
+            <p>${index + 1}. ${item.q}</p>
+            <div class="options-grid" id="group${index}">
+                ${item.a.map((opt, i) => `<button class="opt" onclick="verify(this, ${index}, ${i})">${opt}</button>`).join('')}
+            </div>
+        `;
+        quizArea.appendChild(card);
+    });
+
+    function verify(btn, qIdx, oIdx) {
+        const parent = document.getElementById('group' + qIdx);
+        const allBtns = parent.querySelectorAll('button');
+        
+        allBtns.forEach(b => b.disabled = true);
+
+        if (oIdx === quizData[qIdx].c) {
+            btn.classList.add('correct');
+            userScore++;
+        } else {
+            btn.classList.add('wrong');
+            allBtns[quizData[qIdx].c].classList.add('correct');
+        }
+    }
+
+    function showTotal() {
+        const scoreZone = document.getElementById('score-zone');
+        const finalText = document.getElementById('final-text');
+        scoreZone.style.display = 'block';
+        finalText.innerText = `درجتك هي: ${userScore} من ${quizData.length}`;
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
