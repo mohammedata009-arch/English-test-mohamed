@@ -167,6 +167,9 @@ function speak(text){
 
 // البوابة 4: تمرين الصور
 function checkStep4(){
+    const name=document.getElementById("studentName").value.trim();
+    if(!name){ alert("الرجاء إدخال اسم الطالب"); return; }
+
     const q1=document.getElementById("q1").value.toLowerCase();
     const q2=document.getElementById("q2").value.toLowerCase();
     const r=document.getElementById("result");
@@ -182,12 +185,12 @@ function checkStep4(){
     setTimeout(()=>{ nextStep(); }, 1500);
 }
 
-// إنهاء وإرسال الرسالة إلى WhatsApp
+// إنهاء وإرسال النتيجة
 function finish(){
+    const name=document.getElementById("studentName").value.trim();
     const url=`https://chat.whatsapp.com/Bp3JS0KpxzNDIisOt5lNNX`;
-    const msg = encodeURIComponent("Thanks, it's great!"); // الرسالة الجديدة
     alert("تم الإرسال! سيتم الانتقال إلى المجموعة على واتساب.");
-    window.open(url + "?text=" + msg,"_blank");
+    window.open(url,"_blank");
 }
 
 // YouTube API لإيقاف الفيديو وانتقال تلقائي
@@ -205,10 +208,11 @@ function onYouTubeIframeAPIReady() {
 function onPlayerStateChange(event) {
   if (event.data == YT.PlayerState.ENDED) {
     alert("🎉 انتهى الفيديو، سيتم إنهاء التمرين وإرسال النتيجة تلقائيًا!");
-    finish();
+    finish(); // يستدعي دالة إرسال النتيجة
   }
 }
 </script>
 <script src="https://www.youtube.com/iframe_api"></script>
+
 </body>
 </html>
