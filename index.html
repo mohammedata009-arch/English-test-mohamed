@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>منصة البرامج التخصصية | الحروف والكلمات مع الصوت</title>
+<title>منصة البرامج التخصصية | الحروف والكلمات والفيديو</title>
 
 <style>
 body{
@@ -36,16 +36,17 @@ input{
     text-align:center;
     border-radius:8px;
     border:1px solid #ccc;
+    margin-bottom:10px;
 }
 
-.letters{
+.letters, .letter-images{
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(60px,1fr));
+    grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
     gap:10px;
     margin-top:15px;
 }
 
-.letter{
+.letter, .letter-img{
     background:#2563eb;
     color:white;
     font-size:22px;
@@ -54,7 +55,7 @@ input{
     cursor:pointer;
 }
 
-.letter:hover{
+.letter:hover, .letter-img:hover{
     background:#1e40af;
 }
 
@@ -76,6 +77,20 @@ button{
     margin-top:10px;
     font-weight:bold;
 }
+
+iframe{
+    border-radius:12px;
+}
+.letter-img img{
+    width:80px;
+    height:80px;
+    display:block;
+    margin:auto;
+}
+.letter-img span{
+    display:block;
+    margin-top:5px;
+}
 </style>
 </head>
 
@@ -92,11 +107,26 @@ button{
     <input id="studentName" placeholder="اكتب اسمك هنا">
 </section>
 
+<!-- نافذة محاضرة فيديو -->
+<section>
+    <h3>📺 محاضرة قصيرة عن الحروف الإنجليزية</h3>
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/OdO5yK6g7J0" 
+    title="English Alphabet for Kids" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</section>
+
+<!-- الحروف مع صوت -->
 <section>
     <h3>🔤 الحروف الإنجليزية مع الصوت</h3>
     <div class="letters" id="letters"></div>
 </section>
 
+<!-- صور الحروف مع أمثلة -->
+<section>
+    <h3>🖼️ صور الحروف مع أمثلة</h3>
+    <div class="letter-images" id="letterImages"></div>
+</section>
+
+<!-- تمارين كلمات -->
 <section class="quiz">
     <h3>✏️ أكمل الكلمات مع الصوت</h3>
 
@@ -124,6 +154,25 @@ letters.forEach(l=>{
     d.onclick=()=>speak(l);
     lettersDiv.appendChild(d);
 });
+
+// ================== صور الحروف مع أمثلة ==================
+const examples = {
+    A: "Apple", B: "Book", C: "Cat", D: "Dog", E: "Elephant",
+    F: "Fish", G: "Grapes", H: "Hat", I: "Ice", J: "Juice",
+    K: "Kite", L: "Lion", M: "Monkey", N: "Nest", O: "Orange",
+    P: "Pen", Q: "Queen", R: "Rabbit", S: "Sun", T: "Tiger",
+    U: "Umbrella", V: "Violin", W: "Watch", X: "Xylophone", Y: "Yogurt", Z: "Zebra"
+};
+
+const imgDiv = document.getElementById("letterImages");
+
+for(let l in examples){
+    const d=document.createElement("div");
+    d.className="letter-img";
+    d.innerHTML=`<img src="https://via.placeholder.com/80?text=${examples[l]}" alt="${examples[l]}"><span>${l} → ${examples[l]}</span>`;
+    d.onclick=()=>speak(examples[l]);
+    imgDiv.appendChild(d);
+}
 
 // ================== نطق ==================
 function speak(text){
@@ -157,8 +206,6 @@ function check(){
 
         // فتح رابط واتساب برسالة جاهزة للنسخ
         const msg=`السلام عليكم، أنا الطالب ${name} وقد أكملت تمارين الحروف والكلمات بنجاح.`;
-        const waLink="https://chat.whatsapp.com/Bp3JS0KpxzNDIisOt5lNNX";
-
         setTimeout(()=>{
             alert("تم فتح واتساب! انسخ الرسالة وأرسلها إلى المجموعة");
             const url=`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
