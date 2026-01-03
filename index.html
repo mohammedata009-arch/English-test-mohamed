@@ -2,94 +2,134 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>منصة البرامج التخصصية | الحروف والكلمات والفيديو</title>
+<title>منصة البرامج التخصصية | الحروف والكلمات التفاعلية</title>
 
 <style>
+/* عام */
 body{
-    font-family: Tahoma, Arial;
-    background:#f4f6ff;
-    padding:20px;
-    text-align:center;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right,#e0f7fa,#f1f8e9);
+    margin:0;
+    padding:0;
+    scroll-behavior: smooth;
 }
 
 header{
-    background:#1e3a8a;
+    background:#1565c0;
     color:white;
-    padding:20px;
-    border-radius:12px;
+    padding:30px 20px;
+    text-align:center;
+    border-bottom-left-radius:20px;
+    border-bottom-right-radius:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.3);
+    position: sticky;
+    top:0;
+    z-index:100;
+    animation: fadeInDown 1s;
 }
 
+header h2{margin:0;font-size:2em;}
+header p{margin:5px 0;font-size:1em;}
+
+/* الأقسام */
 section{
     background:white;
-    margin:20px auto;
+    margin:30px auto;
     max-width:900px;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
 }
+section:hover{transform: translateY(-5px);}
 
+/* مدخل اسم الطالب */
 input{
-    padding:10px;
+    padding:12px;
     font-size:16px;
     width:80%;
     max-width:300px;
     text-align:center;
     border-radius:8px;
-    border:1px solid #ccc;
-    margin-bottom:10px;
+    border:2px solid #90caf9;
+    transition: 0.3s;
+}
+input:focus{
+    border-color:#42a5f5;
+    box-shadow:0 0 10px #42a5f5;
+    outline:none;
 }
 
+/* الحروف */
 .letters, .letter-images{
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
-    gap:10px;
-    margin-top:15px;
+    grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+    gap:15px;
+    margin-top:20px;
 }
 
 .letter, .letter-img{
-    background:#2563eb;
+    background:#42a5f5;
     color:white;
     font-size:22px;
-    padding:15px;
-    border-radius:10px;
+    padding:20px;
+    border-radius:12px;
     cursor:pointer;
+    transition: transform 0.3s, background 0.3s;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
 }
-
 .letter:hover, .letter-img:hover{
-    background:#1e40af;
+    background:#1e88e5;
+    transform: scale(1.1) rotate(5deg);
 }
+.letter-img img{
+    width:90px;
+    height:90px;
+    border-radius:10px;
+    margin-bottom:10px;
+    transition: transform 0.3s;
+}
+.letter-img:hover img{transform: scale(1.1);}
+.letter-img span{font-weight:bold;text-align:center;}
 
+/* تمارين */
 .quiz input{
     width:80px;
+    margin:5px 0;
+    text-align:center;
+    font-weight:bold;
+    font-size:16px;
 }
-
 button{
-    background:#16a34a;
+    background:#43a047;
     color:white;
     border:none;
     padding:10px 18px;
     border-radius:8px;
     cursor:pointer;
-    margin-top:10px;
+    margin-top:15px;
+    transition:0.3s;
 }
+button:hover{background:#388e3c;transform: scale(1.05);}
+.result{margin-top:15px;font-weight:bold;font-size:18px;}
 
-.result{
-    margin-top:10px;
-    font-weight:bold;
-}
-
+/* فيديو */
 iframe{
-    border-radius:12px;
+    border-radius:15px;
+    transition: transform 0.3s;
 }
-.letter-img img{
-    width:80px;
-    height:80px;
-    display:block;
-    margin:auto;
-}
-.letter-img span{
-    display:block;
-    margin-top:5px;
+iframe:hover{transform: scale(1.02);}
+
+/* التسجيل الصوتي */
+#feedback{margin-top:10px;font-weight:bold;font-size:16px;}
+
+/* Animations */
+@keyframes fadeInDown{
+    from{opacity:0; transform: translateY(-50px);}
+    to{opacity:1; transform: translateY(0);}
 }
 </style>
 </head>
@@ -107,74 +147,94 @@ iframe{
     <input id="studentName" placeholder="اكتب اسمك هنا">
 </section>
 
-<!-- نافذة محاضرة فيديو -->
 <section>
     <h3>📺 محاضرة قصيرة عن الحروف الإنجليزية</h3>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/OdO5yK6g7J0" 
-    title="English Alphabet for Kids" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe width="100%" height="315" 
+    src="https://www.youtube.com/embed/-g2yP36gD2A" 
+    title="English Alphabet for Kids" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen></iframe>
 </section>
 
-<!-- الحروف مع صوت -->
 <section>
     <h3>🔤 الحروف الإنجليزية مع الصوت</h3>
     <div class="letters" id="letters"></div>
 </section>
 
-<!-- صور الحروف مع أمثلة -->
 <section>
-    <h3>🖼️ صور الحروف مع أمثلة</h3>
+    <h3>🖼️ صور الحروف مع أمثلة حقيقية</h3>
     <div class="letter-images" id="letterImages"></div>
 </section>
 
-<!-- تمارين كلمات -->
 <section class="quiz">
     <h3>✏️ أكمل الكلمات مع الصوت</h3>
-
     <p>1️⃣ B__k (كتاب)</p>
     <input id="q1">
-
     <p>2️⃣ N__s (أخبار)</p>
     <input id="q2">
-
     <br>
     <button onclick="check()">إنهاء التمرين</button>
-
     <div class="result" id="result"></div>
 </section>
 
+<section>
+    <h3>🎤 حاول نطق الكلمة</h3>
+    <p id="wordToSay">Apple</p>
+    <button onclick="startRecognition()">سجل نطقك</button>
+    <div id="feedback"></div>
+</section>
+
 <script>
-// ================== الحروف مع صوت ==================
+// الحروف
 const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const lettersDiv=document.getElementById("letters");
-
 letters.forEach(l=>{
     const d=document.createElement("div");
     d.className="letter";
     d.textContent=l;
-    d.onclick=()=>speak(l);
+    d.onclick=()=>{ speak(l); alert("أحسنت! ضغطت على حرف "+l); };
     lettersDiv.appendChild(d);
 });
 
-// ================== صور الحروف مع أمثلة ==================
+// صور الحروف
 const examples = {
-    A: "Apple", B: "Book", C: "Cat", D: "Dog", E: "Elephant",
-    F: "Fish", G: "Grapes", H: "Hat", I: "Ice", J: "Juice",
-    K: "Kite", L: "Lion", M: "Monkey", N: "Nest", O: "Orange",
-    P: "Pen", Q: "Queen", R: "Rabbit", S: "Sun", T: "Tiger",
-    U: "Umbrella", V: "Violin", W: "Watch", X: "Xylophone", Y: "Yogurt", Z: "Zebra"
+    A: {word:"Apple", img:"https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg"},
+    B: {word:"Book", img:"https://upload.wikimedia.org/wikipedia/commons/8/8e/Book_icon.svg"},
+    C: {word:"Cat", img:"https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"},
+    D: {word:"Dog", img:"https://upload.wikimedia.org/wikipedia/commons/d/d9/Collage_of_Nine_Dogs.jpg"},
+    E: {word:"Elephant", img:"https://upload.wikimedia.org/wikipedia/commons/3/37/African_Bush_Elephant.jpg"},
+    F: {word:"Fish", img:"https://upload.wikimedia.org/wikipedia/commons/3/32/Goldfish3.jpg"},
+    G: {word:"Grapes", img:"https://upload.wikimedia.org/wikipedia/commons/1/11/Table_grapes_on_white.jpg"},
+    H: {word:"Hat", img:"https://upload.wikimedia.org/wikipedia/commons/4/49/Fedora_hat.jpg"},
+    I: {word:"Ice", img:"https://upload.wikimedia.org/wikipedia/commons/2/2c/Ice_cube.png"},
+    J: {word:"Juice", img:"https://upload.wikimedia.org/wikipedia/commons/3/34/Orangejuice.jpg"},
+    K: {word:"Kite", img:"https://upload.wikimedia.org/wikipedia/commons/1/18/Single_kite.jpg"},
+    L: {word:"Lion", img:"https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg"},
+    M: {word:"Monkey", img:"https://upload.wikimedia.org/wikipedia/commons/2/2c/Capuchin_Costa_Rica.jpg"},
+    N: {word:"Nest", img:"https://upload.wikimedia.org/wikipedia/commons/f/fb/Robin_nest.jpg"},
+    O: {word:"Orange", img:"https://upload.wikimedia.org/wikipedia/commons/c/c4/Orange-Fruit-Pieces.jpg"},
+    P: {word:"Pen", img:"https://upload.wikimedia.org/wikipedia/commons/3/32/BIC_Blue_ballpoint_pen.jpg"},
+    Q: {word:"Queen", img:"https://upload.wikimedia.org/wikipedia/commons/f/f1/Queen_Elizabeth_II.jpg"},
+    R: {word:"Rabbit", img:"https://upload.wikimedia.org/wikipedia/commons/1/16/European_Rabbit.jpg"},
+    S: {word:"Sun", img:"https://upload.wikimedia.org/wikipedia/commons/c/c3/Sun_black.jpg"},
+    T: {word:"Tiger", img:"https://upload.wikimedia.org/wikipedia/commons/5/56/Tiger.50.jpg"},
+    U: {word:"Umbrella", img:"https://upload.wikimedia.org/wikipedia/commons/d/d9/Umbrella_icon.svg"},
+    V: {word:"Violin", img:"https://upload.wikimedia.org/wikipedia/commons/1/1b/Violin_VL100.png"},
+    W: {word:"Watch", img:"https://upload.wikimedia.org/wikipedia/commons/8/86/Wristwatch.jpg"},
+    X: {word:"Xylophone", img:"https://upload.wikimedia.org/wikipedia/commons/1/15/Xylophone.jpg"},
+    Y: {word:"Yogurt", img:"https://upload.wikimedia.org/wikipedia/commons/0/0f/Yoghurt.jpg"},
+    Z: {word:"Zebra", img:"https://upload.wikimedia.org/wikipedia/commons/0/0f/Plains_Zebra_Equus_quagga.jpg"}
 };
-
-const imgDiv = document.getElementById("letterImages");
-
+const imgDiv=document.getElementById("letterImages");
 for(let l in examples){
     const d=document.createElement("div");
     d.className="letter-img";
-    d.innerHTML=`<img src="https://via.placeholder.com/80?text=${examples[l]}" alt="${examples[l]}"><span>${l} → ${examples[l]}</span>`;
-    d.onclick=()=>speak(examples[l]);
+    d.innerHTML=`<img src="${examples[l].img}" alt="${examples[l].word}"><span>${l} → ${examples[l].word}</span>`;
+    d.onclick=()=>{ speak(examples[l].word); alert("أحسنت! ضغطت على "+examples[l].word); };
     imgDiv.appendChild(d);
 }
 
-// ================== نطق ==================
+// نطق
 function speak(text){
     const u=new SpeechSynthesisUtterance(text);
     u.lang="en-US";
@@ -182,13 +242,10 @@ function speak(text){
     speechSynthesis.speak(u);
 }
 
-// ================== كلمات + صوت عند الإجابة الصحيحة + واتساب ==================
+// التمارين + واتساب
 function check(){
     const name=document.getElementById("studentName").value.trim();
-    if(!name){
-        alert("الرجاء إدخال اسم الطالب");
-        return;
-    }
+    if(!name){ alert("الرجاء إدخال اسم الطالب"); return; }
 
     const q1=document.getElementById("q1").value.toLowerCase();
     const q2=document.getElementById("q2").value.toLowerCase();
@@ -196,26 +253,48 @@ function check(){
 
     if(q1==="oo" && q2==="ew"){
         r.style.color="green";
-        r.textContent="✅ أحسنت! تم إكمال التمارين";
+        r.textContent="✅ أحسنت! تم إكمال التمارين 🎉";
+        setTimeout(()=>{ speak("Book"); setTimeout(()=>{ speak("News"); },1000); },500);
 
-        // نطق الكلمات كاملة
-        setTimeout(()=>{
-            speak("Book");
-            setTimeout(()=>{ speak("News"); },1000);
-        },500);
-
-        // فتح رابط واتساب برسالة جاهزة للنسخ
         const msg=`السلام عليكم، أنا الطالب ${name} وقد أكملت تمارين الحروف والكلمات بنجاح.`;
         setTimeout(()=>{
             alert("تم فتح واتساب! انسخ الرسالة وأرسلها إلى المجموعة");
             const url=`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
             window.open(url,"_blank");
         },3500);
-
     }else{
         r.style.color="red";
         r.textContent="❌ بعض الإجابات غير صحيحة، حاول مرة أخرى";
     }
+}
+
+// تسجيل صوت الطالب
+function startRecognition(){
+    if(!('webkitSpeechRecognition' in window)){
+        alert("عذرًا، متصفحك لا يدعم تسجيل الصوت");
+        return;
+    }
+    const recognition=new webkitSpeechRecognition();
+    recognition.lang="en-US";
+    recognition.interimResults=false;
+    recognition.maxAlternatives=1;
+    recognition.start();
+    recognition.onresult=function(event){
+        const speechResult=event.results[0][0].transcript.toLowerCase();
+        const correctWord=document.getElementById("wordToSay").textContent.toLowerCase();
+        const feedback=document.getElementById("feedback");
+
+        if(speechResult.includes(correctWord)){
+            feedback.innerHTML="✅ أحسنت! نطقك صحيح 🎉";
+            feedback.style.color="green";
+            speak("Excellent!");
+        }else{
+            feedback.innerHTML="❌ حاول مرة أخرى";
+            feedback.style.color="red";
+            speak("Try again!");
+        }
+    };
+    recognition.onerror=function(event){ alert("حدث خطأ أثناء التسجيل: "+event.error); }
 }
 </script>
 
