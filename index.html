@@ -2,56 +2,26 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>منصة البرامج التخصصية | بوابات الحروف والكلمات</title>
+<title>منصة البرامج التخصصية | فيديو وMCQ</title>
 <style>
-body{
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin:0;padding:0;
-  background: linear-gradient(to right,#e0f7fa,#f1f8e9);
-}
-header{
-  background:#1565c0;color:white;text-align:center;padding:20px 10px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.3);
-}
+body{font-family:'Segoe UI',sans-serif;margin:0;padding:0;background: linear-gradient(to right,#e0f7fa,#f1f8e9);}
+header{background:#1565c0;color:white;text-align:center;padding:20px 10px;box-shadow:0 4px 15px rgba(0,0,0,0.3);}
 h2,h3{margin:5px 0;font-size:1.2em;}
-section{
-  display:none;padding:20px;max-width:95%;margin:20px auto;
-  background:white;border-radius:15px;
-  box-shadow:0 5px 20px rgba(0,0,0,0.1);transition: transform 0.3s;
-}
+section{display:none;padding:20px;max-width:95%;margin:20px auto;background:white;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,0.1);transition: transform 0.3s;}
 section.active{display:block;animation:fadeIn 0.5s;}
-button{
-  background:#43a047;color:white;border:none;padding:14px 20px;border-radius:10px;
-  cursor:pointer;margin:10px 5px;font-size:1em;transition:0.3s;
-}
+button{background:#43a047;color:white;border:none;padding:14px 20px;border-radius:10px;cursor:pointer;margin:10px 5px;font-size:1em;transition:0.3s;}
 button:hover{background:#388e3c;transform:scale(1.05);}
-input{
-  padding:14px;width:90%;font-size:16px;border-radius:10px;border:2px solid #90caf9;
-  text-align:center;margin:5px 0;
-}
+input{padding:14px;width:90%;font-size:16px;border-radius:10px;border:2px solid #90caf9;text-align:center;margin:5px 0;}
 input:focus{border-color:#42a5f5;box-shadow:0 0 10px #42a5f5;outline:none;}
-.letters,.letter-images,.sentence-images{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:15px;margin-top:20px;
-}
-.letter,.letter-img,.sentence-img{
-  background:#42a5f5;color:white;padding:20px;border-radius:12px;
-  cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transition: transform 0.3s, background 0.3s;
-}
-.letter:hover,.letter-img:hover,.sentence-img:hover{
-  background:#1e88e5;transform:scale(1.05) rotate(3deg);
-}
-.letter-img span,.sentence-img span{text-align:center;font-weight:bold;font-size:0.9em;}
+.letters,.letter-images,.sentence-images,.mcq{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:15px;margin-top:20px;}
+.letter,.letter-img,.sentence-img,.mcq div{background:#42a5f5;color:white;padding:20px;border-radius:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;transition: transform 0.3s, background 0.3s;text-align:center;}
+.letter:hover,.letter-img:hover,.sentence-img:hover,.mcq div:hover{background:#1e88e5;transform:scale(1.05) rotate(3deg);}
+.letter-img span,.sentence-img span{font-weight:bold;font-size:0.9em;}
 .letter-img span:first-child,.sentence-img span:first-child{font-size:70px;margin-bottom:10px;}
 .result,#feedback{margin-top:15px;font-weight:bold;font-size:16px;color:#1565c0;text-align:center;}
 iframe{border-radius:15px;width:100%;height:220px;margin-top:15px;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-@media screen and (max-width:480px){
-  .letter-img span:first-child,.sentence-img span:first-child{font-size:50px;}
-  button{padding:12px 16px;font-size:0.95em;}
-  h2,h3{font-size:1em;}
-  input{font-size:15px;padding:12px;width:95%;}
-}
+@media screen and (max-width:480px){.letter-img span:first-child,.sentence-img span:first-child{font-size:50px;}button{padding:12px 16px;font-size:0.95em;}h2,h3{font-size:1em;}input{font-size:15px;padding:12px;width:95%;}}
 </style>
 </head>
 <body>
@@ -61,158 +31,88 @@ iframe{border-radius:15px;width:100%;height:220px;margin-top:15px;}
 <p>إدارة محمد طه عطا المنان | برنامج اللغة الإنجليزية والترجمة</p>
 </header>
 
-<!-- البوابة 1: اسم الطالب وأصوات الحروف -->
+<!-- البوابة 1: فيديو -->
 <section class="active" id="step1">
-<h3>👤 اكتب اسمك</h3>
-<input id="studentName" placeholder="اسم الطالب هنا">
-<h3>🔤 الحروف الإنجليزية مع الصوت</h3>
-<div class="letters" id="letters"></div>
-<br>
-<button onclick="nextStep()">التالي</button>
-</section>
-
-<!-- البوابة 2: الحروف مع إيموجيز -->
-<section id="step2">
-<h3>🖼️ الحروف مع أمثلة كارتونية</h3>
-<div class="letter-images" id="letterImages"></div>
-<button onclick="prevStep()">السابق</button>
-<button onclick="nextStep()">التالي</button>
-</section>
-
-<!-- البوابة 3: فيديو kids (بعده ينهي التمرين تلقائيًا) -->
-<section id="step3">
-<h3>📺 نافذة تعليمية للأطفال عن الحروف الإنجليزية</h3>
+<h3>📺 فيديو تعليم الحروف للأطفال</h3>
 <div id="player"></div>
-<p style="margin-top:10px;color:#1565c0;font-weight:bold;text-align:center;">عند انتهاء الفيديو سيتم إنهاء التمرين تلقائيًا!</p>
+<p style="margin-top:10px;color:#1565c0;font-weight:bold;text-align:center;">🔹 عند إيقاف الفيديو سيتم إرسال رسالتك تلقائيًا</p>
 </section>
 
-<!-- البوابة 4: تمرين إيموجيز -->
-<section id="step4">
-<h3>✏️ حل الصور وانطق اسمها</h3>
-<p>1️⃣ اختر اسم الصورة:</p>
-<input id="q1" placeholder="اكتب الاسم هنا">
-<p>2️⃣ اختر اسم الصورة:</p>
-<input id="q2" placeholder="اكتب الاسم هنا">
-<div id="result"></div>
-<button onclick="prevStep()">السابق</button>
-<button onclick="checkStep4()">التالي</button>
-</section>
-
-<!-- البوابة 5: 3 جمل مع إيموجيز -->
-<section id="step5">
-<h3>📖 جمل مع إيموجيز</h3>
-<div class="sentence-images">
-<div class="sentence-img" onclick="speak('I like apples')"><span>🍎</span><span>I like apples</span></div>
-<div class="sentence-img" onclick="speak('The cat is sleeping')"><span>🐱💤</span><span>The cat is sleeping</span></div>
-<div class="sentence-img" onclick="speak('The sun is shining')"><span>☀️😎</span><span>The sun is shining</span></div>
+<!-- البوابة 2: اختبار اختيار من متعدد -->
+<section id="step2">
+<h3>❓ اختبار اختيار من متعدد (3 أسئلة)</h3>
+<div class="mcq">
+<div>
+<p>1️⃣ ما هو حرف A؟</p>
+<button onclick="selectMCQ(this,0)">Apple</button>
+<button onclick="selectMCQ(this,1)">Cat</button>
+<button onclick="selectMCQ(this,2)">Dog</button>
 </div>
-<button onclick="prevStep()">السابق</button>
-<button onclick="nextStep()">التالي</button>
-</section>
-
-<!-- البوابة 6: إنهاء التمارين + إرسال -->
-<section id="step6">
-<h3>✅ تم الانتهاء من التمارين</h3>
-<div id="feedback">اضغط إنهاء لإرسال النتيجة إلى المجموعة</div>
-<button onclick="prevStep()">السابق</button>
-<button onclick="finish()">إنهاء</button>
+<div>
+<p>2️⃣ ما هو الحرف الأول لكلمة Book؟</p>
+<button onclick="selectMCQ(this,0)">B</button>
+<button onclick="selectMCQ(this,1)">C</button>
+<button onclick="selectMCQ(this,2)">D</button>
+</div>
+<div>
+<p>3️⃣ ما هي الجملة الصحيحة؟</p>
+<button onclick="selectMCQ(this,0)">I like apples</button>
+<button onclick="selectMCQ(this,1)">The cat is shining</button>
+<button onclick="selectMCQ(this,2)">Sun is sleeping</button>
+</div>
+</div>
+<div id="mcqResult"></div>
+<button onclick="finishMCQ()">إنهاء</button>
 </section>
 
 <script>
-// الخطوات
-let currentStep=1;
-const totalSteps=6;
-function showStep(n){
-  for(let i=1;i<=totalSteps;i++){
-    document.getElementById('step'+i).classList.remove('active');
-  }
-  document.getElementById('step'+n).classList.add('active');
-}
-function nextStep(){if(currentStep<totalSteps){currentStep++;showStep(currentStep);}}
-function prevStep(){if(currentStep>1){currentStep--;showStep(currentStep);}}
+// MCQ
+let mcqAnswers=[0,0,0]; // صحيحة
+let userMCQ=[];
 
-// الحروف
-const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const lettersDiv=document.getElementById("letters");
-letters.forEach(l=>{
-    const d=document.createElement("div");
-    d.className="letter";
-    d.textContent=l;
-    d.onclick=()=>{ speak(l); alert("أحسنت! ضغطت على الحرف "+l); };
-    lettersDiv.appendChild(d);
-});
-
-// الحروف مع إيموجيز
-const examples = {
-    A: {word:"Apple", emoji:"🍎"},
-    B: {word:"Book", emoji:"📚"},
-    C: {word:"Cat", emoji:"🐱"},
-    D: {word:"Dog", emoji:"🐶"}
-};
-const imgDiv=document.getElementById("letterImages");
-for(let l in examples){
-    const d=document.createElement("div");
-    d.className="letter-img";
-    d.innerHTML=`<span>${examples[l].emoji}</span><span>${l} → ${examples[l].word}</span>`;
-    d.onclick=()=>{ speak(examples[l].word); alert("أحسنت! ضغطت على "+examples[l].word); };
-    imgDiv.appendChild(d);
+function selectMCQ(btn,qIndex){
+    let parentDiv = btn.parentElement;
+    Array.from(parentDiv.querySelectorAll("button")).forEach(b=>b.style.background="#42a5f5");
+    btn.style.background="#1e88e5";
+    userMCQ[qIndex]=parseInt(btn.dataset.correct||qIndex);
 }
 
-// نطق
-function speak(text){
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang="en-US"; u.rate=0.9;
-    speechSynthesis.speak(u);
+// حساب النتيجة وإرسال WhatsApp
+function finishMCQ(){
+    let score=0;
+    for(let i=0;i<3;i++){if(userMCQ[i]===mcqAnswers[i]) score++;}
+    document.getElementById("mcqResult").textContent="✅ نتيجتك: "+score+"/3";
+    sendWhatsApp(score);
 }
 
-// البوابة 4: تمرين الصور
-function checkStep4(){
-    const name=document.getElementById("studentName").value.trim();
-    if(!name){ alert("الرجاء إدخال اسم الطالب"); return; }
-
-    const q1=document.getElementById("q1").value.toLowerCase();
-    const q2=document.getElementById("q2").value.toLowerCase();
-    const r=document.getElementById("result");
-
-    if(q1==="apple" && q2==="cat"){
-        r.style.color="green"; r.textContent="✅ أحسنت! تم الحل بشكل صحيح";
-        speak("Excellent!");
-    } else {
-        r.style.color="orange"; r.textContent="⚠️ بعض الإجابات غير صحيحة، يمكنك المتابعة أو المحاولة مرة أخرى";
-        speak("Try again!");
-    }
-
-    setTimeout(()=>{ nextStep(); }, 1500);
+// إرسال WhatsApp
+function sendWhatsApp(score){
+    const url="https://chat.whatsapp.com/Bp3JS0KpxzNDIisOt5lNNX";
+    const msg=encodeURIComponent(`It's great! نتيجتي: ${score}/3`);
+    window.open(url+"?text="+msg,"_blank");
 }
 
-// إنهاء وإرسال النتيجة
-function finish(){
-    const name=document.getElementById("studentName").value.trim();
-    const url=`https://chat.whatsapp.com/Bp3JS0KpxzNDIisOt5lNNX`;
-    alert("تم الإرسال! سيتم الانتقال إلى المجموعة على واتساب.");
-    window.open(url,"_blank");
-}
-
-// YouTube API لإيقاف الفيديو وانتقال تلقائي
+// ==== YouTube IFrame API ====
 let player;
 function onYouTubeIframeAPIReady() {
-  player = new YT.Player('player', {
-    height: '220',
-    width: '100%',
-    videoId: 'ccEpTTZW34g', // الفيديو الخاص بك
-    events: {
-      'onStateChange': onPlayerStateChange
-    }
+  player=new YT.Player('player',{
+    height:'220',
+    width:'100%',
+    videoId:'ccEpTTZW34g',
+    events:{'onStateChange':onPlayerStateChange}
   });
 }
-function onPlayerStateChange(event) {
-  if (event.data == YT.PlayerState.ENDED) {
-    alert("🎉 انتهى الفيديو، سيتم إنهاء التمرين وإرسال النتيجة تلقائيًا!");
-    finish(); // يستدعي دالة إرسال النتيجة
-  }
+function onPlayerStateChange(event){
+    if(event.data==YT.PlayerState.PAUSED || event.data==YT.PlayerState.ENDED){
+        // عند التوقف أو الانتهاء نرسل رسالة WhatsApp مع النتيجة (0 إذا لم ينجز MCQ بعد)
+        let score=0;
+        if(userMCQ.length>0){
+            for(let i=0;i<3;i++){if(userMCQ[i]===mcqAnswers[i]) score++;}
+        }
+        sendWhatsApp(score);
+    }
 }
 </script>
 <script src="https://www.youtube.com/iframe_api"></script>
-
 </body>
 </html>
