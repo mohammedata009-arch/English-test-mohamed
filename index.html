@@ -3,46 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <title>منصة البرامج التخصصية | بوابات الحروف والكلمات</title>
-
 <style>
 body{
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin:0;padding:0;
   background: linear-gradient(to right,#e0f7fa,#f1f8e9);
 }
-
 header{
-  background:#1565c0;color:white;text-align:center;padding:25px;
+  background:#1565c0;color:white;text-align:center;padding:20px 10px;
   box-shadow:0 4px 15px rgba(0,0,0,0.3);
 }
-
-h2,h3{margin:5px 0;}
-section{display:none;padding:25px;max-width:900px;margin:30px auto;background:white;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,0.1);transition: transform 0.3s;}
+h2,h3{margin:5px 0;font-size:1.2em;}
+section{
+  display:none;padding:20px;max-width:95%;margin:20px auto;
+  background:white;border-radius:15px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.1);transition: transform 0.3s;
+}
 section.active{display:block;animation:fadeIn 0.5s;}
-
 button{
-  background:#43a047;color:white;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;margin:10px 5px;
-  transition:0.3s;
+  background:#43a047;color:white;border:none;padding:14px 20px;border-radius:10px;
+  cursor:pointer;margin:10px 5px;font-size:1em;transition:0.3s;
 }
 button:hover{background:#388e3c;transform:scale(1.05);}
-
-input{padding:12px;width:80%;max-width:300px;text-align:center;font-size:16px;border-radius:8px;border:2px solid #90caf9;transition:0.3s;}
+input{
+  padding:14px;width:90%;font-size:16px;border-radius:10px;border:2px solid #90caf9;
+  text-align:center;margin:5px 0;
+}
 input:focus{border-color:#42a5f5;box-shadow:0 0 10px #42a5f5;outline:none;}
-
-.letters,.letter-images,.sentence-images{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:15px;margin-top:20px;}
-.letter,.letter-img,.sentence-img{background:#42a5f5;color:white;padding:20px;border-radius:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;transition: transform 0.3s, background 0.3s;}
-.letter:hover,.letter-img:hover,.sentence-img:hover{background:#1e88e5;transform:scale(1.1) rotate(5deg);}
-.letter-img img,.sentence-img img{width:90px;height:90px;border-radius:10px;margin-bottom:10px;transition: transform 0.3s;}
-.letter-img:hover img,.sentence-img:hover img{transform:scale(1.1);}
-.letter-img span,.sentence-img span{text-align:center;font-weight:bold;}
-
-.result, #feedback{margin-top:15px;font-weight:bold;font-size:18px;color:#1565c0;text-align:center;}
-
-iframe{border-radius:15px;width:100%;height:315px;margin-top:15px;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.letters,.letter-images,.sentence-images{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:15px;margin-top:20px;
+}
+.letter,.letter-img,.sentence-img{
+  background:#42a5f5;color:white;padding:20px;border-radius:12px;
+  cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition: transform 0.3s, background 0.3s;
+}
+.letter:hover,.letter-img:hover,.sentence-img:hover{
+  background:#1e88e5;transform:scale(1.05) rotate(3deg);
+}
+.letter-img span,.sentence-img span{text-align:center;font-weight:bold;font-size:0.9em;}
+.letter-img span:first-child,.sentence-img span:first-child{font-size:70px;margin-bottom:10px;}
+.result,#feedback{margin-top:15px;font-weight:bold;font-size:16px;color:#1565c0;text-align:center;}
+iframe{border-radius:15px;width:100%;height:220px;margin-top:15px;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@media screen and (max-width:480px){
+  .letter-img span:first-child,.sentence-img span:first-child{font-size:50px;}
+  button{padding:12px 16px;font-size:0.95em;}
+  h2,h3{font-size:1em;}
+  input{font-size:15px;padding:12px;width:95%;}
+}
 </style>
 </head>
-
 <body>
 
 <header>
@@ -60,9 +71,9 @@ iframe{border-radius:15px;width:100%;height:315px;margin-top:15px;}
 <button onclick="nextStep()">التالي</button>
 </section>
 
-<!-- البوابة 2: صور الحروف -->
+<!-- البوابة 2: الحروف مع إيموجيز -->
 <section id="step2">
-<h3>🖼️ صور الحروف مع أمثلة</h3>
+<h3>🖼️ الحروف مع أمثلة كارتونية</h3>
 <div class="letter-images" id="letterImages"></div>
 <button onclick="prevStep()">السابق</button>
 <button onclick="nextStep()">التالي</button>
@@ -80,7 +91,7 @@ allowfullscreen></iframe>
 <button onclick="nextStep()">التالي</button>
 </section>
 
-<!-- البوابة 4: تمرين صور + نطق -->
+<!-- البوابة 4: تمرين إيموجيز -->
 <section id="step4">
 <h3>✏️ حل الصور وانطق اسمها</h3>
 <p>1️⃣ اختر اسم الصورة:</p>
@@ -92,19 +103,19 @@ allowfullscreen></iframe>
 <button onclick="checkStep4()">التالي</button>
 </section>
 
-<!-- البوابة 5: 3 جمل مع صور -->
+<!-- البوابة 5: 3 جمل مع إيموجيز -->
 <section id="step5">
-<h3>📖 جمل مع صور</h3>
+<h3>📖 جمل مع إيموجيز</h3>
 <div class="sentence-images">
-<div class="sentence-img" onclick="speak('I like apples')"><img src="https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg"><span>I like apples</span></div>
-<div class="sentence-img" onclick="speak('The cat is sleeping')"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"><span>The cat is sleeping</span></div>
-<div class="sentence-img" onclick="speak('The sun is shining')"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Sun_black.jpg"><span>The sun is shining</span></div>
+<div class="sentence-img" onclick="speak('I like apples')"><span>🍎</span><span>I like apples</span></div>
+<div class="sentence-img" onclick="speak('The cat is sleeping')"><span>🐱💤</span><span>The cat is sleeping</span></div>
+<div class="sentence-img" onclick="speak('The sun is shining')"><span>☀️😎</span><span>The sun is shining</span></div>
 </div>
 <button onclick="prevStep()">السابق</button>
 <button onclick="nextStep()">التالي</button>
 </section>
 
-<!-- البوابة 6: إنهاء التمارين + إرسال النتيجة -->
+<!-- البوابة 6: إنهاء التمارين + إرسال -->
 <section id="step6">
 <h3>✅ تم الانتهاء من التمارين</h3>
 <div id="feedback">اضغط إنهاء لإرسال النتيجة إلى المجموعة</div>
@@ -116,14 +127,12 @@ allowfullscreen></iframe>
 // الخطوات
 let currentStep=1;
 const totalSteps=6;
-
 function showStep(n){
   for(let i=1;i<=totalSteps;i++){
     document.getElementById('step'+i).classList.remove('active');
   }
   document.getElementById('step'+n).classList.add('active');
 }
-
 function nextStep(){if(currentStep<totalSteps){currentStep++;showStep(currentStep);}}
 function prevStep(){if(currentStep>1){currentStep--;showStep(currentStep);}}
 
@@ -138,18 +147,18 @@ letters.forEach(l=>{
     lettersDiv.appendChild(d);
 });
 
-// صور الحروف
+// الحروف مع إيموجيز
 const examples = {
-    A: {word:"Apple", img:"https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg"},
-    B: {word:"Book", img:"https://upload.wikimedia.org/wikipedia/commons/8/8e/Book_icon.svg"},
-    C: {word:"Cat", img:"https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"},
-    D: {word:"Dog", img:"https://upload.wikimedia.org/wikipedia/commons/d/d9/Collage_of_Nine_Dogs.jpg"}
+    A: {word:"Apple", emoji:"🍎"},
+    B: {word:"Book", emoji:"📚"},
+    C: {word:"Cat", emoji:"🐱"},
+    D: {word:"Dog", emoji:"🐶"}
 };
 const imgDiv=document.getElementById("letterImages");
 for(let l in examples){
     const d=document.createElement("div");
     d.className="letter-img";
-    d.innerHTML=`<img src="${examples[l].img}" alt="${examples[l].word}"><span>${l} → ${examples[l].word}</span>`;
+    d.innerHTML=`<span>${examples[l].emoji}</span><span>${l} → ${examples[l].word}</span>`;
     d.onclick=()=>{ speak(examples[l].word); alert("أحسنت! ضغطت على "+examples[l].word); };
     imgDiv.appendChild(d);
 }
@@ -165,22 +174,25 @@ function speak(text){
 function checkStep4(){
     const name=document.getElementById("studentName").value.trim();
     if(!name){ alert("الرجاء إدخال اسم الطالب"); return; }
+
     const q1=document.getElementById("q1").value.toLowerCase();
     const q2=document.getElementById("q2").value.toLowerCase();
     const r=document.getElementById("result");
+
     if(q1==="apple" && q2==="cat"){
         r.style.color="green"; r.textContent="✅ أحسنت! تم الحل بشكل صحيح";
-        speak("Excellent!"); nextStep();
-    }else{
-        r.style.color="red"; r.textContent="❌ بعض الإجابات غير صحيحة، حاول مرة أخرى";
+        speak("Excellent!");
+    } else {
+        r.style.color="orange"; r.textContent="⚠️ بعض الإجابات غير صحيحة، يمكنك المتابعة أو المحاولة مرة أخرى";
         speak("Try again!");
     }
+
+    setTimeout(()=>{ nextStep(); }, 1500);
 }
 
 // إنهاء وإرسال النتيجة
 function finish(){
     const name=document.getElementById("studentName").value.trim();
-    const msg=`السلام عليكم، أنا الطالب ${name} وقد أكملت التمارين بنجاح`;
     const url=`https://chat.whatsapp.com/Bp3JS0KpxzNDIisOt5lNNX`;
     alert("تم الإرسال! سيتم الانتقال إلى المجموعة على واتساب.");
     window.open(url,"_blank");
