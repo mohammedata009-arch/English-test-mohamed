@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moh Specialized Programs Board</title>
+    <style>
+        :root { --gold: #D4AF37; --navy: #002366; --white: #ffffff; --bg: #f0f2f5; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1a1a1a; margin: 0; padding: 20px; color: #333; }
+        
+        /* الترويسة الفخمة */
+        .platform-header { text-align: center; background: linear-gradient(135deg, var(--navy), #001233); color: var(--gold); padding: 25px; border-radius: 15px 15px 0 0; border-bottom: 4px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .platform-header h1 { margin: 0; font-size: 28px; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .platform-header p { margin: 5px 0 0; font-size: 18px; color: #fff; opacity: 0.9; }
+
+        .classroom { max-width: 900px; margin: 0 auto; background: var(--white); border-radius: 0 0 15px 15px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        
+        /* فقرة مادورو */
+        .news-section { padding: 30px; background: #fff5f5; border-bottom: 2px solid #eee; }
+        .news-section h2 { color: #c0392b; border-bottom: 2px solid #c0392b; display: inline-block; padding-bottom: 5px; }
+        .news-content { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+        .news-text { flex: 1; min-width: 300px; font-size: 16px; line-height: 1.6; }
+        .news-img { width: 100%; max-width: 350px; border-radius: 10px; border: 3px solid var(--navy); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+        /* السبورة التفاعلية */
+        #main-display { padding: 50px; text-align: center; min-height: 350px; background: radial-gradient(circle, #fff, #f9f9f9); }
+        .icon { font-size: 90px; margin-bottom: 10px; }
+        .term { font-size: 42px; color: var(--navy); font-weight: bold; text-transform: uppercase; margin-bottom: 15px; }
+        .meaning { font-size: 1.5em; background: #f0f4f8; border-left: 10px solid var(--gold); padding: 25px; margin: 20px auto; border-radius: 0 15px 15px 0; max-width: 85%; }
+
+        #video-container { display: none; padding: 40px; text-align: center; background: #000; color: #fff; }
+        
+        .controls { background: #eee; padding: 25px; display: flex; justify-content: space-between; align-items: center; border-top: 2px solid #ddd; }
+        button { padding: 15px 35px; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-nav { background: var(--navy); color: white; }
+        .btn-video { background: #27ae60; color: white; }
+        button:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.2); opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+<header class="platform-header">
+    <h1>منصة البرامج التخصصية - إدارة محمد طه عطا المنان</h1>
+    <p>برنامج اللغة الإنجليزية والترجمة</p>
+</header>
+
+<div class="classroom">
+    <section class="news-section">
+        <h2>Maduro Case: Election Controversy 🇻🇪</h2>
+        <div class="news-content">
+            <div class="news-text">
+                <p><b>Summary:</b> In late 2024 and early 2025, Venezuela faced a massive political crisis. Nicolás Maduro was declared the winner of the presidential election, but the opposition and many international observers claimed <b>election fraud</b>. Protests erupted globally after CNN and other networks reported that voting records showed a different result.</p>
+                <p><i>English Practice:</i> Words like <b>Fraud</b> (تزوير), <b>Opposition</b> (معارضة), and <b>Legitimacy</b> (شرعية) became central to world news.</p>
+            </div>
+            <img src="https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-2164332402.jpg?c=16x9&q=h_720,w_1280,c_fill" class="news-img" alt="CNN Maduro Report">
+        </div>
+    </section>
+
+    <div id="main-display">
+        <div id="card-content"></div>
+    </div>
+
+    <div id="video-container">
+        <h2 style="color: var(--gold);">Final Session: International Politics</h2>
+        <div id="player"></div>
+        <p>Finish the video to send your WhatsApp Report.</p>
+    </div>
+
+    <div class="controls">
+        <button id="prevBtn" class="btn-nav" onclick="prev()">Back</button>
+        <span id="counter" style="font-weight: bold; font-size: 1.3em; color: var(--navy);">1 / 20</span>
+        <button id="nextBtn" class="btn-nav" onclick="next()">Next Word</button>
+        <button id="videoBtn" class="btn-video" style="display:none;" onclick="startVideo()">Final Video & Report 🎬</button>
+    </div>
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+    const terms = [
+        { w: "Democracy", i: "🗳️", m: "People choose their leaders by voting." },
+        { w: "Election", i: "🎫", m: "The process of choosing a leader." },
+        { w: "Diplomacy", i: "🤝", m: "Managing relations peacefully." },
+        { w: "Law", i: "⚖️", m: "Rules made by the government." },
+        { w: "Justice", i: "🏛️", m: "Fairness for everyone." },
+        { w: "Citizen", i: "🆔", m: "A legal member of a country." },
+        { w: "Reform", i: "🛠️", m: "Changes to make things better." },
+        { w: "Debate", i: "🗣️", m: "A formal talk about ideas." },
+        { w: "Rights", i: "📜", m: "Basic freedoms for people." },
+        { w: "Peace", i: "🕊️", m: "No war or fighting." },
+        { w: "Vote", i: "🖋️", m: "Making an official choice." },
+        { w: "Taxes", i: "💰", m: "Money paid to the government." },
+        { w: "Leader", i: "👑", m: "A person in charge." },
+        { w: "Policy", i: "📋", m: "A government plan or rules." },
+        { w: "Party", i: "🚩", m: "A political group." },
+        { w: "Freedom", i: "🗽", m: "Being free to act and speak." },
+        { w: "Constitution", i: "📖", m: "The highest laws of a nation." },
+        { w: "State", i: "🗺️", m: "A nation under one government." },
+        { w: "Negotiation", i: "💬", m: "Talks to reach an agreement." },
+        { w: "Nation", i: "🌍", m: "A country and its people." }
+    ];
+
+    let current = 0;
+    let player;
+
+    function updateCard() {
+        const item = terms[current];
+        document.getElementById('card-content').innerHTML = `
+            <div class="icon">${item.i}</div>
+            <div class="term">${item.w}</div>
+            <div class="meaning"><b>Definition:</b><br>${item.m}</div>
+        `;
+        document.getElementById('counter').innerText = `${current + 1} / 20`;
+        document.getElementById('prevBtn').style.visibility = current === 0 ? 'hidden' : 'visible';
+        
+        if (current === terms.length - 1) {
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('videoBtn').style.display = 'block';
+        } else {
+            document.getElementById('nextBtn').style.display = 'block';
+            document.getElementById('videoBtn').style.display = 'none';
+        }
+    }
+
+    function next() { if (current < terms.length - 1) { current++; updateCard(); } }
+    function prev() { if (current > 0) { current--; updateCard(); } }
+
+    function startVideo() {
+        document.querySelector('.news-section').style.display = 'none';
+        document.getElementById('main-display').style.display = 'none';
+        document.getElementById('video-container').style.display = 'block';
+        document.getElementById('videoBtn').style.display = 'none';
+        document.getElementById('prevBtn').style.display = 'none';
+        document.getElementById('counter').style.display = 'none';
+    }
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '360', width: '100%',
+            videoId: 'u_pA8K0fGf8', 
+            events: { 'onStateChange': (e) => {
+                if (e.data == YT.PlayerState.ENDED) {
+                    window.location.href = "https://wa.me/0999240574?text=Greetings!%20I%20have%20completed%20the%20specialized%20English%20program%20session%20managed%20by%20Mohamed%20Taha%20Ataelmannan.%20✅🏛️";
+                }
+            }}
+        });
+    }
+
+    updateCard();
+</script>
+</body>
+</html>
