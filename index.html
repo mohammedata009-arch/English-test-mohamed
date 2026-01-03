@@ -113,7 +113,7 @@ button{
 </section>
 
 <script>
-// ================== حروف مع صوت ==================
+// ================== الحروف مع صوت ==================
 const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const lettersDiv=document.getElementById("letters");
 
@@ -133,7 +133,7 @@ function speak(text){
     speechSynthesis.speak(u);
 }
 
-// ================== كلمات + صوت عند الإجابة الصحيحة ==================
+// ================== كلمات + صوت عند الإجابة الصحيحة + واتساب ==================
 function check(){
     const name=document.getElementById("studentName").value.trim();
     if(!name){
@@ -155,11 +155,15 @@ function check(){
             setTimeout(()=>{ speak("News"); },1000);
         },500);
 
-        // رسالة واتساب
+        // فتح رابط واتساب برسالة جاهزة للنسخ
         const msg=`السلام عليكم، أنا الطالب ${name} وقد أكملت تمارين الحروف والكلمات بنجاح.`;
-        const url=`https://wa.me/249999240574?text=${encodeURIComponent(msg)}`;
+        const waLink="https://chat.whatsapp.com/Bp3JS0KpxzNDIisOt5lNNX";
 
-        setTimeout(()=>{ window.open(url,"_blank"); },3500);
+        setTimeout(()=>{
+            alert("تم فتح واتساب! انسخ الرسالة وأرسلها إلى المجموعة");
+            const url=`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+            window.open(url,"_blank");
+        },3500);
 
     }else{
         r.style.color="red";
