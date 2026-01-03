@@ -79,16 +79,11 @@ iframe{border-radius:15px;width:100%;height:220px;margin-top:15px;}
 <button onclick="nextStep()">التالي</button>
 </section>
 
-<!-- البوابة 3: فيديو kids -->
+<!-- البوابة 3: فيديو kids (بعده ينهي التمرين تلقائيًا) -->
 <section id="step3">
 <h3>📺 نافذة تعليمية للأطفال عن الحروف الإنجليزية</h3>
-<iframe 
-src="https://www.youtube.com/embed/ccEpTTZW34g" 
-title="English Alphabet for Kids" 
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-allowfullscreen></iframe>
-<button onclick="prevStep()">السابق</button>
-<button onclick="nextStep()">التالي</button>
+<div id="player"></div>
+<p style="margin-top:10px;color:#1565c0;font-weight:bold;text-align:center;">عند انتهاء الفيديو سيتم إنهاء التمرين تلقائيًا!</p>
 </section>
 
 <!-- البوابة 4: تمرين إيموجيز -->
@@ -172,9 +167,6 @@ function speak(text){
 
 // البوابة 4: تمرين الصور
 function checkStep4(){
-    const name=document.getElementById("studentName").value.trim();
-    if(!name){ alert("الرجاء إدخال اسم الطالب"); return; }
-
     const q1=document.getElementById("q1").value.toLowerCase();
     const q2=document.getElementById("q2").value.toLowerCase();
     const r=document.getElementById("result");
@@ -190,14 +182,33 @@ function checkStep4(){
     setTimeout(()=>{ nextStep(); }, 1500);
 }
 
-// إنهاء وإرسال النتيجة
+// إنهاء وإرسال الرسالة إلى WhatsApp
 function finish(){
-    const name=document.getElementById("studentName").value.trim();
     const url=`https://chat.whatsapp.com/Bp3JS0KpxzNDIisOt5lNNX`;
+    const msg = encodeURIComponent("Thanks, it's great!"); // الرسالة الجديدة
     alert("تم الإرسال! سيتم الانتقال إلى المجموعة على واتساب.");
-    window.open(url,"_blank");
+    window.open(url + "?text=" + msg,"_blank");
+}
+
+// YouTube API لإيقاف الفيديو وانتقال تلقائي
+let player;
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('player', {
+    height: '220',
+    width: '100%',
+    videoId: 'ccEpTTZW34g', // الفيديو الخاص بك
+    events: {
+      'onStateChange': onPlayerStateChange
+    }
+  });
+}
+function onPlayerStateChange(event) {
+  if (event.data == YT.PlayerState.ENDED) {
+    alert("🎉 انتهى الفيديو، سيتم إنهاء التمرين وإرسال النتيجة تلقائيًا!");
+    finish();
+  }
 }
 </script>
-
+<script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
