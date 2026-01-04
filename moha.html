@@ -1,192 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Moha Specialized Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة البرامج التخصصية | د. محمد طه</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #6c5ce7; --secondary: #a29bfe; --success: #00b894; --error: #ff7675; --dark: #2d3436; --gold: #f1c40f; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
-        
-        /* شاشة الترحيب */
-        #welcome-overlay { 
-            position: fixed; top:0; left:0; width:100%; height:100%; background: var(--dark); 
-            z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center;
+        :root {
+            --gold: #d4af37;
+            --navy: #001f3f;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.9);
+        }
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
+            margin: 0; padding: 20px; color: #333; min-height: 100vh;
+        }
+        .header-section {
+            background: var(--glass);
+            padding: 30px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 30px; border-bottom: 5px solid var(--gold);
+            text-align: center;
+        }
+        .header-section h1 { color: var(--navy); margin: 0; font-size: 2rem; }
+        .header-section h2 { color: #555; margin: 10px 0; font-size: 1.2rem; }
+        .badge { background: var(--gold); color: var(--navy); padding: 5px 15px; border-radius: 50px; font-weight: bold; }
+
+        .container { max-width: 900px; margin: auto; background: var(--glass); padding: 30px; border-radius: 20px; backdrop-filter: blur(10px); }
+
+        .video-card { margin-bottom: 30px; border-radius: 15px; overflow: hidden; border: 2px solid var(--gold); }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        .quiz-card { background: white; padding: 20px; border-radius: 15px; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
+        .question { 
+            background: #fdfdfd; padding: 15px; margin-bottom: 12px; border-radius: 10px; 
+            border-right: 4px solid var(--navy); text-align: left; direction: ltr; font-size: 1.1rem;
+        }
+        input[type="text"] { 
+            border: none; border-bottom: 2px solid var(--gold); outline: none; 
+            padding: 5px; width: 150px; text-align: center; font-weight: bold; color: var(--navy);
         }
 
-        .header { width: 100%; max-width: 500px; background: var(--dark); color: white; padding: 20px 15px; border-radius: 15px 15px 0 0; text-align: center; border-bottom: 4px solid var(--gold); }
-        .container { width: 100%; max-width: 500px; background: white; border-radius: 0 0 15px 15px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .btn-check { 
+            background: var(--navy); color: var(--gold); border: 2px solid var(--gold);
+            padding: 15px 40px; border-radius: 50px; font-size: 1.2rem; cursor: pointer;
+            transition: 0.3s; width: 100%; font-weight: bold; margin-top: 20px;
+        }
+        .btn-check:hover { background: var(--gold); color: var(--navy); }
 
-        .guest-book { background: #fff9e6; padding: 10px; border-bottom: 2px solid var(--gold); font-size: 13px; width: 100%; max-width: 500px; box-sizing: border-box; }
-        .name-tag { display: inline-block; background: var(--secondary); color: white; padding: 2px 8px; border-radius: 10px; margin: 2px; }
+        .btn-whatsapp {
+            display: none; background: #25d366; color: white; text-decoration: none;
+            padding: 15px; border-radius: 50px; margin-top: 20px; font-weight: bold;
+        }
 
-        .content-area { padding: 30px 15px; text-align: center; min-height: 350px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .word-title { font-size: 38px; color: var(--primary); font-weight: 800; margin: 10px 0; }
-        .word-def { font-size: 1.1em; color: #444; background: #f8f9fa; padding: 15px; border-radius: 12px; border-left: 6px solid var(--primary); width: 90%; }
-        
-        .quiz-option { display: block; width: 95%; margin: 12px auto; padding: 18px; background: var(--secondary); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; }
-        .controls { background: #f1f3f5; padding: 15px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box; }
-        .btn { padding: 12px 25px; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; }
-        .btn-main { background: var(--primary); color: white; }
-        
-        #video-section { display: none; width: 100%; background: #000; }
+        #result-display { display: none; margin-top: 20px; font-size: 1.5rem; font-weight: bold; color: var(--navy); }
     </style>
 </head>
 <body>
 
-<div id="welcome-overlay">
-    <h1 style="color: var(--gold); padding: 0 20px;">Specialized English Platform</h1>
-    <p>إدارة محمد طه عطا المنان</p>
-    <input type="text" id="userName" placeholder="اكتب اسمك هنا للبدء..." style="padding: 15px; border-radius: 10px; border: none; width: 80%; margin-bottom: 20px; font-size: 18px; text-align: center;">
-    <button onclick="startApp()" style="padding: 18px 50px; background: var(--success); color: white; border: none; border-radius: 50px; font-weight: bold; font-size: 20px; cursor: pointer;">دخول المنصة 🚀</button>
-</div>
-
-<div class="header">
-    <h1>🏛️ منصة البرامج التخصصية</h1>
-    <p id="personal-welcome">Welcome!</p>
-</div>
-
-<div class="guest-book">
-    <strong>الحضور:</strong> <span id="namesList"></span>
+<div class="header-section">
+    <h1>منصة البرامج التخصصية - إدارة محمد طه</h1>
+    <h2>برنامج الماجستير المصغر في الترجمة واللغة الإنجليزية</h2>
+    <span class="badge">برنامج تفاعلي فخم 2026</span>
 </div>
 
 <div class="container">
-    <div class="content-area" id="main-board">
-        <div id="word-display"></div>
-        <button onclick="speakCurrent()" style="margin-top:20px; background: var(--gold); border:none; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer;">🔊 استماع للنطق</button>
+    <div class="video-card">
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/s8Bgwc7iYnk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
     </div>
 
-    <div class="content-area" id="quiz-container" style="display:none;">
-        <h2 id="quiz-question" style="color: var(--primary); font-size: 22px;"></h2>
-        <div id="quiz-options" style="width: 100%;"></div>
-    </div>
-
-    <div id="video-section">
-        <div id="player"></div>
-    </div>
-
-    <div class="controls" id="footer-controls">
-        <button id="prevBtn" class="btn btn-main" onclick="prev()">السابق</button>
-        <div id="counter" style="font-weight: bold; color: var(--primary);">1 / 20</div>
-        <button id="nextBtn" class="btn btn-main" onclick="next()">التالي</button>
+    <div class="quiz-card">
+        <h3 style="text-align: center;">📝 Sales & Marketing Quiz</h3>
+        <div id="quiz-box"></div>
+        <button class="btn-check" onclick="evaluateQuiz()">تحقق من النتيجة الآن ✨</button>
+        
+        <div id="result-display"></div>
+        <a id="whatsapp-link" href="#" class="btn-whatsapp" target="_blank">
+            ارسل النتيجة للدكتور عبر واتساب (English Message) ✅
+        </a>
     </div>
 </div>
 
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-    // روابط أصوات بديلة أكثر استقراراً
-    const bellSound = new Audio('https://actions.google.com/sounds/v1/cartoon/clown_horn_short.ogg'); 
-    const clapSound = new Audio('https://actions.google.com/sounds/v1/human/applause_clapping_cheer.ogg');
-
-    let current = 0;
-    let quizCount = 0;
-    let player;
-
-    const terms = [
-        { w: "Democracy", i: "🗳️", m: "A system where citizens choose leaders by voting." },
-        { w: "Election", i: "🎫", m: "The formal process of selecting a person for office." },
-        { w: "Diplomacy", i: "🤝", m: "Managing relations between nations peacefully." },
-        { w: "Law", i: "⚖️", m: "A set of rules created by the government." },
-        { w: "Justice", i: "🏛️", m: "Fair and legal treatment for everyone." },
-        { w: "Citizen", i: "🆔", m: "A legal member of a country with rights." },
-        { w: "Reform", i: "🛠️", m: "To improve a system by making changes." },
-        { w: "Debate", i: "🗣️", m: "A formal discussion on a public topic." },
-        { w: "Rights", i: "📜", m: "Legal freedoms guaranteed to people." },
-        { w: "Peace", i: "🕊️", m: "The absence of war and violence." },
-        { w: "Vote", i: "🖋️", m: "An official choice made by a person." },
-        { w: "Taxes", i: "💰", m: "Money paid to the government for services." },
-        { w: "Leader", i: "👑", m: "A person who guides or commands." },
-        { w: "Policy", i: "📋", m: "A plan or course of action by government." },
-        { w: "Party", i: "🚩", m: "A political group with common goals." },
-        { w: "Freedom", i: "🗽", m: "The power to act, speak, or think freely." },
-        { w: "Constitution", i: "📖", m: "The fundamental laws of a nation." },
-        { w: "State", i: "🗺️", m: "A nation or territory under one government." },
-        { w: "Negotiation", i: "💬", m: "Talks to reach a formal agreement." },
-        { w: "Nation", i: "🌍", m: "A large group of people united by culture." }
+    // الأسئلة مستوحاة من الفيديو (Business English for Sales)
+    const quizData = [
+        { q: "1. Hi, this is Mark ______ Waterhouse Finance.", a: "from" },
+        { q: "2. We ______ in helping companies save costs.", a: "specialize" },
+        { q: "3. I'll keep this ______, I know your time is valuable.", a: "brief" },
+        { q: "4. I'm ______ out because we can help you.", a: "reaching" },
+        { q: "5. I'd love to ______ you how we can help your team.", a: "show" },
+        { q: "6. Can I share a quick ______ that could save you money?", a: "idea" },
+        { q: "7. Do you have a ______ to chat about our services?", a: "minute" },
+        { q: "8. We work with companies like ______ to improve sales.", a: "yours" },
+        { q: "9. Our goal is to make a great first ______.", a: "impression" },
+        { q: "10. Could I take a ______ to share our solutions?", a: "moment" }
     ];
 
-    function startApp() {
-        const nameInput = document.getElementById('userName').value.trim();
-        const name = nameInput || "زائر المنهج";
-        
-        document.getElementById('welcome-overlay').style.display = 'none';
-        document.getElementById('personal-welcome').innerText = "مرحباً بك: " + name;
-
-        // تشغيل الأصوات
-        clapSound.play().catch(e => console.log("Audio play error"));
-        
-        const welcomeMsg = new SpeechSynthesisUtterance("Welcome " + name + ". Let's start the lesson.");
-        window.speechSynthesis.speak(welcomeMsg);
-
-        // تحديث قائمة الأسماء (محاكاة)
-        let names = JSON.parse(localStorage.getItem('vNames')) || ["محمد طه", "أحمد", "عمر"];
-        if(nameInput) names.push(nameInput);
-        if(names.length > 8) names.shift();
-        localStorage.setItem('vNames', JSON.stringify(names));
-        document.getElementById('namesList').innerHTML = names.map(n => `<span class="name-tag">${n}</span>`).join('');
-
-        updateCard();
-    }
-
-    function updateCard() {
-        const item = terms[current];
-        document.getElementById('word-display').innerHTML = `
-            <div style="font-size:70px">${item.i}</div>
-            <div class="word-title">${item.w}</div>
-            <div class="word-def">${item.m}</div>
+    const quizBox = document.getElementById('quiz-box');
+    quizData.forEach((item, i) => {
+        quizBox.innerHTML += `
+            <div class="question">
+                ${item.q.replace('______', `<input type="text" id="input-${i}" placeholder="Enter word">`)}
+            </div>
         `;
-        document.getElementById('counter').innerText = `${current + 1} / 20`;
-        document.getElementById('prevBtn').style.visibility = current === 0 ? 'hidden' : 'visible';
-    }
+    });
 
-    function speakCurrent() {
-        const msg = new SpeechSynthesisUtterance(terms[current].w + ". " + terms[current].m);
-        msg.lang = 'en-US';
-        window.speechSynthesis.speak(msg);
-    }
+    const bell = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
+    const applause = new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3');
 
-    function next() { if (current < terms.length - 1) { current++; updateCard(); } else { startQuiz(); } }
-    function prev() { if (current > 0) { current--; updateCard(); } }
-
-    function startQuiz() {
-        document.getElementById('main-board').style.display = 'none';
-        document.getElementById('footer-controls').style.display = 'none';
-        document.getElementById('quiz-container').style.display = 'flex';
-        showQuizQuestion();
-    }
-
-    function showQuizQuestion() {
-        const words = ["Democracy", "Peace", "Law"];
-        const correct = terms.find(t => t.w === words[quizCount]);
-        document.getElementById('quiz-question').innerText = `What is the meaning of "${correct.w}"?`;
-        const options = [correct.m, "Buying new clothes.", "Swimming in the sea."].sort(() => Math.random() - 0.5);
-        document.getElementById('quiz-options').innerHTML = options.map(opt => `<button class="quiz-option" onclick="checkAnswer('${opt}', '${correct.m}')">${opt}</button>`).join('');
-    }
-
-    function checkAnswer(selected, correct) {
-        if (selected === correct) {
-            bellSound.play();
-            quizCount++;
-            if (quizCount < 3) setTimeout(showQuizQuestion, 600); else showVideo();
-        }
-    }
-
-    function showVideo() {
-        document.getElementById('quiz-container').style.display = 'none';
-        document.getElementById('video-section').style.display = 'block';
-    }
-
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-            height: '300', width: '100%', videoId: 'wkEJ0eg_6-E',
-            events: { 'onStateChange': (e) => {
-                if (e.data == YT.PlayerState.PAUSED || e.data == YT.PlayerState.ENDED) {
-                    window.location.href = "https://wa.me/249999240574?text=Thanks!%20I%20completed%20the%20Moha%20Program!%20✅🏛️";
-                }
-            }}
+    function evaluateQuiz() {
+        let score = 0;
+        quizData.forEach((item, i) => {
+            const val = document.getElementById(`input-${i}`).value.toLowerCase().trim();
+            if (val === item.a) {
+                score++;
+                document.getElementById(`input-${i}`).style.color = "green";
+            } else {
+                document.getElementById(`input-${i}`).style.color = "red";
+            }
         });
+
+        const resultDiv = document.getElementById('result-display');
+        resultDiv.style.display = "block";
+        resultDiv.innerHTML = `نتيجتك هي: ${score} من 10`;
+
+        if(score === 10) applause.play(); else bell.play();
+
+        // إعداد رابط الواتساب
+        const phone = "0999240574";
+        const message = `Hello Dr. Mohamed Taha, I have finished interacting with the platform. My Quiz Score is: ${score}/10.`;
+        const encodedMsg = encodeURIComponent(message);
+        const waLink = document.getElementById('whatsapp-link');
+        waLink.href = `https://wa.me/${phone}?text=${encodedMsg}`;
+        waLink.style.display = "block";
+
+        alert("تم التصحيح! ارسل سكرين شوت للقروب واضغط على زر الواتساب لإبلاغ الإدارة.");
     }
+
+    // منع الخروج دون إرسال النتيجة
+    window.addEventListener('beforeunload', function (e) {
+        e.preventDefault();
+        e.returnValue = 'هل قمت بإرسال لقطة الشاشة للقروب؟ ارسلها قبل الخروج!';
+    });
 </script>
+
 </body>
 </html>
 
