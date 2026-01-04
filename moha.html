@@ -3,150 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة البرامج التخصصية | د. محمد طه</title>
+    <title>ماجستير الترجمة - د. محمد طه</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --gold: #d4af37;
-            --navy: #001f3f;
-            --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.9);
-        }
+        :root { --gold: #d4af37; --navy: #001f3f; --white: #ffffff; --success: #22c55e; --error: #ef4444; }
+        * { box-sizing: border-box; }
         body { 
-            font-family: 'Cairo', sans-serif; 
-            background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
-            margin: 0; padding: 20px; color: #333; min-height: 100vh;
+            font-family: 'Cairo', sans-serif; background: #001220; 
+            margin: 0; padding: 10px; color: #333; line-height: 1.6;
         }
+        
+        /* الترويسة */
         .header-section {
-            background: var(--glass);
-            padding: 30px; border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            margin-bottom: 30px; border-bottom: 5px solid var(--gold);
-            text-align: center;
+            background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+            padding: 20px 15px; border-radius: 20px; text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); margin-bottom: 20px;
+            border-top: 6px solid var(--gold);
         }
-        .header-section h1 { color: var(--navy); margin: 0; font-size: 2rem; }
-        .header-section h2 { color: #555; margin: 10px 0; font-size: 1.2rem; }
-        .badge { background: var(--gold); color: var(--navy); padding: 5px 15px; border-radius: 50px; font-weight: bold; }
+        .header-section h1 { color: var(--navy); margin: 0; font-size: 1.4rem; }
+        .header-section p { color: var(--gold); font-weight: bold; margin: 5px 0 0; font-size: 0.9rem; }
 
-        .container { max-width: 900px; margin: auto; background: var(--glass); padding: 30px; border-radius: 20px; backdrop-filter: blur(10px); }
-
-        .video-card { margin-bottom: 30px; border-radius: 15px; overflow: hidden; border: 2px solid var(--gold); }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-
-        .quiz-card { background: white; padding: 20px; border-radius: 15px; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
-        .question { 
-            background: #fdfdfd; padding: 15px; margin-bottom: 12px; border-radius: 10px; 
-            border-right: 4px solid var(--navy); text-align: left; direction: ltr; font-size: 1.1rem;
+        /* نظام الإشعارات الداخلي */
+        #page-notify {
+            position: sticky; top: 10px; z-index: 1000;
+            background: var(--navy); color: var(--gold);
+            padding: 12px; border-radius: 12px; margin-bottom: 15px;
+            display: none; border: 1px solid var(--gold);
+            text-align: center; font-weight: bold; font-size: 0.9rem;
+            animation: slideDown 0.4s ease;
         }
+
+        .container { max-width: 500px; margin: auto; }
+
+        /* الأيقونات والتنقل */
+        .nav-icons {
+            display: flex; justify-content: space-around; background: var(--white);
+            padding: 15px; border-radius: 20px; margin-bottom: 20px;
+        }
+        .nav-item { cursor: pointer; font-size: 1.5rem; transition: 0.3s; opacity: 0.6; }
+        .nav-item.active { opacity: 1; transform: scale(1.2); color: var(--navy); border-bottom: 2px solid var(--gold); }
+
+        .section { display: none; background: rgba(255,255,255,0.95); padding: 20px; border-radius: 20px; animation: fadeIn 0.5s; }
+        .section.active { display: block; }
+
+        /* تنسيق الأسئلة */
+        .q-card { 
+            background: #fff; border: 1px solid #eee; padding: 15px; 
+            border-radius: 15px; margin-bottom: 15px; text-align: left; direction: ltr;
+        }
+        .q-text { font-weight: bold; color: var(--navy); margin-bottom: 10px; font-size: 1.1rem; }
+        .feedback { display: none; margin-top: 10px; font-size: 0.9rem; font-weight: bold; border-radius: 8px; padding: 8px; direction: rtl; text-align: right; }
+        
         input[type="text"] { 
-            border: none; border-bottom: 2px solid var(--gold); outline: none; 
-            padding: 5px; width: 150px; text-align: center; font-weight: bold; color: var(--navy);
+            width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; 
+            font-size: 1rem; outline: none; transition: 0.3s;
+        }
+        input:focus { border-color: var(--navy); }
+
+        .btn-wa {
+            display: block; background: #25d366; color: white; text-align: center;
+            padding: 15px; border-radius: 15px; text-decoration: none; font-weight: bold;
+            margin-top: 20px; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
         }
 
-        .btn-check { 
-            background: var(--navy); color: var(--gold); border: 2px solid var(--gold);
-            padding: 15px 40px; border-radius: 50px; font-size: 1.2rem; cursor: pointer;
-            transition: 0.3s; width: 100%; font-weight: bold; margin-top: 20px;
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+        @keyframes slideDown { from {transform: translateY(-20px);} to {transform: translateY(0);} }
+        
+        /* تحسينات الهاتف */
+        @media (max-width: 480px) {
+            .header-section h1 { font-size: 1.2rem; }
+            .q-text { font-size: 1rem; }
         }
-        .btn-check:hover { background: var(--gold); color: var(--navy); }
-
-        .btn-whatsapp {
-            display: none; background: #25d366; color: white; text-decoration: none;
-            padding: 15px; border-radius: 50px; margin-top: 20px; font-weight: bold;
-        }
-
-        #result-display { display: none; margin-top: 20px; font-size: 1.5rem; font-weight: bold; color: var(--navy); }
     </style>
 </head>
 <body>
 
-<div class="header-section">
-    <h1>منصة البرامج التخصصية - إدارة محمد طه</h1>
-    <h2>برنامج الماجستير المصغر في الترجمة واللغة الإنجليزية</h2>
-    <span class="badge">برنامج تفاعلي فخم 2026</span>
-</div>
+<div id="page-notify"></div>
 
 <div class="container">
-    <div class="video-card">
-        <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/s8Bgwc7iYnk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
+    <div class="header-section">
+        <h1>منصة د. محمد طه التخصصية</h1>
+        <p>ماجستير الترجمة واللغة الإنجليزية</p>
     </div>
 
-    <div class="quiz-card">
-        <h3 style="text-align: center;">📝 Sales & Marketing Quiz</h3>
-        <div id="quiz-box"></div>
-        <button class="btn-check" onclick="evaluateQuiz()">تحقق من النتيجة الآن ✨</button>
+    <div class="nav-icons">
+        <div class="nav-item active" onclick="showSec('vid', this)">📺</div>
+        <div class="nav-item" onclick="showSec('quiz', this)">✍️</div>
+        <div class="nav-item" onclick="showSec('vocab', this)">📖</div>
+    </div>
+
+    <div class="section active" id="vid">
+        <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:15px; overflow:hidden;">
+            <iframe src="https://www.youtube.com/embed/s8Bgwc7iYnk" style="position:absolute;width:100%;height:100%;" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 10px;">شاهد الفيديو لتعلم مهارات الـ Sales Pitch</p>
+    </div>
+
+    <div class="section" id="quiz">
+        <h3 style="text-align:center">Grammar & Intro</h3>
+        <div id="quiz-container"></div>
+    </div>
+
+    <div class="section" id="vocab">
+        <h3 style="text-align:center">Marketing Vocabulary</h3>
+        <p style="text-align:center; font-size: 0.8rem;">ترجم الكلمات التالية إلى الإنجليزية:</p>
+        <div id="vocab-container"></div>
         
-        <div id="result-display"></div>
-        <a id="whatsapp-link" href="#" class="btn-whatsapp" target="_blank">
-            ارسل النتيجة للدكتور عبر واتساب (English Message) ✅
-        </a>
+        <div id="final-results" style="display:none; text-align:center; padding:20px;">
+            <h2 id="score-text"></h2>
+            <a id="wa-btn" href="#" class="btn-wa">إرسال النتيجة واتساب (English) 🟢</a>
+        </div>
     </div>
 </div>
 
 <script>
-    // الأسئلة مستوحاة من الفيديو (Business English for Sales)
-    const quizData = [
-        { q: "1. Hi, this is Mark ______ Waterhouse Finance.", a: "from" },
-        { q: "2. We ______ in helping companies save costs.", a: "specialize" },
-        { q: "3. I'll keep this ______, I know your time is valuable.", a: "brief" },
-        { q: "4. I'm ______ out because we can help you.", a: "reaching" },
-        { q: "5. I'd love to ______ you how we can help your team.", a: "show" },
-        { q: "6. Can I share a quick ______ that could save you money?", a: "idea" },
-        { q: "7. Do you have a ______ to chat about our services?", a: "minute" },
-        { q: "8. We work with companies like ______ to improve sales.", a: "yours" },
-        { q: "9. Our goal is to make a great first ______.", a: "impression" },
-        { q: "10. Could I take a ______ to share our solutions?", a: "moment" }
+    const bell = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
+    const clap = new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3');
+
+    // أسئلة الجمل
+    const quizItems = [
+        { q: "1. I am reaching ______ to you.", a: "out" },
+        { q: "2. We ______ in legal translation.", a: "specialize" },
+        { q: "3. I won't take much of your ______.", a: "time" }
     ];
 
-    const quizBox = document.getElementById('quiz-box');
-    quizData.forEach((item, i) => {
-        quizBox.innerHTML += `
-            <div class="question">
-                ${item.q.replace('______', `<input type="text" id="input-${i}" placeholder="Enter word">`)}
-            </div>
-        `;
-    });
+    // أسئلة المفردات (عربي -> انجليزي)
+    const vocabItems = [
+        { q: "حملة تسويقية", a: "campaign" },
+        { q: "الجمهور المستهدف", a: "target audience" },
+        { q: "علامة تجارية", a: "brand" },
+        { q: "ترويج", a: "promotion" }
+    ];
 
-    const bell = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
-    const applause = new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3');
+    let totalScore = 0;
+    const totalPossible = quizItems.length + vocabItems.length;
 
-    function evaluateQuiz() {
-        let score = 0;
-        quizData.forEach((item, i) => {
-            const val = document.getElementById(`input-${i}`).value.toLowerCase().trim();
-            if (val === item.a) {
-                score++;
-                document.getElementById(`input-${i}`).style.color = "green";
-            } else {
-                document.getElementById(`input-${i}`).style.color = "red";
-            }
-        });
-
-        const resultDiv = document.getElementById('result-display');
-        resultDiv.style.display = "block";
-        resultDiv.innerHTML = `نتيجتك هي: ${score} من 10`;
-
-        if(score === 10) applause.play(); else bell.play();
-
-        // إعداد رابط الواتساب
-        const phone = "0999240574";
-        const message = `Hello Dr. Mohamed Taha, I have finished interacting with the platform. My Quiz Score is: ${score}/10.`;
-        const encodedMsg = encodeURIComponent(message);
-        const waLink = document.getElementById('whatsapp-link');
-        waLink.href = `https://wa.me/${phone}?text=${encodedMsg}`;
-        waLink.style.display = "block";
-
-        alert("تم التصحيح! ارسل سكرين شوت للقروب واضغط على زر الواتساب لإبلاغ الإدارة.");
+    function internalNotify(msg) {
+        const box = document.getElementById('page-notify');
+        box.innerText = msg; box.style.display = 'block';
+        setTimeout(() => box.style.display='none', 3000);
     }
 
-    // منع الخروج دون إرسال النتيجة
-    window.addEventListener('beforeunload', function (e) {
-        e.preventDefault();
-        e.returnValue = 'هل قمت بإرسال لقطة الشاشة للقروب؟ ارسلها قبل الخروج!';
-    });
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'en-US';
+        window.speechSynthesis.speak(msg);
+    }
+
+    function showSec(id, el) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        el.classList.add('active');
+    }
+
+    function renderQuestions(data, containerId, prefix) {
+        const container = document.getElementById(containerId);
+        data.forEach((item, i) => {
+            const id = `${prefix}-${i}`;
+            container.innerHTML += `
+                <div class="q-card">
+                    <div class="q-text">${item.q}</div>
+                    <input type="text" id="${id}" onchange="checkAnswer('${id}', '${item.a}', this)" placeholder="أجب هنا...">
+                    <div id="feed-${id}" class="feedback"></div>
+                </div>
+            `;
+        });
+    }
+
+    function checkAnswer(id, correct, inputEl) {
+        const userVal = inputEl.value.toLowerCase().trim();
+        const feed = document.getElementById(`feed-${id}`);
+        
+        if (userVal === correct.toLowerCase()) {
+            inputEl.style.borderColor = "var(--success)";
+            feed.innerHTML = "✅ إجابة صحيحة! نطق الكلمة جاري...";
+            feed.style.display = "block"; feed.style.color = "var(--success)";
+            bell.play();
+            speak(correct);
+            totalScore++;
+        } else {
+            inputEl.style.borderColor = "var(--error)";
+            feed.innerHTML = `❌ خطأ. الإجابة هي: <b>${correct}</b>`;
+            feed.style.display = "block"; feed.style.color = "var(--error)";
+            speak(correct);
+        }
+        inputEl.disabled = true;
+        checkFinal();
+    }
+
+    function checkFinal() {
+        const answered = document.querySelectorAll('input:disabled').length;
+        if (answered === totalPossible) {
+            document.getElementById('final-results').style.display = "block";
+            document.getElementById('score-text').innerText = `النتيجة: ${totalScore} من ${totalPossible}`;
+            if(totalScore === totalPossible) clap.play();
+            
+            const waLink = `https://wa.me/249999240574?text=${encodeURIComponent("Hello Dr. Mohamed Taha, I completed the interactive session. My Score: " + totalScore + "/" + totalPossible)}`;
+            document.getElementById('wa-btn').href = waLink;
+            internalNotify("🎉 انتهيت! ارسل النتيجة واتساب الآن.");
+        }
+    }
+
+    window.onload = () => {
+        renderQuestions(quizItems, 'quiz-container', 'qz');
+        renderQuestions(vocabItems, 'vocab-container', 'vb');
+        internalNotify("مرحباً بك! تنقل عبر الأيقونات بالأعلى.");
+    };
+
+    window.onbeforeunload = (e) => {
+        e.preventDefault(); e.returnValue = 'ارسل اسكرين شوت قبل المغادرة!';
+    };
 </script>
 
 </body>
