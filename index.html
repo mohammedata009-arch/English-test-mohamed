@@ -1,212 +1,229 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>منصة البرامج التخصصية | تعليم الحروف والكلمات</title>
-<style>
-body{font-family:'Segoe UI',sans-serif;margin:0;padding:0;background: linear-gradient(to right,#e0f7fa,#f1f8e9);}
-header{background:#1565c0;color:white;text-align:center;padding:20px 10px;box-shadow:0 4px 15px rgba(0,0,0,0.3);}
-h2,h3{margin:5px 0;font-size:1.2em;}
-section{display:none;padding:20px;max-width:95%;margin:20px auto;background:white;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,0.1);transition: transform 0.3s;}
-section.active{display:block;animation:fadeIn 0.5s;}
-button{background:#43a047;color:white;border:none;padding:14px 20px;border-radius:10px;cursor:pointer;margin:10px 5px;font-size:1em;transition:0.3s;}
-button:hover{background:#388e3c;transform:scale(1.05);}
-input{padding:14px;width:90%;font-size:16px;border-radius:10px;border:2px solid #90caf9;text-align:center;margin:5px 0;}
-input:focus{border-color:#42a5f5;box-shadow:0 0 10px #42a5f5;outline:none;}
-.letters,.letter-images,.sentence-images,.mcq{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:15px;margin-top:20px;}
-.letter,.letter-img,.sentence-img,.mcq div{background:#42a5f5;color:white;padding:20px;border-radius:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;transition: transform 0.3s, background 0.3s;text-align:center;}
-.letter:hover,.letter-img:hover,.sentence-img:hover,.mcq div:hover{background:#1e88e5;transform:scale(1.05) rotate(3deg);}
-.letter-img span,.sentence-img span{font-weight:bold;font-size:0.9em;}
-.letter-img span:first-child,.sentence-img span:first-child{font-size:70px;margin-bottom:10px;}
-.result,#feedback,#mcqResult{margin-top:15px;font-weight:bold;font-size:16px;color:#1565c0;text-align:center;}
-iframe{border-radius:15px;width:100%;height:220px;margin-top:15px;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-@media screen and (max-width:480px){.letter-img span:first-child,.sentence-img span:first-child{font-size:50px;}button{padding:12px 16px;font-size:0.95em;}h2,h3{font-size:1em;}input{font-size:15px;padding:12px;width:95%;}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة البرامج التخصصية - محمد طه</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #d4af37; --navy: #001f3f; --light-bg: #f4f7f6; --success: #22c55e; --error: #ef4444; }
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Cairo', sans-serif; background: #001220; 
+            margin: 0; padding: 10px; color: #333; line-height: 1.6;
+        }
+        
+        /* الهيدر المحسن */
+        .header-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+            padding: 25px 15px; border-radius: 20px; text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin-bottom: 25px;
+            border-bottom: 5px solid var(--gold);
+        }
+        .header-section h1 { color: var(--navy); margin: 0; font-size: 1.5rem; }
+        .admin-box { margin-top: 10px; }
+        .admin-label { color: #888; font-size: 0.8rem; display: block; }
+        .admin-name { color: var(--gold); font-weight: bold; font-size: 1.2rem; }
+
+        /* التنبيهات العلوي */
+        #page-notify {
+            position: sticky; top: 10px; z-index: 1000;
+            background: var(--gold); color: var(--navy);
+            padding: 12px; border-radius: 12px; margin-bottom: 15px;
+            display: none; text-align: center; font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .container { max-width: 550px; margin: auto; }
+
+        /* أيقونات التنقل */
+        .nav-icons {
+            display: flex; justify-content: space-around; background: white;
+            padding: 15px; border-radius: 50px; margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .nav-item { cursor: pointer; font-size: 1.6rem; filter: grayscale(100%); transition: 0.3s; opacity: 0.5; }
+        .nav-item.active { filter: grayscale(0%); transform: scale(1.3); opacity: 1; }
+
+        /* الأقسام */
+        .section { display: none; background: #ffffff; padding: 25px; border-radius: 25px; animation: fadeIn 0.6s ease; }
+        .section.active { display: block; }
+
+        /* الفيديوهات */
+        .video-box { margin-bottom: 20px; border-radius: 15px; overflow: hidden; border: 2px solid #eee; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        /* الأسئلة والتمارين */
+        .q-card { 
+            background: #f9f9f9; border-right: 5px solid var(--navy); 
+            padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: left; direction: ltr;
+        }
+        .q-text { font-weight: 700; color: #222; margin-bottom: 10px; font-size: 1rem; }
+        input[type="text"] { 
+            width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; 
+            font-size: 1rem; transition: 0.3s; outline: none;
+        }
+        input:focus { border-color: var(--gold); background: #fffdf5; }
+        .feedback { display: none; margin-top: 10px; font-size: 0.9rem; font-weight: bold; border-radius: 5px; padding: 5px; direction: rtl; text-align: right; }
+
+        /* زر الواتساب */
+        .btn-wa {
+            display: block; background: #25d366; color: white; text-align: center;
+            padding: 16px; border-radius: 15px; text-decoration: none; font-weight: bold;
+            margin-top: 20px; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
+    </style>
 </head>
 <body>
 
-<header>
-<h2>منصة البرامج التخصصية</h2>
-<p>إدارة محمد طه عطا المنان | برنامج اللغة الإنجليزية والترجمة</p>
-</header>
+<div id="page-notify"></div>
 
-<!-- البوابة 1: اسم الطالب وأصوات الحروف -->
-<section class="active" id="step1">
-<h3>👤 اكتب اسمك</h3>
-<input id="studentName" placeholder="اسم الطالب هنا">
-<h3>🔤 الحروف الإنجليزية مع الصوت</h3>
-<div class="letters" id="letters"></div>
-<br>
-<button onclick="nextStep()">التالي</button>
-</section>
+<div class="container">
+    <div class="header-section">
+        <h1>منصة البرامج التخصصية</h1>
+        <div class="admin-box">
+            <span class="admin-label">إدارة</span>
+            <span class="admin-name">محمد طه عطا المنان طه</span>
+        </div>
+    </div>
 
-<!-- البوابة 2: الحروف مع إيموجيز -->
-<section id="step2">
-<h3>🖼️ الحروف مع أمثلة كارتونية</h3>
-<div class="letter-images" id="letterImages"></div>
-<button onclick="prevStep()">السابق</button>
-<button onclick="nextStep()">التالي</button>
-</section>
+    <div class="nav-icons">
+        <div class="nav-item active" onclick="showSec('vid', this)">📺</div>
+        <div class="nav-item" onclick="showSec('quiz', this)">📝</div>
+        <div class="nav-item" onclick="showSec('vocab', this)">📖</div>
+    </div>
 
-<!-- البوابة 3: فيديو kids -->
-<section id="step3">
-<h3>📺 نافذة تعليمية للأطفال عن الحروف الإنجليزية</h3>
-<div id="player"></div>
-<p style="margin-top:10px;color:#1565c0;font-weight:bold;text-align:center;">🔹 عند إيقاف الفيديو سيتم إرسال رسالتك تلقائيًا</p>
-</section>
+    <div class="section active" id="vid">
+        <h3 style="text-align:center; margin-top:0;">الدرس المرئي (Pets)</h3>
+        <div class="video-box">
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/-QTRzqNIpO4" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="video-box">
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/TlQLmsWa04k" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <p style="text-align: center; font-size: 0.85rem; color: #666;">شاهد الفيديوهات أعلاه بتركيز، ثم انتقل للتمارين.</p>
+    </div>
 
-<!-- البوابة 4: تمرين إيموجيز -->
-<section id="step4">
-<h3>✏️ حل الصور وانطق اسمها</h3>
-<p>1️⃣ اختر اسم الصورة:</p>
-<input id="q1" placeholder="اكتب الاسم هنا">
-<p>2️⃣ اختر اسم الصورة:</p>
-<input id="q2" placeholder="اكتب الاسم هنا">
-<div id="result"></div>
-<button onclick="prevStep()">السابق</button>
-<button onclick="checkStep4()">التالي</button>
-</section>
+    <div class="section" id="quiz">
+        <h3 style="text-align:center">Pets & Responsibilities (B-Level)</h3>
+        <div id="quiz-container"></div>
+    </div>
 
-<!-- البوابة 5: 3 جمل مع إيموجيز -->
-<section id="step5">
-<h3>📖 جمل مع إيموجيز</h3>
-<div class="sentence-images">
-<div class="sentence-img" onclick="speak('I like apples')"><span>🍎</span><span>I like apples</span></div>
-<div class="sentence-img" onclick="speak('The cat is sleeping')"><span>🐱💤</span><span>The cat is sleeping</span></div>
-<div class="sentence-img" onclick="speak('The sun is shining')"><span>☀️😎</span><span>The sun is shining</span></div>
+    <div class="section" id="vocab">
+        <h3 style="text-align:center">Advanced Pet Care Terms</h3>
+        <p style="text-align:center; font-size: 0.85rem; color: #888;">أجب بالإنجليزية (المستوى المتوسط):</p>
+        <div id="vocab-container"></div>
+        
+        <div id="final-results" style="display:none; text-align:center; padding:20px; border-top: 2px dashed #ddd;">
+            <h2 id="score-text" style="color:var(--navy)"></h2>
+            <a id="wa-btn" href="#" class="btn-wa">إرسال النتيجة لمحمد طه عطا المنان 🟢</a>
+        </div>
+    </div>
 </div>
-<button onclick="prevStep()">السابق</button>
-<button onclick="nextStep()">التالي</button>
-</section>
-
-<!-- البوابة 6: اختبار اختيار من متعدد -->
-<section id="step6">
-<h3>❓ اختبار اختيار من متعدد (3 أسئلة)</h3>
-<div class="mcq">
-<div>
-<p>1️⃣ ما هو حرف A؟</p>
-<button onclick="selectMCQ(this,0)">Apple</button>
-<button onclick="selectMCQ(this,1)">Cat</button>
-<button onclick="selectMCQ(this,2)">Dog</button>
-</div>
-<div>
-<p>2️⃣ ما هو الحرف الأول لكلمة Book؟</p>
-<button onclick="selectMCQ(this,0)">B</button>
-<button onclick="selectMCQ(this,1)">C</button>
-<button onclick="selectMCQ(this,2)">D</button>
-</div>
-<div>
-<p>3️⃣ ما هي الجملة الصحيحة؟</p>
-<button onclick="selectMCQ(this,0)">I like apples</button>
-<button onclick="selectMCQ(this,1)">The cat is shining</button>
-<button onclick="selectMCQ(this,2)">Sun is sleeping</button>
-</div>
-</div>
-<div id="mcqResult"></div>
-<button onclick="finishMCQ()">إنهاء</button>
-</section>
 
 <script>
-// الخطوات
-let currentStep=1;
-const totalSteps=6;
-function showStep(n){
-  for(let i=1;i<=totalSteps;i++){document.getElementById('step'+i).classList.remove('active');}
-  document.getElementById('step'+n).classList.add('active');
-}
-function nextStep(){if(currentStep<totalSteps){currentStep++;showStep(currentStep);}}
-function prevStep(){if(currentStep>1){currentStep--;showStep(currentStep);}}
+    const bell = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
+    const clap = new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3');
 
-// الحروف
-const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const lettersDiv=document.getElementById("letters");
-letters.forEach(l=>{
-    const d=document.createElement("div");
-    d.className="letter";
-    d.textContent=l;
-    d.onclick=()=>{ speak(l); alert("أحسنت! ضغطت على الحرف "+l); };
-    lettersDiv.appendChild(d);
-});
+    // المحتوى التدريبي عن الحيوانات الأليفة - مستوى B
+    const quizItems = [
+        { q: "1. Owning a dog is a huge ____ that lasts for years.", a: "commitment" },
+        { q: "2. If your cat is sick, you should call the ____.", a: "vet" },
+        { q: "3. Many people choose to ____ pets from a shelter.", a: "adopt" },
+        { q: "4. A well-____ dog is much easier to take for walks.", a: "trained" }
+    ];
 
-// الحروف مع إيموجيز
-const examples={A:{word:"Apple",emoji:"🍎"},B:{word:"Book",emoji:"📚"},C:{word:"Cat",emoji:"🐱"},D:{word:"Dog",emoji:"🐶"}};
-const imgDiv=document.getElementById("letterImages");
-for(let l in examples){
-    const d=document.createElement("div");
-    d.className="letter-img";
-    d.innerHTML=`<span>${examples[l].emoji}</span><span>${l} → ${examples[l].word}</span>`;
-    d.onclick=()=>{ speak(examples[l].word); alert("أحسنت! ضغطت على "+examples[l].word); };
-    imgDiv.appendChild(d);
-}
+    const vocabItems = [
+        { q: "سلالة (حيوانات)", a: "breed" },
+        { q: "ملجأ الحيوانات", a: "animal shelter" },
+        { q: "العناية بالمظهر (للحيوانات)", a: "grooming" },
+        { q: "الرفقة / الصحبة", a: "companionship" }
+    ];
 
-// نطق
-function speak(text){
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang="en-US"; u.rate=0.9;
-    speechSynthesis.speak(u);
-}
+    let totalScore = 0;
+    const totalPossible = quizItems.length + vocabItems.length;
 
-// تمرين الصور
-function checkStep4(){
-    const name=document.getElementById("studentName").value.trim();
-    if(!name){ alert("الرجاء إدخال اسم الطالب"); return; }
-    const q1=document.getElementById("q1").value.toLowerCase();
-    const q2=document.getElementById("q2").value.toLowerCase();
-    const r=document.getElementById("result");
-    if(q1==="apple" && q2==="cat"){
-        r.style.color="green"; r.textContent="✅ أحسنت! تم الحل بشكل صحيح";
-        speak("Excellent!");
-    } else {
-        r.style.color="orange"; r.textContent="⚠️ بعض الإجابات غير صحيحة، يمكنك المتابعة أو المحاولة مرة أخرى";
-        speak("Try again!");
+    function internalNotify(msg) {
+        const box = document.getElementById('page-notify');
+        box.innerText = msg; box.style.display = 'block';
+        setTimeout(() => box.style.display='none', 4000);
     }
-    setTimeout(()=>{ nextStep(); }, 1500);
-}
 
-// MCQ
-let mcqAnswers=[0,0,0];
-let userMCQ=[];
-function selectMCQ(btn,qIndex){
-    let parentDiv = btn.parentElement;
-    Array.from(parentDiv.querySelectorAll("button")).forEach(b=>b.style.background="#42a5f5");
-    btn.style.background="#1e88e5";
-    userMCQ[qIndex]=parseInt(btn.dataset.correct||qIndex);
-}
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'en-US';
+        window.speechSynthesis.speak(msg);
+    }
 
-function finishMCQ(){
-    let score=0;
-    for(let i=0;i<3;i++){if(userMCQ[i]===mcqAnswers[i]) score++;}
-    document.getElementById("mcqResult").textContent="✅ نتيجتك: "+score+"/3";
-    sendWhatsApp(score);
-}
+    function showSec(id, el) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        el.classList.add('active');
+    }
 
-function sendWhatsApp(score){
-    const url="https://chat.whatsapp.com/Bp3JS0KpxzNDIisOt5lNNX";
-    const msg=encodeURIComponent(`It's great! نتيجتي: ${score}/3`);
-    window.open(url+"?text="+msg,"_blank");
-}
+    function renderQuestions(data, containerId, prefix) {
+        const container = document.getElementById(containerId);
+        data.forEach((item, i) => {
+            const id = `${prefix}-${i}`;
+            container.innerHTML += `
+                <div class="q-card">
+                    <div class="q-text">${item.q}</div>
+                    <input type="text" id="${id}" onchange="checkAnswer('${id}', '${item.a}', this)" placeholder="Type answer...">
+                    <div id="feed-${id}" class="feedback"></div>
+                </div>
+            `;
+        });
+    }
 
-// ==== YouTube API لإرسال WhatsApp عند إيقاف الفيديو ====
-let player;
-function onYouTubeIframeAPIReady() {
-  player=new YT.Player('player',{
-    height:'220',
-    width:'100%',
-    videoId:'ccEpTTZW34g',
-    events:{'onStateChange':onPlayerStateChange}
-  });
-}
-function onPlayerStateChange(event){
-    if(event.data==YT.PlayerState.PAUSED || event.data==YT.PlayerState.ENDED){
-        let score=0;
-        if(userMCQ.length>0){for(let i=0;i<3;i++){if(userMCQ[i]===mcqAnswers[i]) score++;}
+    function checkAnswer(id, correct, inputEl) {
+        const userVal = inputEl.value.toLowerCase().trim();
+        const feed = document.getElementById(`feed-${id}`);
+        
+        if (userVal === correct.toLowerCase()) {
+            inputEl.style.borderColor = "var(--success)";
+            feed.innerHTML = "✅ صحيح! استمع للنطق الآن...";
+            feed.style.display = "block"; feed.style.color = "var(--success)";
+            bell.play();
+            speak(correct);
+            totalScore++;
+        } else {
+            inputEl.style.borderColor = "var(--error)";
+            feed.innerHTML = `❌ خطأ. الإجابة هي: <b>${correct}</b>`;
+            feed.style.display = "block"; feed.style.color = "var(--error)";
+            speak(correct);
         }
-        sendWhatsApp(score);
-        nextStep();
+        inputEl.disabled = true;
+        checkFinal();
     }
-}
+
+    function checkFinal() {
+        const answered = document.querySelectorAll('input:disabled').length;
+        if (answered === totalPossible) {
+            document.getElementById('final-results').style.display = "block";
+            document.getElementById('score-text').innerText = `النتيجة: ${totalScore} من ${totalPossible}`;
+            if(totalScore === totalPossible) clap.play();
+            
+            const waLink = `https://wa.me/249XXXXXXXXX?text=${encodeURIComponent("تم إكمال درس Pets بنجاح\nالنتيجة: " + totalScore + "/" + totalPossible + "\nإلى: محمد طه عطا المنان")}`;
+            document.getElementById('wa-btn').href = waLink;
+            internalNotify("🎉 رائع! اضغط بالأسفل لإرسال نتيجتك.");
+        }
+    }
+
+    window.onload = () => {
+        renderQuestions(quizItems, 'quiz-container', 'qz');
+        renderQuestions(vocabItems, 'vocab-container', 'vb');
+        internalNotify("مرحباً بك في منصة محمد طه عطا المنان.. بالتوفيق!");
+    };
 </script>
-<script src="https://www.youtube.com/iframe_api"></script>
+
 </body>
 </html>
