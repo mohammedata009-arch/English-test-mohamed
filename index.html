@@ -2,61 +2,52 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Weather Fill-in-the-Blank</title>
+<title>Weather Reading & Speaking Exercise</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-/* --- إعدادات عامة --- */
 body {
     font-family: 'Comic Sans MS', cursive, sans-serif;
-    background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+    background: linear-gradient(to right, #a8edea, #fed6e3);
     text-align: center;
     padding: 20px;
     color: #333;
 }
 h2 {
     color: #ff5722;
-    text-shadow: 1px 1px 3px #fff;
+    text-shadow: 1px 1px 2px #fff;
 }
 .page { display: none; }
 .active { display: block; }
 
-/* --- الجملة والكلمة الناقصة --- */
-#sentence {
-    font-size: 24px;
+#passage {
+    font-size: 20px;
     background: #fff3cd;
     padding: 15px;
     border-radius: 12px;
     border: 2px solid #ffeeba;
-    display: inline-block;
-    margin-bottom: 15px;
-    transition: transform 0.3s;
+    margin-bottom: 20px;
+    text-align: left;
 }
-#sentence:hover {
-    transform: scale(1.05);
-}
-
-/* --- مدخل الإجابة --- */
 input[type="text"] {
-    font-size: 20px;
-    padding: 12px;
-    width: 60%;
-    border-radius: 12px;
+    font-size: 18px;
+    padding: 8px;
+    width: 50%;
+    border-radius: 8px;
     border: 2px solid #2196F3;
+    margin: 8px 0;
     transition: all 0.3s;
 }
 input[type="text"]:focus {
     border-color: #ff5722;
-    box-shadow: 0 0 10px rgba(255,87,34,0.5);
+    box-shadow: 0 0 8px rgba(255,87,34,0.5);
     outline: none;
 }
-
-/* --- الأزرار --- */
 button {
     font-size: 18px;
-    padding: 12px 22px;
+    padding: 10px 20px;
     margin: 10px;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -67,153 +58,157 @@ button:hover {
 .start { background: #4CAF50; color: white; }
 .listen { background: #2196F3; color: white; }
 .check { background: #FF9800; color: white; }
-
-/* --- ملاحظات وإشعارات --- */
-.correct {
-    color: green;
-    font-size: 20px;
-    animation: pop 0.5s ease-in-out;
-}
-.wrong {
-    color: red;
-    font-size: 20px;
-    animation: shake 0.5s;
-}
-#progress {
-    margin-top: 10px;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-/* --- تأثيرات CSS --- */
-@keyframes shake {
-    0% { transform: translateX(0); }
-    20% { transform: translateX(-5px); }
-    40% { transform: translateX(5px); }
-    60% { transform: translateX(-5px); }
-    80% { transform: translateX(5px); }
-    100% { transform: translateX(0); }
-}
-@keyframes pop {
-    0% { transform: scale(0.5); opacity: 0; }
-    50% { transform: scale(1.2); opacity: 1; }
-    100% { transform: scale(1); }
-}
-
-/* --- صندوق التعليمات --- */
-.notice {
-    background: #fff8e1;
-    border: 2px solid #ffe082;
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 20px;
-    font-size: 16px;
-}
+.correct { color: green; font-size:18px; animation: pop 0.5s ease-in-out; }
+.wrong { color: red; font-size:18px; animation: shake 0.5s; }
+@keyframes shake {0%{transform:translateX(0);}20%{transform:translateX(-5px);}40%{transform:translateX(5px);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}100%{transform:translateX(0);}}
+@keyframes pop {0%{transform:scale(0.5);opacity:0;}50%{transform:scale(1.2);opacity:1;}100%{transform:scale(1);}}
+.notice {background:#fff8e1;border:2px solid #ffe082;border-radius:12px;padding:15px;margin-bottom:20px;font-size:16px;text-align:left;}
 </style>
 </head>
 <body>
 
 <!-- صفحة الترحيب -->
 <div id="welcome" class="page active">
-    <h2>🌦 Weather Fill-in-the-Blank</h2>
-    <p><b>منصة البرامج التخصصية</b> - إدارة: محمد طه عطا المنان</p>
-    <p>برنامج تفاعلي: استمع + اكتب الكلمة الناقصة</p>
-
-    <div class="notice">
-        <p>📌 تعليمات:</p>
-        <p>1️⃣ استمع للجملة أولًا 🔊</p>
-        <p>2️⃣ اكتب الكلمة الناقصة فقط</p>
-        <p>3️⃣ سترى التصحيح فورًا</p>
-        <p>📸 أرسل Screenshot للقروب</p>
-    </div>
-
-    <button class="start" onclick="startLesson()">▶️ ابدأ التمرين</button>
+<h2>🌦 Weather Reading & Speaking Exercise</h2>
+<p><b>منصة البرامج التخصصية</b> - إدارة: محمد طه عطا المنان</p>
+<div class="notice">
+<p>📌 تعليمات:</p>
+<p>1️⃣ اقرأ القطعة أو استمع لها 🔊</p>
+<p>2️⃣ أجب على الأسئلة بالنطق 🎤</p>
+<p>3️⃣ املأ الفراغات بالكتابة ✏️</p>
+<p>4️⃣ سترى التصحيح فورًا ✅❌</p>
+<p>📸 أرسل Screenshot للقروب</p>
+</div>
+<button class="start" onclick="startLesson()">▶️ ابدأ التمرين</button>
 </div>
 
 <!-- صفحة التمرين -->
 <div id="lesson" class="page">
-    <h2>📖 Fill-in-the-Blank Dialogue</h2>
+<h2>📖 Passage</h2>
+<div id="passage"></div>
+<button class="listen" onclick="playPassage()">🔊 Listen to Passage</button>
 
-    <p id="sentence"></p>
-    <button class="listen" onclick="playSentence()">🔊 Listen Sentence</button>
-    <br>
-    <input type="text" id="answerInput" placeholder="اكتب الكلمة الناقصة هنا">
-    <br>
-    <button class="check" onclick="checkAnswer()">✅ تحقق الإجابة</button>
+<h2>📝 Fill-in-the-blank</h2>
+<div id="blanks"></div>
+<button class="check" onclick="checkBlanks()">✅ تحقق الإجابات</button>
 
-    <p id="feedback"></p>
-    <p id="progress"></p>
+<h2>🎤 Answer the Questions</h2>
+<div id="questions"></div>
+<p id="feedback"></p>
+<p id="progress"></p>
 </div>
 
 <script>
+// --- البيانات ---
+const passageText = `Today the weather is sunny and warm. Many people go outside to play and enjoy the sun. Some clouds are in the sky, but there is no rain. In the evening, the temperature becomes cooler, and a gentle breeze blows. Everyone should wear comfortable clothes and drink water to stay healthy.`;
+
+const blanksData = [
+    {sentence:"Today the weather is ___ and warm.", blank:"sunny"},
+    {sentence:"Many people go outside to ___ and enjoy the sun.", blank:"play"},
+    {sentence:"Some clouds are in the ___, but there is no rain.", blank:"sky"},
+    {sentence:"In the evening, the temperature becomes ___.", blank:"cooler"},
+    {sentence:"Everyone should wear comfortable clothes and drink ___ to stay healthy.", blank:"water"}
+];
+
+const questionsData = [
+    {question:"What is the weather today?", answers:["sunny","warm"]},
+    {question:"Do people go outside?", answers:["yes","they go outside"]},
+    {question:"Are there any clouds?", answers:["yes","some clouds"]},
+    {question:"Is it raining?", answers:["no","it is not raining","no"]},
+    {question:"What should people drink?", answers:["water"]},
+    {question:"When does the temperature become cooler?", answers:["in the evening","evening"]},
+    {question:"Is the weather cold?", answers:["no"]},
+    {question:"Do people wear comfortable clothes?", answers:["yes"]},
+    {question:"Is there a breeze?", answers:["yes","a gentle breeze"]},
+    {question:"Is the sun shining?", answers:["yes"]}
+];
+
+let currentStep = 0;
+let scoreQuestions = 0;
+
 // --- بدء التمرين ---
 function startLesson(){
     document.getElementById("welcome").classList.remove("active");
     document.getElementById("lesson").classList.add("active");
-    showSentence();
+    document.getElementById("passage").innerText = passageText;
+
+    // عرض الفراغات
+    let blanksHTML = "";
+    blanksData.forEach((b,i)=>{
+        blanksHTML += `<p>${b.sentence} <input type="text" id="blank${i}" placeholder="..."></p>`;
+    });
+    document.getElementById("blanks").innerHTML = blanksHTML;
+
+    // عرض السؤال الأول
+    showQuestion();
 }
 
-// --- بيانات الحوار: الجملة + الكلمة الناقصة ---
-const dialogueData = [
-    {sentence:"Hello! How are you __?", blank:"today"},
-    {sentence:"It is __ and sunny.", blank:"hot"},
-    {sentence:"Do you like this __?", blank:"weather"},
-    {sentence:"I like it because I can play __.", blank:"outside"},
-    {sentence:"When it rains, I stay at __.", blank:"home"},
-    {sentence:"In cold weather, I wear a __.", blank:"jacket"},
-    {sentence:"Yesterday it was __ and windy.", blank:"cold"},
-    {sentence:"Tomorrow it will be __.", blank:"rainy"},
-    {sentence:"I always drink __ when I am cold.", blank:"tea"},
-    {sentence:"Playing outside is fun in the __.", blank:"sun"}
-];
+// --- Text-to-Speech للقطعة ---
+function playPassage(){
+    let utter = new SpeechSynthesisUtterance(passageText);
+    utter.lang = "en-US";
+    utter.voice = speechSynthesis.getVoices().find(v=>v.name.includes("David")) || null;
+    speechSynthesis.speak(utter);
+}
 
-let currentStep = 0;
-let score = 0;
+// --- تحقق الفراغات ---
+function checkBlanks(){
+    let feedback = "";
+    let score = 0;
+    blanksData.forEach((b,i)=>{
+        const input = document.getElementById(`blank${i}`).value.trim().toLowerCase();
+        if(input === b.blank.toLowerCase()){
+            feedback += `<p class="correct">✅ Correct: ${b.sentence.replace("___", b.blank)}</p>`;
+            score++;
+        } else {
+            feedback += `<p class="wrong">❌ Wrong: ${b.sentence.replace("___", b.blank)}</p>`;
+        }
+    });
+    document.getElementById("feedback").innerHTML = feedback;
+    document.getElementById("progress").innerHTML = `Score for blanks: ${score} / ${blanksData.length}`;
+}
 
-// --- عرض الجملة الحالية ---
-function showSentence(){
-    if(currentStep < dialogueData.length){
-        document.getElementById("sentence").innerText = dialogueData[currentStep].sentence;
-        document.getElementById("progress").innerText = "Sentence " + (currentStep+1) + " of " + dialogueData.length;
-        document.getElementById("answerInput").value = "";
-        document.getElementById("feedback").innerText = "";
+// --- عرض الأسئلة للنطق ---
+function showQuestion(){
+    if(currentStep < questionsData.length){
+        document.getElementById("questions").innerHTML = `
+            <p>${questionsData[currentStep].question}</p>
+            <button class="listen" onclick="speakQuestion()">🔊 Listen Question</button>
+            <button class="check" onclick="startSpeaking()">🎤 Speak Answer</button>
+        `;
+        document.getElementById("progress").innerText = `Question ${currentStep+1} of ${questionsData.length}`;
     } else {
-        document.getElementById("sentence").innerText = "🎉 انتهى التمرين! نتيجتك: " + score + "/" + dialogueData.length;
-        document.getElementById("progress").innerText = "";
-        document.getElementById("answerInput").style.display = "none";
-        document.querySelector(".check").style.display = "none";
-        document.querySelector(".listen").style.display = "none";
+        document.getElementById("questions").innerHTML = "<p>🎉 End of questions! Your score: " + scoreQuestions + "/" + questionsData.length + "</p>";
     }
 }
 
-// --- Text-to-Speech للجملة ---
-function playSentence(){
-    if(currentStep < dialogueData.length){
-        let text = dialogueData[currentStep].sentence.replace("__", "blank");
-        let utter = new SpeechSynthesisUtterance(text);
-        utter.lang = "en-US";
-        speechSynthesis.speak(utter);
-    }
+// --- Text-to-Speech للسؤال ---
+function speakQuestion(){
+    let utter = new SpeechSynthesisUtterance(questionsData[currentStep].question);
+    utter.lang = "en-US";
+    utter.voice = speechSynthesis.getVoices().find(v=>v.name.includes("David")) || null;
+    speechSynthesis.speak(utter);
 }
 
-// --- تحقق الكلمة الناقصة ---
-function checkAnswer(){
-    const input = document.getElementById("answerInput").value.toLowerCase().trim();
-    const current = dialogueData[currentStep];
-    const feedback = document.getElementById("feedback");
+// --- Speech Recognition ---
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+recognition.lang = "en-US";
 
-    if(input === current.blank.toLowerCase()){
-        feedback.innerHTML = "✅ Correct! 🌟";
-        feedback.className = "correct";
-        score++;
+function startSpeaking(){ recognition.start(); }
+
+recognition.onresult = function(event){
+    let spoken = event.results[0][0].transcript.toLowerCase();
+    const correctAnswers = questionsData[currentStep].answers.map(a=>a.toLowerCase());
+    if(correctAnswers.includes(spoken)){
+        scoreQuestions++;
+        alert("✅ Correct!");
     } else {
-        feedback.innerHTML = "❌ Incorrect. The correct word is: " + current.blank;
-        feedback.className = "wrong";
+        alert("❌ Wrong! Correct answer: " + questionsData[currentStep].answers[0]);
     }
-
     currentStep++;
-    setTimeout(showSentence, 1000);
-}
+    showQuestion();
+};
 </script>
 
 </body>
