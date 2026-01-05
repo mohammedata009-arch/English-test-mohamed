@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Weather Speaking Interactive</title>
+<title>Weather Voice Dialogue</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body {
     font-family: Arial, sans-serif;
-    background: #f2f6ff;
+    background: #f0f8ff;
     text-align: center;
     padding: 20px;
 }
@@ -23,9 +23,8 @@ button {
 }
 .start { background: #4CAF50; color: white; }
 .listen { background: #2196F3; color: white; }
-.speak { background: #FF9800; color: white; }
-.correct { color: green; font-size:20px; }
-.wrong { color: red; font-size:20px; }
+.correct { color: green; font-size:18px; }
+.wrong { color: red; font-size:18px; }
 .notice {
     background: #fff3cd;
     border: 1px solid #ffeeba;
@@ -36,13 +35,11 @@ button {
 }
 </style>
 </head>
-
 <body>
 
 <!-- صفحة الترحيب -->
 <div id="welcome" class="page active">
     <h2>🌟 مرحبًا بك</h2>
-
     <p><b>منصة البرامج التخصصية</b></p>
     <p>إدارة: محمد طه عطا المنان</p>
     <p>برنامج تفاعلي لتدريب المحادثة وتصحيح النطق</p>
@@ -50,12 +47,12 @@ button {
     <hr>
 
     <div class="notice">
-        <p>📌 <b>تعليمات مهمة:</b></p>
-        <p>1️⃣ استمع للسؤال جيدًا</p>
-        <p>2️⃣ أجب بصوت واضح</p>
-        <p>3️⃣ بعد التمرين:</p>
-        <p>📸 أرسل Screenshot للنتيجة</p>
-        <p>🎤 وأرسل تسجيل صوتك للقروب</p>
+        <p>📌 <b>تعليمات:</b></p>
+        <p>1️⃣ استمع للأسئلة جيدًا</p>
+        <p>2️⃣ انطق الإجابة بصوت واضح</p>
+        <p>3️⃣ بعد كل إجابة سترى النتيجة والجملة الصحيحة إذا أخطأت</p>
+        <p>📸 أرسل Screenshot للقروب</p>
+        <p>🎤 أرسل تسجيل صوتك للقروب</p>
     </div>
 
     <button class="start" onclick="startLesson()">▶️ ابدأ التمرين</button>
@@ -63,56 +60,42 @@ button {
 
 <!-- صفحة التمرين -->
 <div id="lesson" class="page">
-    <h2>🌦 Weather Speaking Practice</h2>
-
-    <p><b>Question:</b> What is the weather like today?</p>
-
-    <button class="listen" onclick="speakQuestion()">🔊 Listen</button>
-    <button class="speak" onclick="startSpeaking()">🎤 Speak</button>
-
-    <p id="studentText"></p>
-    <p id="result"></p>
-
-    <div id="shareNotice" class="notice" style="display:none;">
-        <p>✅ أحسنت!</p>
-        <p>📸 الرجاء إرسال Screenshot للنتيجة</p>
-        <p>🎤 وإرسال تسجيل صوتك للقروب</p>
+    <h2>🌦 Weather Voice Dialogue</h2>
+    <div id="dialogue">
+        <p><b>Teacher:</b> Hello! How are you today?</p>
     </div>
+    <button class="listen" onclick="speakQuestion()">🔊 Listen Question</button>
+    <button class="listen" onclick="startSpeaking()">🎤 Speak Your Answer</button>
+    <p id="feedback"></p>
 </div>
 
 <script>
+// بدء التمرين
 function startLesson() {
     document.getElementById("welcome").classList.remove("active");
     document.getElementById("lesson").classList.add("active");
 }
 
-// نص السؤال الرئيسي
-const question = "What is the weather like today?";
-
-// قائمة الإجابات الصحيحة البسيطة
-const answers = [
-    "it is hot",
-    "it is sunny",
-    "it is cold",
-    "it is rainy",
-    "i like it",
-    "i don’t like it",
-    "i play football",
-    "i read a book",
-    "i stay at home",
-    "i drink water",
-    "i wear a jacket",
-    "yesterday it was hot",
-    "yesterday it was sunny",
-    "it will be rainy",
-    "it will be cold"
+// بيانات الحوار: سؤال، أجوبة صحيحة، وجملة تصحيحية
+const dialogueData = [
+    {teacher:"What is the weather like today?", answers:["it is hot","it is sunny","it is cold","it is rainy"], correct:"It is sunny."},
+    {teacher:"Do you like this weather?", answers:["yes i like it","no i don't like it"], correct:"Yes, I like it."},
+    {teacher:"Why do you like it?", answers:["because i can play outside","because it is warm"], correct:"Because I can play outside."},
+    {teacher:"What do you usually do in sunny weather?", answers:["i play football","i read a book"], correct:"I play football."},
+    {teacher:"How about rainy weather?", answers:["sometimes","not really"], correct:"Sometimes, I like it."},
+    {teacher:"What do you do when it is rainy?", answers:["i stay at home","i watch tv"], correct:"I stay at home and watch TV."},
+    {teacher:"And in cold weather?", answers:["i wear a jacket","i drink hot tea"], correct:"I wear a jacket and drink hot tea."},
+    {teacher:"Can you tell me about yesterday's weather?", answers:["yesterday it was hot","yesterday it was sunny"], correct:"Yesterday it was sunny."},
+    {teacher:"What will the weather be like tomorrow?", answers:["it will be rainy","it will be cold"], correct:"It will be rainy."}
 ];
 
-// Text-to-Speech للسؤال
+let currentStep = 0;
+
+// Text-to-Speech
 function speakQuestion() {
-    let u = new SpeechSynthesisUtterance(question);
-    u.lang = "en-US";
-    speechSynthesis.speak(u);
+    const utter = new SpeechSynthesisUtterance(dialogueData[currentStep].teacher);
+    utter.lang = "en-US";
+    speechSynthesis.speak(utter);
 }
 
 // Speech Recognition
@@ -126,26 +109,28 @@ function startSpeaking() {
 
 recognition.onresult = function(event) {
     let spoken = event.results[0][0].transcript.toLowerCase();
-    document.getElementById("studentText").innerText = "You said: " + spoken;
+    const feedback = document.getElementById("feedback");
+    const dialogueDiv = document.getElementById("dialogue");
+    const current = dialogueData[currentStep];
 
-    if (answers.includes(spoken)) {
-        document.getElementById("result").innerHTML = "✅ Correct! 🌟 Keep going!";
-        document.getElementById("result").className = "correct";
-        document.getElementById("shareNotice").style.display = "block";
-        speak("Good job! Your answer is correct. Don't forget to share screenshot and voice note.");
+    dialogueDiv.innerHTML += "<p><b>Student:</b> " + spoken + "</p>";
+
+    if(current.answers.includes(spoken)){
+        feedback.innerHTML = "✅ Correct! 🌟 Well done!";
+        feedback.className = "correct";
     } else {
-        document.getElementById("result").innerHTML = "❌ Try again! Say: It is hot, sunny, cold, or rainy.";
-        document.getElementById("result").className = "wrong";
-        speak("Try again. Say: it is hot, it is sunny, it is cold, or it is rainy.");
+        feedback.innerHTML = "❌ Incorrect. Correct answer: " + current.correct;
+        feedback.className = "wrong";
+        dialogueDiv.innerHTML += "<p><b>Teacher:</b> " + current.correct + "</p>";
+    }
+
+    currentStep++;
+    if(currentStep < dialogueData.length){
+        dialogueDiv.innerHTML += "<p><b>Teacher:</b> " + dialogueData[currentStep].teacher + "</p>";
+    } else {
+        dialogueDiv.innerHTML += "<p><b>🎉 End of dialogue! Please send Screenshot & Voice Note to the group.</b></p>";
     }
 };
-
-// وظيفة التحدث بصوت التطبيق للتشجيع
-function speak(text) {
-    let u = new SpeechSynthesisUtterance(text);
-    u.lang = "en-US";
-    speechSynthesis.speak(u);
-}
 </script>
 
 </body>
