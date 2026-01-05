@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Weather Voice Dialogue</title>
+<title>Weather Interactive for Kids</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body {
@@ -15,87 +15,91 @@ body {
 .active { display: block; }
 button {
     font-size: 18px;
-    padding: 12px 22px;
+    padding: 10px 20px;
     margin: 10px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
 }
-.start { background: #4CAF50; color: white; }
-.listen { background: #2196F3; color: white; }
+.dialog-btn { background: #2196F3; color: white; }
 .correct { color: green; font-size:18px; }
 .wrong { color: red; font-size:18px; }
-.notice {
-    background: #fff3cd;
-    border: 1px solid #ffeeba;
-    padding: 15px;
+#videoPopup {
+    display: none;
+    position: fixed;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 60%;
+    background: #fff;
+    border: 2px solid #333;
     border-radius: 10px;
-    margin-top: 20px;
-    font-size: 14px;
+    z-index: 100;
+    padding: 10px;
+}
+#videoPopup iframe {
+    width: 100%;
+    height: 90%;
+}
+#closeVideo {
+    background: #FF9800;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 5px;
 }
 </style>
 </head>
 <body>
 
-<!-- صفحة الترحيب -->
-<div id="welcome" class="page active">
-    <h2>🌟 مرحبًا بك</h2>
-    <p><b>منصة البرامج التخصصية</b></p>
-    <p>إدارة: محمد طه عطا المنان</p>
-    <p>برنامج تفاعلي لتدريب المحادثة وتصحيح النطق</p>
+<h2>🌦 Weather Interactive for Kids</h2>
+<p><b>منصة البرامج التخصصية</b> - إدارة: محمد طه عطا المنان</p>
 
-    <hr>
+<hr>
 
-    <div class="notice">
-        <p>📌 <b>تعليمات:</b></p>
-        <p>1️⃣ استمع للأسئلة جيدًا</p>
-        <p>2️⃣ انطق الإجابة بصوت واضح</p>
-        <p>3️⃣ بعد كل إجابة سترى النتيجة والجملة الصحيحة إذا أخطأت</p>
-        <p>📸 أرسل Screenshot للقروب</p>
-        <p>🎤 أرسل تسجيل صوتك للقروب</p>
-    </div>
-
-    <button class="start" onclick="startLesson()">▶️ ابدأ التمرين</button>
+<div id="dialogue">
+    <h3>📖 الحوار المكتوب</h3>
+    <p><b>Teacher:</b> Hello! How are you today? <button class="dialog-btn" onclick="showVideo()">▶️ Watch Video</button></p>
+    <p><b>Teacher:</b> What is the weather like today? <button class="dialog-btn" onclick="showVideo()">▶️ Watch Video</button></p>
+    <p><b>Teacher:</b> Do you like this weather? <button class="dialog-btn" onclick="showVideo()">▶️ Watch Video</button></p>
 </div>
 
-<!-- صفحة التمرين -->
-<div id="lesson" class="page">
-    <h2>🌦 Weather Voice Dialogue</h2>
-    <div id="dialogue">
-        <p><b>Teacher:</b> Hello! How are you today?</p>
-    </div>
-    <button class="listen" onclick="speakQuestion()">🔊 Listen Question</button>
-    <button class="listen" onclick="startSpeaking()">🎤 Speak Your Answer</button>
-    <p id="feedback"></p>
+<hr>
+
+<p><b>Listen & Speak / Write:</b></p>
+<button onclick="speakQuestion()">🔊 Listen Question</button>
+<button onclick="startSpeaking()">🎤 Speak Answer</button>
+<br>
+<input type="text" id="studentInput" placeholder="أكتب إجابتك هنا إذا أحببت">
+<br>
+<button onclick="checkAnswer()">✅ تحقق الإجابة</button>
+
+<p id="feedback"></p>
+
+<!-- نافذة الفيديو -->
+<div id="videoPopup">
+    <iframe id="ytVideo" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <br>
+    <button id="closeVideo" onclick="closeVideo()">❌ Close Video</button>
 </div>
 
 <script>
-// بدء التمرين
-function startLesson() {
-    document.getElementById("welcome").classList.remove("active");
-    document.getElementById("lesson").classList.add("active");
-}
-
-// بيانات الحوار: سؤال، أجوبة صحيحة، وجملة تصحيحية
+// بيانات الحوار
 const dialogueData = [
+    {teacher:"Hello! How are you today?", answers:["i am fine","i am good"], correct:"I am fine, thank you."},
     {teacher:"What is the weather like today?", answers:["it is hot","it is sunny","it is cold","it is rainy"], correct:"It is sunny."},
-    {teacher:"Do you like this weather?", answers:["yes i like it","no i don't like it"], correct:"Yes, I like it."},
-    {teacher:"Why do you like it?", answers:["because i can play outside","because it is warm"], correct:"Because I can play outside."},
-    {teacher:"What do you usually do in sunny weather?", answers:["i play football","i read a book"], correct:"I play football."},
-    {teacher:"How about rainy weather?", answers:["sometimes","not really"], correct:"Sometimes, I like it."},
-    {teacher:"What do you do when it is rainy?", answers:["i stay at home","i watch tv"], correct:"I stay at home and watch TV."},
-    {teacher:"And in cold weather?", answers:["i wear a jacket","i drink hot tea"], correct:"I wear a jacket and drink hot tea."},
-    {teacher:"Can you tell me about yesterday's weather?", answers:["yesterday it was hot","yesterday it was sunny"], correct:"Yesterday it was sunny."},
-    {teacher:"What will the weather be like tomorrow?", answers:["it will be rainy","it will be cold"], correct:"It will be rainy."}
+    {teacher:"Do you like this weather?", answers:["yes i like it","no i don't like it"], correct:"Yes, I like it."}
 ];
-
 let currentStep = 0;
 
 // Text-to-Speech
-function speakQuestion() {
-    const utter = new SpeechSynthesisUtterance(dialogueData[currentStep].teacher);
-    utter.lang = "en-US";
-    speechSynthesis.speak(utter);
+function speakQuestion(){
+    if(currentStep < dialogueData.length){
+        const utter = new SpeechSynthesisUtterance(dialogueData[currentStep].teacher);
+        utter.lang = "en-US";
+        speechSynthesis.speak(utter);
+    }
 }
 
 // Speech Recognition
@@ -103,11 +107,9 @@ const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecogni
 const recognition = new SpeechRecognition();
 recognition.lang = "en-US";
 
-function startSpeaking() {
-    recognition.start();
-}
+function startSpeaking(){ recognition.start(); }
 
-recognition.onresult = function(event) {
+recognition.onresult = function(event){
     let spoken = event.results[0][0].transcript.toLowerCase();
     const feedback = document.getElementById("feedback");
     const dialogueDiv = document.getElementById("dialogue");
@@ -126,11 +128,57 @@ recognition.onresult = function(event) {
 
     currentStep++;
     if(currentStep < dialogueData.length){
-        dialogueDiv.innerHTML += "<p><b>Teacher:</b> " + dialogueData[currentStep].teacher + "</p>";
+        dialogueDiv.innerHTML += "<p><b>Teacher:</b> " + dialogueData[currentStep].teacher + ' <button class="dialog-btn" onclick="showVideo()">▶️ Watch Video</button></p>';
     } else {
         dialogueDiv.innerHTML += "<p><b>🎉 End of dialogue! Please send Screenshot & Voice Note to the group.</b></p>";
     }
 };
+
+// تحقق الكتابة (اختياري)
+function checkAnswer(){
+    const input = document.getElementById("studentInput").value.toLowerCase().trim();
+    if(input === "") return;
+    const feedback = document.getElementById("feedback");
+    const dialogueDiv = document.getElementById("dialogue");
+    const current = dialogueData[currentStep];
+
+    dialogueDiv.innerHTML += "<p><b>Student:</b> " + input + "</p>";
+
+    if(current.answers.includes(input)){
+        feedback.innerHTML = "✅ Correct! 🌟 Well done!";
+        feedback.className = "correct";
+    } else {
+        feedback.innerHTML = "❌ Incorrect. Correct answer: " + current.correct;
+        feedback.className = "wrong";
+        dialogueDiv.innerHTML += "<p><b>Teacher:</b> " + current.correct + "</p>";
+    }
+
+    currentStep++;
+    document.getElementById("studentInput").value = "";
+
+    if(currentStep < dialogueData.length){
+        dialogueDiv.innerHTML += "<p><b>Teacher:</b> " + dialogueData[currentStep].teacher + ' <button class="dialog-btn" onclick="showVideo()">▶️ Watch Video</button></p>';
+    } else {
+        dialogueDiv.innerHTML += "<p><b>🎉 End of dialogue! Please send Screenshot & Voice Note to the group.</b></p>";
+    }
+}
+
+// عرض الفيديو
+function showVideo(){
+    const videoPopup = document.getElementById("videoPopup");
+    const ytVideo = document.getElementById("ytVideo");
+    // مثال على فيديو تعليم الطقس للأطفال
+    ytVideo.src = "https://www.youtube.com/embed/3X3vYjTj-IE?autoplay=1";
+    videoPopup.style.display = "block";
+}
+
+// غلق الفيديو
+function closeVideo(){
+    const videoPopup = document.getElementById("videoPopup");
+    const ytVideo = document.getElementById("ytVideo");
+    ytVideo.src = "";
+    videoPopup.style.display = "none";
+}
 </script>
 
 </body>
