@@ -2,182 +2,217 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Weather Interactive for Kids</title>
+<title>Weather Fill-in-the-Blank</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+/* --- إعدادات عامة --- */
 body {
-    font-family: Arial, sans-serif;
-    background: #f0f8ff;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: linear-gradient(to right, #a1c4fd, #c2e9fb);
     text-align: center;
     padding: 20px;
+    color: #333;
+}
+h2 {
+    color: #ff5722;
+    text-shadow: 1px 1px 3px #fff;
 }
 .page { display: none; }
 .active { display: block; }
+
+/* --- الجملة والكلمة الناقصة --- */
+#sentence {
+    font-size: 24px;
+    background: #fff3cd;
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid #ffeeba;
+    display: inline-block;
+    margin-bottom: 15px;
+    transition: transform 0.3s;
+}
+#sentence:hover {
+    transform: scale(1.05);
+}
+
+/* --- مدخل الإجابة --- */
+input[type="text"] {
+    font-size: 20px;
+    padding: 12px;
+    width: 60%;
+    border-radius: 12px;
+    border: 2px solid #2196F3;
+    transition: all 0.3s;
+}
+input[type="text"]:focus {
+    border-color: #ff5722;
+    box-shadow: 0 0 10px rgba(255,87,34,0.5);
+    outline: none;
+}
+
+/* --- الأزرار --- */
 button {
     font-size: 18px;
-    padding: 10px 20px;
+    padding: 12px 22px;
     margin: 10px;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
-.dialog-btn { background: #2196F3; color: white; }
-.correct { color: green; font-size:18px; }
-.wrong { color: red; font-size:18px; }
-#videoPopup {
-    display: none;
-    position: fixed;
-    top: 10%;
-    left: 10%;
-    width: 80%;
-    height: 60%;
-    background: #fff;
-    border: 2px solid #333;
-    border-radius: 10px;
-    z-index: 100;
-    padding: 10px;
+button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
-#videoPopup iframe {
-    width: 100%;
-    height: 90%;
+.start { background: #4CAF50; color: white; }
+.listen { background: #2196F3; color: white; }
+.check { background: #FF9800; color: white; }
+
+/* --- ملاحظات وإشعارات --- */
+.correct {
+    color: green;
+    font-size: 20px;
+    animation: pop 0.5s ease-in-out;
 }
-#closeVideo {
-    background: #FF9800;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 5px;
+.wrong {
+    color: red;
+    font-size: 20px;
+    animation: shake 0.5s;
+}
+#progress {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* --- تأثيرات CSS --- */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+}
+@keyframes pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+/* --- صندوق التعليمات --- */
+.notice {
+    background: #fff8e1;
+    border: 2px solid #ffe082;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-size: 16px;
 }
 </style>
 </head>
 <body>
 
-<h2>🌦 Weather Interactive for Kids</h2>
-<p><b>منصة البرامج التخصصية</b> - إدارة: محمد طه عطا المنان</p>
+<!-- صفحة الترحيب -->
+<div id="welcome" class="page active">
+    <h2>🌦 Weather Fill-in-the-Blank</h2>
+    <p><b>منصة البرامج التخصصية</b> - إدارة: محمد طه عطا المنان</p>
+    <p>برنامج تفاعلي: استمع + اكتب الكلمة الناقصة</p>
 
-<hr>
+    <div class="notice">
+        <p>📌 تعليمات:</p>
+        <p>1️⃣ استمع للجملة أولًا 🔊</p>
+        <p>2️⃣ اكتب الكلمة الناقصة فقط</p>
+        <p>3️⃣ سترى التصحيح فورًا</p>
+        <p>📸 أرسل Screenshot للقروب</p>
+    </div>
 
-<div id="dialogue">
-    <h3>📖 الحوار المكتوب</h3>
-    <p><b>Teacher:</b> Hello! How are you today? <button class="dialog-btn" onclick="showVideo()">▶️ Watch Video</button></p>
-    <p><b>Teacher:</b> What is the weather like today? <button class="dialog-btn" onclick="showVideo()">▶️ Watch Video</button></p>
-    <p><b>Teacher:</b> Do you like this weather? <button class="dialog-btn" onclick="showVideo()">▶️ Watch Video</button></p>
+    <button class="start" onclick="startLesson()">▶️ ابدأ التمرين</button>
 </div>
 
-<hr>
+<!-- صفحة التمرين -->
+<div id="lesson" class="page">
+    <h2>📖 Fill-in-the-Blank Dialogue</h2>
 
-<p><b>Listen & Speak / Write:</b></p>
-<button onclick="speakQuestion()">🔊 Listen Question</button>
-<button onclick="startSpeaking()">🎤 Speak Answer</button>
-<br>
-<input type="text" id="studentInput" placeholder="أكتب إجابتك هنا إذا أحببت">
-<br>
-<button onclick="checkAnswer()">✅ تحقق الإجابة</button>
-
-<p id="feedback"></p>
-
-<!-- نافذة الفيديو -->
-<div id="videoPopup">
-    <iframe id="ytVideo" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p id="sentence"></p>
+    <button class="listen" onclick="playSentence()">🔊 Listen Sentence</button>
     <br>
-    <button id="closeVideo" onclick="closeVideo()">❌ Close Video</button>
+    <input type="text" id="answerInput" placeholder="اكتب الكلمة الناقصة هنا">
+    <br>
+    <button class="check" onclick="checkAnswer()">✅ تحقق الإجابة</button>
+
+    <p id="feedback"></p>
+    <p id="progress"></p>
 </div>
 
 <script>
-// بيانات الحوار
-const dialogueData = [
-    {teacher:"Hello! How are you today?", answers:["i am fine","i am good"], correct:"I am fine, thank you."},
-    {teacher:"What is the weather like today?", answers:["it is hot","it is sunny","it is cold","it is rainy"], correct:"It is sunny."},
-    {teacher:"Do you like this weather?", answers:["yes i like it","no i don't like it"], correct:"Yes, I like it."}
-];
-let currentStep = 0;
+// --- بدء التمرين ---
+function startLesson(){
+    document.getElementById("welcome").classList.remove("active");
+    document.getElementById("lesson").classList.add("active");
+    showSentence();
+}
 
-// Text-to-Speech
-function speakQuestion(){
+// --- بيانات الحوار: الجملة + الكلمة الناقصة ---
+const dialogueData = [
+    {sentence:"Hello! How are you __?", blank:"today"},
+    {sentence:"It is __ and sunny.", blank:"hot"},
+    {sentence:"Do you like this __?", blank:"weather"},
+    {sentence:"I like it because I can play __.", blank:"outside"},
+    {sentence:"When it rains, I stay at __.", blank:"home"},
+    {sentence:"In cold weather, I wear a __.", blank:"jacket"},
+    {sentence:"Yesterday it was __ and windy.", blank:"cold"},
+    {sentence:"Tomorrow it will be __.", blank:"rainy"},
+    {sentence:"I always drink __ when I am cold.", blank:"tea"},
+    {sentence:"Playing outside is fun in the __.", blank:"sun"}
+];
+
+let currentStep = 0;
+let score = 0;
+
+// --- عرض الجملة الحالية ---
+function showSentence(){
     if(currentStep < dialogueData.length){
-        const utter = new SpeechSynthesisUtterance(dialogueData[currentStep].teacher);
+        document.getElementById("sentence").innerText = dialogueData[currentStep].sentence;
+        document.getElementById("progress").innerText = "Sentence " + (currentStep+1) + " of " + dialogueData.length;
+        document.getElementById("answerInput").value = "";
+        document.getElementById("feedback").innerText = "";
+    } else {
+        document.getElementById("sentence").innerText = "🎉 انتهى التمرين! نتيجتك: " + score + "/" + dialogueData.length;
+        document.getElementById("progress").innerText = "";
+        document.getElementById("answerInput").style.display = "none";
+        document.querySelector(".check").style.display = "none";
+        document.querySelector(".listen").style.display = "none";
+    }
+}
+
+// --- Text-to-Speech للجملة ---
+function playSentence(){
+    if(currentStep < dialogueData.length){
+        let text = dialogueData[currentStep].sentence.replace("__", "blank");
+        let utter = new SpeechSynthesisUtterance(text);
         utter.lang = "en-US";
         speechSynthesis.speak(utter);
     }
 }
 
-// Speech Recognition
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
-recognition.lang = "en-US";
-
-function startSpeaking(){ recognition.start(); }
-
-recognition.onresult = function(event){
-    let spoken = event.results[0][0].transcript.toLowerCase();
-    const feedback = document.getElementById("feedback");
-    const dialogueDiv = document.getElementById("dialogue");
-    const current = dialogueData[currentStep];
-
-    dialogueDiv.innerHTML += "<p><b>Student:</b> " + spoken + "</p>";
-
-    if(current.answers.includes(spoken)){
-        feedback.innerHTML = "✅ Correct! 🌟 Well done!";
-        feedback.className = "correct";
-    } else {
-        feedback.innerHTML = "❌ Incorrect. Correct answer: " + current.correct;
-        feedback.className = "wrong";
-        dialogueDiv.innerHTML += "<p><b>Teacher:</b> " + current.correct + "</p>";
-    }
-
-    currentStep++;
-    if(currentStep < dialogueData.length){
-        dialogueDiv.innerHTML += "<p><b>Teacher:</b> " + dialogueData[currentStep].teacher + ' <button class="dialog-btn" onclick="showVideo()">▶️ Watch Video</button></p>';
-    } else {
-        dialogueDiv.innerHTML += "<p><b>🎉 End of dialogue! Please send Screenshot & Voice Note to the group.</b></p>";
-    }
-};
-
-// تحقق الكتابة (اختياري)
+// --- تحقق الكلمة الناقصة ---
 function checkAnswer(){
-    const input = document.getElementById("studentInput").value.toLowerCase().trim();
-    if(input === "") return;
-    const feedback = document.getElementById("feedback");
-    const dialogueDiv = document.getElementById("dialogue");
+    const input = document.getElementById("answerInput").value.toLowerCase().trim();
     const current = dialogueData[currentStep];
+    const feedback = document.getElementById("feedback");
 
-    dialogueDiv.innerHTML += "<p><b>Student:</b> " + input + "</p>";
-
-    if(current.answers.includes(input)){
-        feedback.innerHTML = "✅ Correct! 🌟 Well done!";
+    if(input === current.blank.toLowerCase()){
+        feedback.innerHTML = "✅ Correct! 🌟";
         feedback.className = "correct";
+        score++;
     } else {
-        feedback.innerHTML = "❌ Incorrect. Correct answer: " + current.correct;
+        feedback.innerHTML = "❌ Incorrect. The correct word is: " + current.blank;
         feedback.className = "wrong";
-        dialogueDiv.innerHTML += "<p><b>Teacher:</b> " + current.correct + "</p>";
     }
 
     currentStep++;
-    document.getElementById("studentInput").value = "";
-
-    if(currentStep < dialogueData.length){
-        dialogueDiv.innerHTML += "<p><b>Teacher:</b> " + dialogueData[currentStep].teacher + ' <button class="dialog-btn" onclick="showVideo()">▶️ Watch Video</button></p>';
-    } else {
-        dialogueDiv.innerHTML += "<p><b>🎉 End of dialogue! Please send Screenshot & Voice Note to the group.</b></p>";
-    }
-}
-
-// عرض الفيديو
-function showVideo(){
-    const videoPopup = document.getElementById("videoPopup");
-    const ytVideo = document.getElementById("ytVideo");
-    // مثال على فيديو تعليم الطقس للأطفال
-    ytVideo.src = "https://www.youtube.com/embed/3X3vYjTj-IE?autoplay=1";
-    videoPopup.style.display = "block";
-}
-
-// غلق الفيديو
-function closeVideo(){
-    const videoPopup = document.getElementById("videoPopup");
-    const ytVideo = document.getElementById("ytVideo");
-    ytVideo.src = "";
-    videoPopup.style.display = "none";
+    setTimeout(showSentence, 1000);
 }
 </script>
 
