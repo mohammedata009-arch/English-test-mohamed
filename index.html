@@ -1,215 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Weather Reading & Speaking Exercise</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body {
-    font-family: 'Comic Sans MS', cursive, sans-serif;
-    background: linear-gradient(to right, #a8edea, #fed6e3);
-    text-align: center;
-    padding: 20px;
-    color: #333;
-}
-h2 {
-    color: #ff5722;
-    text-shadow: 1px 1px 2px #fff;
-}
-.page { display: none; }
-.active { display: block; }
-
-#passage {
-    font-size: 20px;
-    background: #fff3cd;
-    padding: 15px;
-    border-radius: 12px;
-    border: 2px solid #ffeeba;
-    margin-bottom: 20px;
-    text-align: left;
-}
-input[type="text"] {
-    font-size: 18px;
-    padding: 8px;
-    width: 50%;
-    border-radius: 8px;
-    border: 2px solid #2196F3;
-    margin: 8px 0;
-    transition: all 0.3s;
-}
-input[type="text"]:focus {
-    border-color: #ff5722;
-    box-shadow: 0 0 8px rgba(255,87,34,0.5);
-    outline: none;
-}
-button {
-    font-size: 18px;
-    padding: 10px 20px;
-    margin: 10px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-.start { background: #4CAF50; color: white; }
-.listen { background: #2196F3; color: white; }
-.check { background: #FF9800; color: white; }
-.correct { color: green; font-size:18px; animation: pop 0.5s ease-in-out; }
-.wrong { color: red; font-size:18px; animation: shake 0.5s; }
-@keyframes shake {0%{transform:translateX(0);}20%{transform:translateX(-5px);}40%{transform:translateX(5px);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}100%{transform:translateX(0);}}
-@keyframes pop {0%{transform:scale(0.5);opacity:0;}50%{transform:scale(1.2);opacity:1;}100%{transform:scale(1);}}
-.notice {background:#fff8e1;border:2px solid #ffe082;border-radius:12px;padding:15px;margin-bottom:20px;font-size:16px;text-align:left;}
-</style>
-</head>
-<body>
-
-<!-- صفحة الترحيب -->
-<div id="welcome" class="page active">
-<h2>🌦 Weather Reading & Speaking Exercise</h2>
-<p><b>منصة البرامج التخصصية</b> - إدارة: محمد طه عطا المنان</p>
-<div class="notice">
-<p>📌 تعليمات:</p>
-<p>1️⃣ اقرأ القطعة أو استمع لها 🔊</p>
-<p>2️⃣ أجب على الأسئلة بالنطق 🎤</p>
-<p>3️⃣ املأ الفراغات بالكتابة ✏️</p>
-<p>4️⃣ سترى التصحيح فورًا ✅❌</p>
-<p>📸 أرسل Screenshot للقروب</p>
-</div>
-<button class="start" onclick="startLesson()">▶️ ابدأ التمرين</button>
-</div>
-
-<!-- صفحة التمرين -->
-<div id="lesson" class="page">
-<h2>📖 Passage</h2>
-<div id="passage"></div>
-<button class="listen" onclick="playPassage()">🔊 Listen to Passage</button>
-
-<h2>📝 Fill-in-the-blank</h2>
-<div id="blanks"></div>
-<button class="check" onclick="checkBlanks()">✅ تحقق الإجابات</button>
-
-<h2>🎤 Answer the Questions</h2>
-<div id="questions"></div>
-<p id="feedback"></p>
-<p id="progress"></p>
-</div>
-
-<script>
-// --- البيانات ---
-const passageText = `Today the weather is sunny and warm. Many people go outside to play and enjoy the sun. Some clouds are in the sky, but there is no rain. In the evening, the temperature becomes cooler, and a gentle breeze blows. Everyone should wear comfortable clothes and drink water to stay healthy.`;
-
-const blanksData = [
-    {sentence:"Today the weather is ___ and warm.", blank:"sunny"},
-    {sentence:"Many people go outside to ___ and enjoy the sun.", blank:"play"},
-    {sentence:"Some clouds are in the ___, but there is no rain.", blank:"sky"},
-    {sentence:"In the evening, the temperature becomes ___.", blank:"cooler"},
-    {sentence:"Everyone should wear comfortable clothes and drink ___ to stay healthy.", blank:"water"}
-];
-
-const questionsData = [
-    {question:"What is the weather today?", answers:["sunny","warm"]},
-    {question:"Do people go outside?", answers:["yes","they go outside"]},
-    {question:"Are there any clouds?", answers:["yes","some clouds"]},
-    {question:"Is it raining?", answers:["no","it is not raining","no"]},
-    {question:"What should people drink?", answers:["water"]},
-    {question:"When does the temperature become cooler?", answers:["in the evening","evening"]},
-    {question:"Is the weather cold?", answers:["no"]},
-    {question:"Do people wear comfortable clothes?", answers:["yes"]},
-    {question:"Is there a breeze?", answers:["yes","a gentle breeze"]},
-    {question:"Is the sun shining?", answers:["yes"]}
-];
-
-let currentStep = 0;
-let scoreQuestions = 0;
-
-// --- بدء التمرين ---
-function startLesson(){
-    document.getElementById("welcome").classList.remove("active");
-    document.getElementById("lesson").classList.add("active");
-    document.getElementById("passage").innerText = passageText;
-
-    // عرض الفراغات
-    let blanksHTML = "";
-    blanksData.forEach((b,i)=>{
-        blanksHTML += `<p>${b.sentence} <input type="text" id="blank${i}" placeholder="..."></p>`;
-    });
-    document.getElementById("blanks").innerHTML = blanksHTML;
-
-    // عرض السؤال الأول
-    showQuestion();
-}
-
-// --- Text-to-Speech للقطعة ---
-function playPassage(){
-    let utter = new SpeechSynthesisUtterance(passageText);
-    utter.lang = "en-US";
-    utter.voice = speechSynthesis.getVoices().find(v=>v.name.includes("David")) || null;
-    speechSynthesis.speak(utter);
-}
-
-// --- تحقق الفراغات ---
-function checkBlanks(){
-    let feedback = "";
+function checkAnswers() {
+    const answers = {
+        q1:'b', q2:'b', q3:'a', q4:'a', q5:'b', q6:'a', q7:'b', q8:'a', q9:'b', q10:'a', q11:'a', q12:'a', q13:'b'
+    };
     let score = 0;
-    blanksData.forEach((b,i)=>{
-        const input = document.getElementById(`blank${i}`).value.trim().toLowerCase();
-        if(input === b.blank.toLowerCase()){
-            feedback += `<p class="correct">✅ Correct: ${b.sentence.replace("___", b.blank)}</p>`;
-            score++;
-        } else {
-            feedback += `<p class="wrong">❌ Wrong: ${b.sentence.replace("___", b.blank)}</p>`;
-        }
+
+    for (let i=1; i<=13; i++) {
+        let radios = document.getElementsByName('q'+i);
+        radios.forEach(radio => {
+            radio.parentElement.style.background = '#e6f7ff'; // إعادة اللون الأساسي
+            if (radio.checked) {
+                if (radio.value === answers['q'+i]) {
+                    radio.parentElement.style.background = '#c8f7c5'; // أخضر صحيح
+                    score++;
+                } else {
+                    radio.parentElement.style.background = '#f7c5c5'; // أحمر خاطئ
+                }
+            }
+            // دائمًا نعلم الإجابة الصحيحة
+            if (radio.value === answers['q'+i]) {
+                radio.parentElement.style.border = '2px solid green';
+            } else {
+                radio.parentElement.style.border = '1px solid #ccc';
+            }
+        });
+    }
+
+    // قراءة نص
+    let readingText = document.getElementById('readingAnswer').value.toLowerCase();
+    const readingKeywords = ["last sunday","his family","football","picnic","many birds","watched a movie"];
+    let readingScore = 0;
+    readingKeywords.forEach(word => {
+        if(readingText.includes(word)) readingScore++;
     });
-    document.getElementById("feedback").innerHTML = feedback;
-    document.getElementById("progress").innerHTML = `Score for blanks: ${score} / ${blanksData.length}`;
+
+    let total = score + readingScore;
+    let maxTotal = 13 + readingKeywords.length;
+
+    document.getElementById('result').innerHTML = `نتيجتك: ${total} من ${maxTotal}`;
 }
 
-// --- عرض الأسئلة للنطق ---
-function showQuestion(){
-    if(currentStep < questionsData.length){
-        document.getElementById("questions").innerHTML = `
-            <p>${questionsData[currentStep].question}</p>
-            <button class="listen" onclick="speakQuestion()">🔊 Listen Question</button>
-            <button class="check" onclick="startSpeaking()">🎤 Speak Answer</button>
-        `;
-        document.getElementById("progress").innerText = `Question ${currentStep+1} of ${questionsData.length}`;
-    } else {
-        document.getElementById("questions").innerHTML = "<p>🎉 End of questions! Your score: " + scoreQuestions + "/" + questionsData.length + "</p>";
-    }
-}
-
-// --- Text-to-Speech للسؤال ---
-function speakQuestion(){
-    let utter = new SpeechSynthesisUtterance(questionsData[currentStep].question);
-    utter.lang = "en-US";
-    utter.voice = speechSynthesis.getVoices().find(v=>v.name.includes("David")) || null;
-    speechSynthesis.speak(utter);
-}
-
-// --- Speech Recognition ---
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
-recognition.lang = "en-US";
-
-function startSpeaking(){ recognition.start(); }
-
-recognition.onresult = function(event){
-    let spoken = event.results[0][0].transcript.toLowerCase();
-    const correctAnswers = questionsData[currentStep].answers.map(a=>a.toLowerCase());
-    if(correctAnswers.includes(spoken)){
-        scoreQuestions++;
-        alert("✅ Correct!");
-    } else {
-        alert("❌ Wrong! Correct answer: " + questionsData[currentStep].answers[0]);
-    }
-    currentStep++;
-    showQuestion();
-};
-</script>
-
-</body>
-</html>
