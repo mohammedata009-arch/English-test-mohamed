@@ -1,41 +1,276 @@
-function checkAnswers() {
-    const answers = {
-        q1:'b', q2:'b', q3:'a', q4:'a', q5:'b', q6:'a', q7:'b', q8:'a', q9:'b', q10:'a', q11:'a', q12:'a', q13:'b'
-    };
-    let score = 0;
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>اختبار الماضي البسيط - تفاعلي</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question p {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .options label {
+            display: block;
+            background: #e6f7ff;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid #ccc;
+        }
+        .options input {
+            margin-left: 10px;
+        }
+        .options label:hover {
+            background: #cceeff;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            background: #007bff;
+            color: white;
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        #result {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #333;
+        }
+        .reading {
+            background: #f9f9f9;
+            padding: 15px;
+            border-left: 5px solid #007bff;
+            margin-bottom: 20px;
+        }
+        #sendWA {
+            background: #25D366;
+        }
+    </style>
+</head>
+<body>
+    <h1>اختبار الماضي البسيط - تفاعلي</h1>
+    <div class="quiz-container">
+        <!-- أسئلة اختيار من متعدد -->
+        <div class="question">
+            <p>1. I ______ to the market yesterday.</p>
+            <div class="options">
+                <label><input type="radio" name="q1" value="b"> went</label>
+                <label><input type="radio" name="q1" value="a"> go</label>
+                <label><input type="radio" name="q1" value="c"> goes</label>
+            </div>
+        </div>
 
-    for (let i=1; i<=13; i++) {
-        let radios = document.getElementsByName('q'+i);
-        radios.forEach(radio => {
-            radio.parentElement.style.background = '#e6f7ff'; // إعادة اللون الأساسي
-            if (radio.checked) {
-                if (radio.value === answers['q'+i]) {
-                    radio.parentElement.style.background = '#c8f7c5'; // أخضر صحيح
-                    score++;
-                } else {
-                    radio.parentElement.style.background = '#f7c5c5'; // أحمر خاطئ
-                }
+        <div class="question">
+            <p>2. She ______ a book last night.</p>
+            <div class="options">
+                <label><input type="radio" name="q2" value="b"> read</label>
+                <label><input type="radio" name="q2" value="a"> reads</label>
+                <label><input type="radio" name="q2" value="c"> reading</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>3. They ______ football two days ago.</p>
+            <div class="options">
+                <label><input type="radio" name="q3" value="a"> played</label>
+                <label><input type="radio" name="q3" value="b"> plays</label>
+                <label><input type="radio" name="q3" value="c"> play</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>4. We ______ a new movie last weekend.</p>
+            <div class="options">
+                <label><input type="radio" name="q4" value="a"> watched</label>
+                <label><input type="radio" name="q4" value="b"> watch</label>
+                <label><input type="radio" name="q4" value="c"> watches</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>5. He ______ his homework yesterday.</p>
+            <div class="options">
+                <label><input type="radio" name="q5" value="b"> did</label>
+                <label><input type="radio" name="q5" value="a"> do</label>
+                <label><input type="radio" name="q5" value="c"> does</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>6. I ______ my keys this morning.</p>
+            <div class="options">
+                <label><input type="radio" name="q6" value="a"> lost</label>
+                <label><input type="radio" name="q6" value="b"> lose</label>
+                <label><input type="radio" name="q6" value="c"> loses</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>7. My parents ______ to London last summer.</p>
+            <div class="options">
+                <label><input type="radio" name="q7" value="b"> travelled</label>
+                <label><input type="radio" name="q7" value="a"> travel</label>
+                <label><input type="radio" name="q7" value="c"> travels</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>8. She ______ a cake for her friend.</p>
+            <div class="options">
+                <label><input type="radio" name="q8" value="a"> made</label>
+                <label><input type="radio" name="q8" value="b"> make</label>
+                <label><input type="radio" name="q8" value="c"> makes</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>9. We ______ very happy yesterday.</p>
+            <div class="options">
+                <label><input type="radio" name="q9" value="b"> were</label>
+                <label><input type="radio" name="q9" value="a"> was</label>
+                <label><input type="radio" name="q9" value="c"> is</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>10. The children ______ TV last night.</p>
+            <div class="options">
+                <label><input type="radio" name="q10" value="a"> watched</label>
+                <label><input type="radio" name="q10" value="b"> watch</label>
+                <label><input type="radio" name="q10" value="c"> watching</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>11. I ______ breakfast at 7 a.m.</p>
+            <div class="options">
+                <label><input type="radio" name="q11" value="a"> ate</label>
+                <label><input type="radio" name="q11" value="b"> eat</label>
+                <label><input type="radio" name="q11" value="c"> eats</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>12. He ______ a letter to his friend.</p>
+            <div class="options">
+                <label><input type="radio" name="q12" value="a"> wrote</label>
+                <label><input type="radio" name="q12" value="b"> write</label>
+                <label><input type="radio" name="q12" value="c"> writes</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>13. They ______ to school yesterday.</p>
+            <div class="options">
+                <label><input type="radio" name="q13" value="b"> went</label>
+                <label><input type="radio" name="q13" value="a"> go</label>
+                <label><input type="radio" name="q13" value="c"> goes</label>
+            </div>
+        </div>
+
+        <!-- نص قراءة -->
+        <div class="reading">
+            <p><strong>نص القراءة:</strong></p>
+            <p>Last Sunday, Ahmed went to the park with his family. They played football and had a picnic. Ahmed saw many birds and took some photos. After that, they went home and watched a movie. It was a very nice day.</p>
+            <p>أسئلة:</p>
+            <ol>
+                <li>When did Ahmed go to the park?</li>
+                <li>Who did Ahmed go with?</li>
+                <li>What did they do at the park?</li>
+                <li>What did Ahmed see?</li>
+                <li>What did they do after going home?</li>
+            </ol>
+            <textarea id="readingAnswer" placeholder="اكتب إجاباتك هنا..." style="width:100%;height:100px;padding:10px;border-radius:10px;border:1px solid #ccc;"></textarea>
+        </div>
+
+        <button onclick="checkAnswers()">تحقق من الإجابات</button>
+        <button id="sendWA">📲 إرسال النتائج على واتساب</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function checkAnswers() {
+            const answers = {
+                q1:'b', q2:'b', q3:'a', q4:'a', q5:'b', q6:'a', q7:'b', q8:'a', q9:'b', q10:'a', q11:'a', q12:'a', q13:'b'
+            };
+            let score = 0;
+
+            for (let i=1; i<=13; i++) {
+                let radios = document.getElementsByName('q'+i);
+                radios.forEach(radio => {
+                    // إعادة اللون الأساسي
+                    radio.parentElement.style.background = '#e6f7ff';
+                    radio.parentElement.style.border = '1px solid #ccc';
+                    
+                    if (radio.checked) {
+                        if (radio.value === answers['q'+i]) {
+                            radio.parentElement.style.background = '#c8f7c5'; // أخضر
+                            score++;
+                        } else {
+                            radio.parentElement.style.background = '#f7c5c5'; // أحمر
+                        }
+                    }
+                    // علامة الإجابة الصحيحة
+                    if (radio.value === answers['q'+i]) {
+                        radio.parentElement.style.border = '2px solid green';
+                    }
+                });
             }
-            // دائمًا نعلم الإجابة الصحيحة
-            if (radio.value === answers['q'+i]) {
-                radio.parentElement.style.border = '2px solid green';
-            } else {
-                radio.parentElement.style.border = '1px solid #ccc';
+
+            // قراءة نص
+            let readingText = document.getElementById('readingAnswer').value.toLowerCase();
+            const readingKeywords = ["last sunday","his family","football","picnic","many birds","watched a movie"];
+            let readingScore = 0;
+            readingKeywords.forEach(word => {
+                if(readingText.includes(word)) readingScore++;
+            });
+
+            let total = score + readingScore;
+            let maxTotal = 13 + readingKeywords.length;
+
+            document.getElementById('result').innerHTML = `نتيجتك: ${total} من ${maxTotal}`;
+        }
+
+        document.getElementById('sendWA').addEventListener('click', function() {
+            let resultText = document.getElementById('result').innerText;
+            if(resultText === "") {
+                alert("الرجاء الضغط على 'تحقق من الإجابات' أولاً");
+                return;
             }
+            let whatsappURL = "https://wa.me/249999240574?text=" + encodeURIComponent(resultText);
+            window.open(whatsappURL, "_blank");
         });
-    }
-
-    // قراءة نص
-    let readingText = document.getElementById('readingAnswer').value.toLowerCase();
-    const readingKeywords = ["last sunday","his family","football","picnic","many birds","watched a movie"];
-    let readingScore = 0;
-    readingKeywords.forEach(word => {
-        if(readingText.includes(word)) readingScore++;
-    });
-
-    let total = score + readingScore;
-    let maxTotal = 13 + readingKeywords.length;
-
-    document.getElementById('result').innerHTML = `نتيجتك: ${total} من ${maxTotal}`;
-}
-
+    </script>
+</body>
+</html>
