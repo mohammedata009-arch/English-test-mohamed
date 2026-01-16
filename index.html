@@ -2,312 +2,217 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>اختبار الماضي البسيط - المنصة البرامج التخصصية إدارة محمد طه</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة البرامج التخصصية - إدارة محمد طه</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f8ff;
-            margin: 0;
-            padding: 20px;
+        /* CSS متقدم لتصميم عصري */
+        :root {
+            --main-bg: #f0f2f5;
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            --accent-color: #ff9a9e;
         }
-        h1 {
-            text-align: center;
+
+        body { 
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+            background: var(--main-bg); 
+            margin: 0; 
             color: #333;
-            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        h2 {
-            text-align: center;
-            color: #007bff;
-            margin-bottom: 30px;
+
+        header { 
+            background: var(--primary-gradient); 
+            color: white; 
+            padding: 40px 20px; 
+            text-align: center; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-radius: 0 0 30px 30px;
         }
-        .quiz-container {
-            max-width: 800px;
-            margin: auto;
+
+        .container { 
+            max-width: 700px; 
+            margin: -40px auto 40px; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 25px; 
+            box-shadow: var(--card-shadow);
+            z-index: 10;
+        }
+
+        .btn { 
             background: #fff;
-            padding: 20px 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        .question {
-            display: none;
-            margin-bottom: 20px;
-        }
-        .question.active {
-            display: block;
-        }
-        .question p {
+            color: #764ba2;
+            border: 2px solid #764ba2;
+            padding: 15px 30px; 
+            border-radius: 15px; 
+            cursor: pointer; 
+            font-size: 18px; 
             font-weight: bold;
-            margin-bottom: 10px;
+            margin: 10px; 
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-        .options label {
-            display: block;
-            background: #e6f7ff;
-            padding: 10px;
-            margin-bottom: 5px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-            border: 1px solid #ccc;
-        }
-        .options input {
-            margin-left: 10px;
-        }
-        .options label:hover {
-            background: #cceeff;
-        }
-        button {
-            display: block;
-            margin: 20px auto;
-            background: #007bff;
+
+        .btn:hover { 
+            background: var(--primary-gradient);
             color: white;
-            padding: 12px 25px;
-            font-size: 16px;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(118, 75, 162, 0.3);
+        }
+
+        .sound-btn { 
+            background: var(--accent-color);
+            color: white;
+            width: 90px; height: 90px; 
+            border-radius: 50%; 
+            font-size: 40px; 
             border: none;
-            border-radius: 10px;
             cursor: pointer;
-            transition: 0.3s;
+            margin: 20px auto;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 20px rgba(255, 154, 158, 0.4);
+            animation: pulse 2s infinite;
         }
-        button:hover {
-            opacity: 0.9;
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
-        #result {
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 20px;
-            color: #333;
+
+        .progress-bar {
+            height: 10px; background: #eee; border-radius: 5px; margin: 20px 0; overflow: hidden;
         }
-        .reading {
-            background: #f9f9f9;
-            padding: 15px;
-            border-left: 5px solid #007bff;
-            margin-bottom: 20px;
-            display: none;
+        #inner-bar {
+            height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.5s;
         }
-        #sendWA {
-            background: #25D366;
-        }
+
+        .footer { margin-top: auto; padding: 20px; color: #7f8c8d; font-size: 14px; text-align: center; }
+
+        #quiz-box, #result-box { display: none; }
+
+        .whatsapp-btn { background: #25D366; color: white; border: none; }
     </style>
 </head>
 <body>
-    <h1>المنصة البرامج التخصصية إدارة – محمد طه</h1>
-    <h2>اختبار الماضي البسيط - تفاعلي</h2>
 
-    <div class="quiz-container">
-        <!-- أسئلة -->
-        <div class="question active" id="q1">
-            <p>1. I ______ to the market yesterday.</p>
-            <div class="options">
-                <label><input type="radio" name="q1" value="b"> went</label>
-                <label><input type="radio" name="q1" value="a"> go</label>
-                <label><input type="radio" name="q1" value="c"> goes</label>
-            </div>
-            <button onclick="nextQuestion('q1')">التالي</button>
-        </div>
+<header>
+    <h1 style="margin:0; font-size: 28px;">منصة البرامج التخصصية</h1>
+    <p style="opacity: 0.9; margin-top: 10px;">بإشراف الأستاذ: محمد طه عطا المنان</p>
+</header>
 
-        <div class="question" id="q2">
-            <p>2. She ______ a book last night.</p>
-            <div class="options">
-                <label><input type="radio" name="q2" value="b"> read</label>
-                <label><input type="radio" name="q2" value="a"> reads</label>
-                <label><input type="radio" name="q2" value="c"> reading</label>
-            </div>
-            <button onclick="nextQuestion('q2')">التالي</button>
-        </div>
-
-        <div class="question" id="q3">
-            <p>3. They ______ football two days ago.</p>
-            <div class="options">
-                <label><input type="radio" name="q3" value="a"> played</label>
-                <label><input type="radio" name="q3" value="b"> plays</label>
-                <label><input type="radio" name="q3" value="c"> play</label>
-            </div>
-            <button onclick="nextQuestion('q3')">التالي</button>
-        </div>
-
-        <div class="question" id="q4">
-            <p>4. We ______ a new movie last weekend.</p>
-            <div class="options">
-                <label><input type="radio" name="q4" value="a"> watched</label>
-                <label><input type="radio" name="q4" value="b"> watch</label>
-                <label><input type="radio" name="q4" value="c"> watches</label>
-            </div>
-            <button onclick="nextQuestion('q4')">التالي</button>
-        </div>
-
-        <div class="question" id="q5">
-            <p>5. He ______ his homework yesterday.</p>
-            <div class="options">
-                <label><input type="radio" name="q5" value="b"> did</label>
-                <label><input type="radio" name="q5" value="a"> do</label>
-                <label><input type="radio" name="q5" value="c"> does</label>
-            </div>
-            <button onclick="nextQuestion('q5')">التالي</button>
-        </div>
-
-        <div class="question" id="q6">
-            <p>6. I ______ my keys this morning.</p>
-            <div class="options">
-                <label><input type="radio" name="q6" value="a"> lost</label>
-                <label><input type="radio" name="q6" value="b"> lose</label>
-                <label><input type="radio" name="q6" value="c"> loses</label>
-            </div>
-            <button onclick="nextQuestion('q6')">التالي</button>
-        </div>
-
-        <div class="question" id="q7">
-            <p>7. My parents ______ to London last summer.</p>
-            <div class="options">
-                <label><input type="radio" name="q7" value="b"> travelled</label>
-                <label><input type="radio" name="q7" value="a"> travel</label>
-                <label><input type="radio" name="q7" value="c"> travels</label>
-            </div>
-            <button onclick="nextQuestion('q7')">التالي</button>
-        </div>
-
-        <div class="question" id="q8">
-            <p>8. She ______ a cake for her friend.</p>
-            <div class="options">
-                <label><input type="radio" name="q8" value="a"> made</label>
-                <label><input type="radio" name="q8" value="b"> make</label>
-                <label><input type="radio" name="q8" value="c"> makes</label>
-            </div>
-            <button onclick="nextQuestion('q8')">التالي</button>
-        </div>
-
-        <div class="question" id="q9">
-            <p>9. We ______ very happy yesterday.</p>
-            <div class="options">
-                <label><input type="radio" name="q9" value="b"> were</label>
-                <label><input type="radio" name="q9" value="a"> was</label>
-                <label><input type="radio" name="q9" value="c"> is</label>
-            </div>
-            <button onclick="nextQuestion('q9')">التالي</button>
-        </div>
-
-        <div class="question" id="q10">
-            <p>10. The children ______ TV last night.</p>
-            <div class="options">
-                <label><input type="radio" name="q10" value="a"> watched</label>
-                <label><input type="radio" name="q10" value="b"> watch</label>
-                <label><input type="radio" name="q10" value="c"> watching</label>
-            </div>
-            <button onclick="nextQuestion('q10')">التالي</button>
-        </div>
-
-        <div class="question" id="q11">
-            <p>11. I ______ breakfast at 7 a.m.</p>
-            <div class="options">
-                <label><input type="radio" name="q11" value="a"> ate</label>
-                <label><input type="radio" name="q11" value="b"> eat</label>
-                <label><input type="radio" name="q11" value="c"> eats</label>
-            </div>
-            <button onclick="nextQuestion('q11')">التالي</button>
-        </div>
-
-        <div class="question" id="q12">
-            <p>12. He ______ a letter to his friend.</p>
-            <div class="options">
-                <label><input type="radio" name="q12" value="a"> wrote</label>
-                <label><input type="radio" name="q12" value="b"> write</label>
-                <label><input type="radio" name="q12" value="c"> writes</label>
-            </div>
-            <button onclick="nextQuestion('q12')">التالي</button>
-        </div>
-
-        <div class="question" id="q13">
-            <p>13. They ______ to school yesterday.</p>
-            <div class="options">
-                <label><input type="radio" name="q13" value="b"> went</label>
-                <label><input type="radio" name="q13" value="a"> go</label>
-                <label><input type="radio" name="q13" value="c"> goes</label>
-            </div>
-            <button onclick="showReading()">التالي</button>
-        </div>
-
-        <!-- نص القراءة -->
-        <div class="reading" id="reading">
-            <p><strong>نص القراءة:</strong></p>
-            <p>Last Sunday, Ahmed went to the park with his family. They played football and had a picnic. Ahmed saw many birds and took some photos. After that, they went home and watched a movie. It was a very nice day.</p>
-            <p>أسئلة:</p>
-            <ol>
-                <li>When did Ahmed go to the park?</li>
-                <li>Who did Ahmed go with?</li>
-                <li>What did they do at the park?</li>
-                <li>What did Ahmed see?</li>
-                <li>What did they do after going home?</li>
-            </ol>
-            <textarea id="readingAnswer" placeholder="اكتب إجاباتك هنا..." style="width:100%;height:100px;padding:10px;border-radius:10px;border:1px solid #ccc;"></textarea>
-            <button onclick="checkAnswers()">تحقق من الإجابات</button>
-        </div>
-
-        <button id="sendWA">📲 إرسال النتائج على واتساب</button>
-        <div id="result"></div>
+<div class="container">
+    <div id="start-box" style="text-align: center;">
+        <h2 style="color: #4b6cb7;">مرحباً بك في اختبار النطق</h2>
+        <p>تعلم حروف اللغة الإنجليزية الـ 26 بالصوت والصورة</p>
+        <button class="btn" style="background: var(--primary-gradient); color: white;" onclick="initApp()">ابدأ رحلة التعلم</button>
     </div>
 
-    <script>
-        const answers = {
-            q1:'b', q2:'b', q3:'a', q4:'a', q5:'b', q6:'a', q7:'b', q8:'a', q9:'b', q10:'a', q11:'a', q12:'a', q13:'b'
-        };
+    <div id="quiz-box">
+        <div class="progress-bar"><div id="inner-bar"></div></div>
+        <p id="q-count" style="font-weight: bold; color: #7f8c8d;">الحرف 1 من 26</p>
+        
+        <button class="sound-btn" onclick="playCurrentWord()">🔊</button>
+        <p style="font-size: 18px;">اسمع الصوت ثم اختر الكلمة المماثلة:</p>
+        
+        <div id="options"></div>
+    </div>
 
-        function nextQuestion(current) {
-            document.getElementById(current).classList.remove('active');
-            let nextId = parseInt(current.slice(1)) + 1;
-            if(document.getElementById('q'+nextId)) {
-                document.getElementById('q'+nextId).classList.add('active');
-            }
+    <div id="result-box" style="text-align: center;">
+        <div style="font-size: 60px;">🏆</div>
+        <h2 style="color: #27ae60;">أحسنت يا بطل!</h2>
+        <p>لقد أكملت اختبار منصة البرامج التخصصية بنجاح</p>
+        <h1 id="score-display" style="font-size: 50px; color: #764ba2;">0 / 26</h1>
+        <button class="btn whatsapp-btn" onclick="sendWhatsApp()">إرسال النتيجة لواتساب الأستاذ محمد</button>
+    </div>
+</div>
+
+<footer class="footer">
+    جميع الحقوق محفوظة © منصة البرامج التخصصية - محمد طه عطا المنان 2026
+</footer>
+
+<script>
+    const alphabet = [
+        {l: "A", w: "Apple", m: "تفاحة"}, {l: "B", w: "Ball", m: "كرة"},
+        {l: "C", w: "Cat", m: "قطة"}, {l: "D", w: "Dog", m: "كلب"},
+        {l: "E", w: "Egg", m: "بيضة"}, {l: "F", w: "Fish", m: "سمكة"},
+        {l: "G", w: "Goat", m: "ماعز"}, {l: "H", w: "Hat", m: "قبعة"},
+        {l: "I", w: "Ice cream", m: "مثلجات"}, {l: "J", w: "Jam", m: "مربى"},
+        {l: "K", w: "Key", m: "مفتاح"}, {l: "L", w: "Lion", m: "أسد"},
+        {l: "M", w: "Moon", m: "قمر"}, {l: "N", w: "Nose", m: "أنف"},
+        {l: "O", w: "Orange", m: "برتقالة"}, {l: "P", w: "Pen", m: "قلم"},
+        {l: "Q", w: "Queen", m: "ملكة"}, {l: "R", w: "Rabbit", m: "أرنب"},
+        {l: "S", w: "Sun", m: "شمس"}, {l: "T", w: "Tree", m: "شجرة"},
+        {l: "U", w: "Umbrella", m: "مظلة"}, {l: "V", w: "Van", m: "شاحنة"},
+        {l: "W", w: "Watch", m: "ساعة"}, {l: "X", w: "X-ray", m: "أشعة"},
+        {l: "Y", w: "Yo-yo", m: "يويو"}, {l: "Z", w: "Zebra", m: "حمار وحشي"}
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+
+    function initApp() {
+        document.getElementById('start-box').style.display = 'none';
+        document.getElementById('quiz-box').style.display = 'block';
+        loadNext();
+    }
+
+    function playCurrentWord() {
+        let utter = new SpeechSynthesisUtterance(alphabet[currentIdx].w);
+        utter.lang = 'en-US';
+        utter.rate = 0.8;
+        window.speechSynthesis.speak(utter);
+    }
+
+    function loadNext() {
+        if (currentIdx >= alphabet.length) {
+            showResult();
+            return;
         }
 
-        function showReading() {
-            document.getElementById('q13').classList.remove('active');
-            document.getElementById('reading').style.display = 'block';
-        }
+        // تحديث شريط التقدم والعدد
+        document.getElementById('inner-bar').style.width = ((currentIdx / 26) * 100) + "%";
+        document.getElementById('q-count').innerText = `السؤال ${currentIdx + 1} من 26`;
+        
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
 
-        function checkAnswers() {
-            let score = 0;
+        let correct = alphabet[currentIdx].w;
+        // توليد خيار خاطئ
+        let wrong = alphabet[(currentIdx + 3) % 26].w;
+        let choices = [correct, wrong].sort(() => Math.random() - 0.5);
 
-            for (let i=1; i<=13; i++) {
-                let radios = document.getElementsByName('q'+i);
-                radios.forEach(radio => {
-                    radio.parentElement.style.background = '#e6f7ff';
-                    radio.parentElement.style.border = '1px solid #ccc';
-                    if (radio.checked) {
-                        if (radio.value === answers['q'+i]) {
-                            radio.parentElement.style.background = '#c8f7c5';
-                            score++;
-                        } else {
-                            radio.parentElement.style.background = '#f7c5c5';
-                        }
-                    }
-                    if (radio.value === answers['q'+i]) {
-                        radio.parentElement.style.border = '2px solid green';
-                    }
-                });
-            }
-
-            // قراءة نص
-            let readingText = document.getElementById('readingAnswer').value.toLowerCase();
-            const readingKeywords = ["last sunday","his family","football","picnic","many birds","watched a movie"];
-            let readingScore = 0;
-            readingKeywords.forEach(word => {
-                if(readingText.includes(word)) readingScore++;
-            });
-
-            let total = score + readingScore;
-            let maxTotal = 13 + readingKeywords.length;
-
-            document.getElementById('result').innerHTML = `نتيجتك: ${total} من ${maxTotal}`;
-        }
-
-        document.getElementById('sendWA').addEventListener('click', function() {
-            let resultText = document.getElementById('result').innerText;
-            if(resultText === "") {
-                alert("الرجاء الضغط على 'تحقق من الإجابات' أولاً");
-                return;
-            }
-            let whatsappURL = "https://wa.me/249999240574?text=" + encodeURIComponent(resultText);
-            window.open(whatsappURL, "_blank");
+        choices.forEach(choice => {
+            let b = document.createElement('button');
+            b.className = 'btn';
+            b.innerText = choice;
+            b.onclick = () => {
+                if(choice === correct) score++;
+                currentIdx++;
+                loadNext();
+            };
+            optionsDiv.appendChild(b);
         });
-    </script>
+
+        setTimeout(playCurrentWord, 600);
+    }
+
+    function showResult() {
+        document.getElementById('quiz-box').style.display = 'none';
+        document.getElementById('result-box').style.display = 'block';
+        document.getElementById('score-display').innerText = `${score} / 26`;
+    }
+
+    function sendWhatsApp() {
+        const phone = "249999240574";
+        const msg = `🎓 *نتيجة اختبار منصة البرامج التخصصية*\n*إدارة: محمد طه عطا المنان*\n\nالنتيجة: ${score} من 26\nالتاريخ: ${new Date().toLocaleDateString('ar-EG')}`;
+        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+</script>
+
 </body>
 </html>
