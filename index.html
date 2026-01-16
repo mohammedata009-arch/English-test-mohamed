@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة البرامج التخصصية - إدارة محمد طه</title>
     <style>
-        /* CSS متقدم لتصميم عصري */
         :root {
             --main-bg: #f0f2f5;
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -14,10 +13,9 @@
         }
 
         body { 
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
             background: var(--main-bg); 
             margin: 0; 
-            color: #333;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -40,6 +38,7 @@
             border-radius: 25px; 
             box-shadow: var(--card-shadow);
             z-index: 10;
+            text-align: center;
         }
 
         .btn { 
@@ -54,14 +53,12 @@
             margin: 10px; 
             width: 100%;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
         .btn:hover { 
             background: var(--primary-gradient);
             color: white;
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(118, 75, 162, 0.3);
         }
 
         .sound-btn { 
@@ -96,6 +93,7 @@
         #quiz-box, #result-box { display: none; }
 
         .whatsapp-btn { background: #25D366; color: white; border: none; }
+        .whatsapp-btn:hover { background: #128C7E; }
     </style>
 </head>
 <body>
@@ -106,28 +104,26 @@
 </header>
 
 <div class="container">
-    <div id="start-box" style="text-align: center;">
-        <h2 style="color: #4b6cb7;">مرحباً بك في اختبار النطق</h2>
-        <p>تعلم حروف اللغة الإنجليزية الـ 26 بالصوت والصورة</p>
-        <button class="btn" style="background: var(--primary-gradient); color: white;" onclick="initApp()">ابدأ رحلة التعلم</button>
+    <div id="start-box">
+        <h2 style="color: #4b6cb7;">اختبار النطق المتطور</h2>
+        <p>اضغط أدناه للبدء في اختبار الـ 26 حرفاً بالصوت</p>
+        <button class="btn" style="background: var(--primary-gradient); color: white;" onclick="initApp()">ابدأ الآن</button>
     </div>
 
     <div id="quiz-box">
         <div class="progress-bar"><div id="inner-bar"></div></div>
-        <p id="q-count" style="font-weight: bold; color: #7f8c8d;">الحرف 1 من 26</p>
-        
+        <p id="q-count" style="font-weight: bold; color: #7f8c8d;">السؤال 1 من 26</p>
         <button class="sound-btn" onclick="playCurrentWord()">🔊</button>
-        <p style="font-size: 18px;">اسمع الصوت ثم اختر الكلمة المماثلة:</p>
-        
+        <p>استمع للصوت ثم اختر الكلمة المماثلة:</p>
         <div id="options"></div>
     </div>
 
-    <div id="result-box" style="text-align: center;">
+    <div id="result-box">
         <div style="font-size: 60px;">🏆</div>
-        <h2 style="color: #27ae60;">أحسنت يا بطل!</h2>
-        <p>لقد أكملت اختبار منصة البرامج التخصصية بنجاح</p>
+        <h2 style="color: #27ae60;">رائع جداً!</h2>
+        <p>لقد أكملت الاختبار في منصة الأستاذ محمد طه</p>
         <h1 id="score-display" style="font-size: 50px; color: #764ba2;">0 / 26</h1>
-        <button class="btn whatsapp-btn" onclick="sendWhatsApp()">إرسال النتيجة لواتساب الأستاذ محمد</button>
+        <button class="btn whatsapp-btn" onclick="sendWhatsApp()">إرسال النتيجة للرقم الجديد</button>
     </div>
 </div>
 
@@ -137,19 +133,15 @@
 
 <script>
     const alphabet = [
-        {l: "A", w: "Apple", m: "تفاحة"}, {l: "B", w: "Ball", m: "كرة"},
-        {l: "C", w: "Cat", m: "قطة"}, {l: "D", w: "Dog", m: "كلب"},
-        {l: "E", w: "Egg", m: "بيضة"}, {l: "F", w: "Fish", m: "سمكة"},
-        {l: "G", w: "Goat", m: "ماعز"}, {l: "H", w: "Hat", m: "قبعة"},
-        {l: "I", w: "Ice cream", m: "مثلجات"}, {l: "J", w: "Jam", m: "مربى"},
-        {l: "K", w: "Key", m: "مفتاح"}, {l: "L", w: "Lion", m: "أسد"},
-        {l: "M", w: "Moon", m: "قمر"}, {l: "N", w: "Nose", m: "أنف"},
-        {l: "O", w: "Orange", m: "برتقالة"}, {l: "P", w: "Pen", m: "قلم"},
-        {l: "Q", w: "Queen", m: "ملكة"}, {l: "R", w: "Rabbit", m: "أرنب"},
-        {l: "S", w: "Sun", m: "شمس"}, {l: "T", w: "Tree", m: "شجرة"},
-        {l: "U", w: "Umbrella", m: "مظلة"}, {l: "V", w: "Van", m: "شاحنة"},
-        {l: "W", w: "Watch", m: "ساعة"}, {l: "X", w: "X-ray", m: "أشعة"},
-        {l: "Y", w: "Yo-yo", m: "يويو"}, {l: "Z", w: "Zebra", m: "حمار وحشي"}
+        {l: "A", w: "Apple"}, {l: "B", w: "Ball"}, {l: "C", w: "Cat"}, 
+        {l: "D", w: "Dog"}, {l: "E", w: "Egg"}, {l: "F", w: "Fish"},
+        {l: "G", w: "Goat"}, {l: "H", w: "Hat"}, {l: "I", w: "Ice cream"},
+        {l: "J", w: "Jam"}, {l: "K", w: "Key"}, {l: "L", w: "Lion"},
+        {l: "M", w: "Moon"}, {l: "N", w: "Nose"}, {l: "O", w: "Orange"},
+        {l: "P", w: "Pen"}, {l: "Q", w: "Queen"}, {l: "R", w: "Rabbit"},
+        {l: "S", w: "Sun"}, {l: "T", w: "Tree"}, {l: "U", w: "Umbrella"},
+        {l: "V", w: "Van"}, {l: "W", w: "Watch"}, {l: "X", w: "X-ray"},
+        {l: "Y", w: "Yo-yo"}, {l: "Z", w: "Zebra"}
     ];
 
     let currentIdx = 0;
@@ -174,16 +166,14 @@
             return;
         }
 
-        // تحديث شريط التقدم والعدد
         document.getElementById('inner-bar').style.width = ((currentIdx / 26) * 100) + "%";
-        document.getElementById('q-count').innerText = `السؤال ${currentIdx + 1} من 26`;
+        document.getElementById('q-count').innerText = `الحرف رقم ${currentIdx + 1} من 26`;
         
         const optionsDiv = document.getElementById('options');
         optionsDiv.innerHTML = '';
 
         let correct = alphabet[currentIdx].w;
-        // توليد خيار خاطئ
-        let wrong = alphabet[(currentIdx + 3) % 26].w;
+        let wrong = alphabet[(currentIdx + 2) % 26].w;
         let choices = [correct, wrong].sort(() => Math.random() - 0.5);
 
         choices.forEach(choice => {
@@ -198,7 +188,7 @@
             optionsDiv.appendChild(b);
         });
 
-        setTimeout(playCurrentWord, 600);
+        setTimeout(playCurrentWord, 700);
     }
 
     function showResult() {
@@ -208,8 +198,9 @@
     }
 
     function sendWhatsApp() {
-        const phone = "249999240574";
-        const msg = `🎓 *نتيجة اختبار منصة البرامج التخصصية*\n*إدارة: محمد طه عطا المنان*\n\nالنتيجة: ${score} من 26\nالتاريخ: ${new Date().toLocaleDateString('ar-EG')}`;
+        // الرقم الجديد الذي طلبته
+        const phone = "249901946410";
+        const msg = `*منصة البرامج التخصصية*\n*إشراف الأستاذ: محمد طه عطا المنان*\n\nالنتيجة النهائية للاختبار الصوتي:\nالدرجة: ${score} من 26\nتم الإنجاز بنجاح ✅`;
         window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 </script>
