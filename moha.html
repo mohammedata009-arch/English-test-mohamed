@@ -2,124 +2,146 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Syllabus Exam - منصة البرامج التخصصية</title>
+    <title>اختبار منصة البرامج التخصصية - إدارة محمد طه</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Roboto:wght@400;700&display=swap');
-        
-        body { font-family: 'Amiri', serif; background-color: #f4f4f9; padding: 20px; color: #333; }
-        .quiz-container { max-width: 850px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); border-top: 10px solid #002366; }
-        header { text-align: center; border-bottom: 2px solid #d4af37; margin-bottom: 30px; }
-        .question-box { background: #fff; border: 1px solid #eee; padding: 20px; margin-bottom: 25px; border-radius: 8px; transition: 0.3s; }
-        .en-text { font-family: 'Roboto', sans-serif; direction: ltr; display: block; font-size: 1.2em; color: #b0413e; margin: 10px 0; }
-        .btn-audio { background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-bottom: 10px; }
-        .options button { display: block; width: 100%; text-align: right; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; background: white; cursor: pointer; font-size: 16px; }
-        .options button:hover:not([disabled]) { background: #f0f7ff; }
-        .explanation { display: none; margin-top: 15px; padding: 15px; background: #e8f4fd; border-right: 4px solid #002366; font-size: 15px; }
-        .correct { border-color: #2ecc71 !important; background: #e8fdf0 !important; }
-        .wrong { border-color: #e74c3c !important; background: #fde8e8 !important; }
-        #whatsapp-section { display: none; text-align: center; margin-top: 30px; padding: 20px; border-top: 2px dashed #d4af37; }
-        .btn-wa { background: #25D366; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; }
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --bg: #f4f7f6;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); display: flex; justify-content: center; padding: 20px; }
+        .quiz-container { background: white; width: 100%; max-width: 600px; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 10px solid var(--secondary); }
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { color: var(--primary); font-size: 24px; margin-bottom: 5px; }
+        .admin-name { color: var(--secondary); font-weight: bold; }
+        .question { display: none; margin-bottom: 20px; }
+        .question.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .options { list-style: none; padding: 0; }
+        .options li { background: #eee; margin: 10px 0; padding: 15px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: 500; }
+        .options li:hover { background: #ddd; }
+        .options li.correct { background: var(--success) !important; color: white; }
+        .options li.wrong { background: var(--error) !important; color: white; }
+        .footer { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
+        #result-area { text-align: center; display: none; }
+        .btn-whatsapp { background: #25D366; color: white; padding: 15px 25px; border: none; border-radius: 50px; cursor: pointer; font-size: 18px; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 20px; }
+        input[type="text"] { width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; }
     </style>
 </head>
 <body>
 
 <div class="quiz-container">
     <header>
-        <h2 style="color:#002366; margin:0;">منصة البرامج التخصصية</h2>
-        <h3 style="color:#d4af37; margin:5px;">إدارة محمد طه عطا المنان</h3>
-        <p>امتحان تحديد المستوى (المفعول به والمكملات)</p>
+        <h1>منصة البرامج التخصصية</h1>
+        <div class="admin-name">إدارة: محمد طه عطا المنان</div>
+        <hr>
     </header>
 
-    <div id="quiz-body"></div>
+    <div id="setup-area">
+        <p>الرجاء إدخال اسمك للبدء:</p>
+        <input type="text" id="user-name" placeholder="اكتب اسمك هنا...">
+        <button class="btn-whatsapp" style="width:100%" onclick="startQuiz()">ابدأ الاختبار</button>
+    </div>
 
-    <div id="whatsapp-section">
-        <h3>انتهى الاختبار!</h3>
-        <p id="final-score" style="font-size:24px; color:#002366;"></p>
-        <p>يرجى إدخال اسمك لإرسال النتيجة إلى الإدارة:</p>
-        <input type="text" id="student-name" placeholder="اسمك الثلاثي" style="padding:10px; width:250px; margin-bottom:20px;"><br>
-        <a href="#" id="send-wa" class="btn-wa" onclick="sendToWhatsApp()">إرسال النتيجة عبر واتساب ✅</a>
+    <div id="quiz-area" style="display:none;">
+        <div id="questions-container"></div>
+        <div class="footer">
+            <span id="score-tracker">النقاط: 0</span>
+            <span id="question-number">السؤال 1 من 10</span>
+        </div>
+    </div>
+
+    <div id="result-area">
+        <h2>اكتمل الاختبار!</h2>
+        <p id="final-score" style="font-size: 24px; font-weight: bold;"></p>
+        <p>اضغط أدناه لإرسال نتيجتك للإدارة</p>
+        <a id="whatsapp-link" href="#" class="btn-whatsapp">إرسال النتيجة عبر واتساب ✅</a>
     </div>
 </div>
 
+<audio id="sound-correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
+<audio id="sound-wrong" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
+
 <script>
-const questions = [
-    { s: "They elected him president.", a: "Object Complement", e: "القاعدة: كلمة president تكمل معنى المفعول به him بعد فعل الانتخاب. المعنى: انتخبوه رئيساً.", c: "president" },
-    { s: "The results seem excellent.", a: "Subject Complement", e: "القاعدة: Excellent مكمل فاعل يصف النتائج بعد فعل الربط seem. المعنى: تبدو النتائج ممتازة.", c: "excellent" },
-    { s: "I sent her a message.", a: "Indirect Object", e: "القاعدة: her هنا هي المستفيد من الرسالة (مفعول غير مباشر). المعنى: أرسلتُ لها رسالة.", c: "her" },
-    { s: "We find the solution effective.", a: "Object Complement", e: "القاعدة: effective تصف حالة الحل (solution) الذي هو مفعول به. المعنى: وجدنا الحل فعالاً.", c: "effective" },
-    { s: "She bought a new laptop.", a: "Direct Object", e: "القاعدة: laptop هو الشيء الذي وقع عليه فعل الشراء مباشرة. المعنى: اشترت حاسوباً جديداً.", c: "laptop" },
-    { s: "Knowledge is power.", a: "Subject Complement", e: "القاعدة: power تعيد تعريف الفاعل بعد فعل الربط is. المعنى: العلم قوة.", c: "power" },
-    { s: "The news made us happy.", a: "Object Complement", e: "القاعدة: happy تصف شعورنا (المفعول به us) كنتيجة للخبر. المعنى: الأخبار جعلتنا سعداء.", c: "happy" },
-    { s: "Give the man his money.", a: "Indirect Object", e: "القاعدة: the man هو من سيتلقى المال (مفعول غير مباشر). المعنى: أعطِ الرجل ماله.", c: "the man" },
-    { s: "He remains a loyal friend.", a: "Subject Complement", e: "القاعدة: friend مكمل للفاعل بعد فعل الاستمرارية remains. المعنى: يظل صديقاً مخلصاً.", c: "friend" },
-    { s: "I painted the wall blue.", a: "Object Complement", e: "القاعدة: blue تصف لون المفعول به بعد طلائه. المعنى: طليتُ الجدار باللون الأزرق.", c: "blue" }
-];
+    const questions = [
+        { q: "The manager gave a __________ presentation.", options: ["Good", "Compelling", "Well"], correct: 1 },
+        { q: "We need a __________ analysis.", options: ["Comprehensive", "Comprehensively", "Quickly"], correct: 0 },
+        { q: "The developer is very __________.", options: ["Slow", "Diligent", "Diligently"], correct: 1 },
+        { q: "This is a __________ solution.", options: ["Reliable", "Reliably", "Fastly"], correct: 0 },
+        { q: "The system became more __________.", options: ["Stable", "Stably", "Stability"], correct: 0 },
+        { q: "The team achieved __________ results.", options: ["Exceptional", "Exceptionally", "Bad"], correct: 0 },
+        { q: "It is __________ to maintain a backup.", options: ["Crucially", "Crucial", "Importance"], correct: 1 },
+        { q: "She is a __________ leader.", options: ["Vision", "Visionary", "Visionarily"], correct: 1 },
+        { q: "The support team was very __________.", options: ["Helpfully", "Helpful", "Help"], correct: 1 },
+        { q: "We need a __________ person.", options: ["Competent", "Competently", "Competence"], correct: 0 }
+    ];
 
-let score = 0;
-let answeredCount = 0;
+    let currentQ = 0;
+    let score = 0;
+    let userName = "";
 
-function speak(text) {
-    const msg = new SpeechSynthesisUtterance(text);
-    msg.lang = 'en-US';
-    window.speechSynthesis.speak(msg);
-}
-
-const quizBody = document.getElementById('quiz-body');
-
-questions.forEach((q, i) => {
-    const div = document.createElement('div');
-    div.className = 'question-box';
-    div.innerHTML = `
-        <p><strong>سؤال ${i+1}:</strong> ما الوظيفة النحوية للكلمة الملونة؟</p>
-        <button class="btn-audio" onclick="speak('${q.s}')">🔈 استمع للجملة</button>
-        <span class="en-text">${q.s.replace(q.c, '<u style="color:#2c3e50">'+q.c+'</u>')}</span>
-        <div class="options" id="opt-${i}">
-            <button onclick="checkAnswer(${i}, 'Direct Object')">Direct Object (مفعول به مباشر)</button>
-            <button onclick="checkAnswer(${i}, 'Indirect Object')">Indirect Object (مفعول به غير مباشر)</button>
-            <button onclick="checkAnswer(${i}, 'Subject Complement')">Subject Complement (مكمل فاعل)</button>
-            <button onclick="checkAnswer(${i}, 'Object Complement')">Object Complement (مكمل مفعول به)</button>
-        </div>
-        <div class="explanation" id="exp-${i}">
-            <strong>الشرح:</strong> ${q.e}
-        </div>
-    `;
-    quizBody.appendChild(div);
-});
-
-function checkAnswer(index, choice) {
-    const btns = document.querySelectorAll(`#opt-${index} button`);
-    const exp = document.getElementById(`exp-${index}`);
-    
-    btns.forEach(b => b.disabled = true);
-    
-    if (choice === questions[index].a) {
-        score++;
-        event.target.classList.add('correct');
-    } else {
-        event.target.classList.add('wrong');
+    function startQuiz() {
+        userName = document.getElementById('user-name').value;
+        if (!userName) { alert("من فضلك أدخل اسمك"); return; }
+        document.getElementById('setup-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
     }
-    
-    exp.style.display = 'block';
-    answeredCount++;
-    
-    if (answeredCount === questions.length) {
-        showFinalSection();
+
+    function showQuestion() {
+        const container = document.getElementById('questions-container');
+        const q = questions[currentQ];
+        container.innerHTML = `
+            <div class="question active">
+                <h3>${currentQ + 1}. ${q.q}</h3>
+                <ul class="options">
+                    ${q.options.map((opt, i) => `<li onclick="checkAnswer(${i}, this)">${opt}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+        document.getElementById('question-number').innerText = `السؤال ${currentQ + 1} من ${questions.length}`;
     }
-}
 
-function showFinalSection() {
-    document.getElementById('whatsapp-section').style.display = 'block';
-    document.getElementById('final-score').innerText = `نتيجتك النهائية: ${score} من 10`;
-}
+    function checkAnswer(idx, element) {
+        const correctIdx = questions[currentQ].correct;
+        const options = document.querySelectorAll('.options li');
+        
+        // منع الضغط المتعدد
+        options.forEach(li => li.style.pointerEvents = 'none');
 
-function sendToWhatsApp() {
-    const name = document.getElementById('student-name').value;
-    if (!name) { alert("يرجى إدخال اسمك أولاً"); return; }
-    
-    const phone = "0901946410";
-    const msg = `مرحبا إدارة منصة البرامج التخصصية (أ. محمد طه)%0Aلقد أتممت اختبار المفعول والمكملات.%0Aالاسم: ${name}%0Aالنتيجة: ${score} من 10`;
-    window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
-}
+        if (idx === correctIdx) {
+            element.classList.add('correct');
+            score++;
+            document.getElementById('sound-correct').play();
+        } else {
+            element.classList.add('wrong');
+            options[correctIdx].classList.add('correct');
+            document.getElementById('sound-wrong').play();
+        }
+
+        document.getElementById('score-tracker').innerText = `النقاط: ${score}`;
+
+        setTimeout(() => {
+            currentQ++;
+            if (currentQ < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }, 1500);
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        document.getElementById('final-score').innerText = `درجتك هي: ${score} من ${questions.length}`;
+        
+        const message = `مرحباً أستاذ محمد طه، أنا الطالب: ${userName}. لقد أكملت اختبار الصفات في منصة البرامج التخصصية وحصلت على نتيجة: (${score} من 10).`;
+        const whatsappUrl = `https://wa.me/249901946410?text=${encodeURIComponent(message)}`;
+        document.getElementById('whatsapp-link').href = whatsappUrl;
+    }
 </script>
 
 </body>
