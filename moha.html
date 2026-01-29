@@ -7,29 +7,29 @@
     <style>
         :root { --primary: #1a5f7a; --secondary: #e67e22; --success: #27ae60; --error: #c0392b; }
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
-        .container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 550px; width: 100%; text-align: center; border-top: 10px solid var(--primary); }
+        .container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 550px; width: 100%; text-align: center; border-top: 10px solid var(--primary); position: relative; }
         .header { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
         .word-card { background: #fff; border: 2px dashed #ddd; border-radius: 15px; padding: 20px; margin: 15px 0; }
         .word-main { font-size: 3.8rem; color: var(--primary); font-weight: bold; margin: 0; }
-        .hint-box { background: #fff3cd; color: #856404; padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-top: 10px; display: none; border: 1px solid #ffeeba; }
-        .btn { border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 1rem; margin: 5px; font-weight: bold; color: white; transition: 0.3s; }
+        .btn { border: none; padding: 15px 25px; border-radius: 10px; cursor: pointer; font-size: 1.1rem; margin: 5px; font-weight: bold; color: white; transition: 0.3s; }
         .btn-listen { background: #3498db; }
-        .btn-speak { background: var(--error); width: 80%; font-size: 1.2rem; }
-        .status-box { margin: 15px 0; padding: 12px; border-radius: 8px; font-weight: bold; min-height: 40px; }
+        .btn-speak { background: var(--error); width: 80%; }
+        .status-box { margin: 15px 0; padding: 15px; border-radius: 8px; font-weight: bold; min-height: 50px; }
         .vowel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
-        .v-btn { border: 2px solid var(--primary); background: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .v-btn { border: 2px solid var(--primary); background: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; }
         .v-btn:hover { background: var(--primary); color: white; }
         .wa-link { background: #25D366; color: white; text-decoration: none; display: block; padding: 15px; border-radius: 10px; margin-top: 10px; font-weight: bold; }
         #start-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 95, 122, 0.98); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; border-radius: 20px; z-index: 100; }
+        .auto-msg { color: #666; font-size: 0.8rem; margin-top: 5px; font-style: italic; }
     </style>
 </head>
 <body>
 
-<div class="container" style="position: relative;">
+<div class="container">
     <div id="start-screen">
         <h1>منصة البرامج التخصصية</h1>
         <p>إدارة: محمد طه عطا المنان</p>
-        <button class="btn" style="background:var(--secondary); padding: 20px 40px; font-size: 1.5rem;" onclick="initQuiz()">ابدأ التدريب (محاولة واحدة) ▶️</button>
+        <button class="btn" style="background:var(--secondary); padding: 20px 40px; font-size: 1.5rem;" onclick="initQuiz()">ابدأ الاختبار التلقائي ▶️</button>
     </div>
 
     <div class="header">
@@ -38,13 +38,12 @@
     </div>
 
     <div id="quiz-body">
-        <div id="progress" style="color: #888;">الكلمة 1 من 10 | ⚠️ محاولة واحدة فقط</div>
+        <div id="progress" style="color: #888; font-weight: bold;">الكلمة 1 من 10</div>
         
         <div class="word-card">
             <div id="target-word" class="word-main">Cat</div>
             <div id="target-trans" style="color:var(--secondary); font-size: 1.3rem;">(قطة)</div>
             <button class="btn btn-listen" onclick="playSound(1)">🔊 اسمع النطق</button>
-            <div id="pronounce-hint" class="hint-box"></div>
         </div>
 
         <button class="btn btn-speak" id="mic-btn" onclick="startListening()">🎤 اضغط وانطق الآن</button>
@@ -52,7 +51,7 @@
         <div id="status-area" class="status-box" style="display:none;"></div>
 
         <div id="vowel-quiz" style="display:none;">
-            <p style="font-weight: bold;">أحسنت! حدد الرمز الصوتي المناسب:</p>
+            <p style="font-weight: bold; color: var(--primary);">نطق صحيح! الآن اختر الرمز الصوتي:</p>
             <div class="vowel-grid">
                 <button class="v-btn" onclick="checkVowel('/æ/')">/æ/</button>
                 <button class="v-btn" onclick="checkVowel('/ɛ/')">/ɛ/</button>
@@ -61,30 +60,24 @@
                 <button class="v-btn" onclick="checkVowel('/ʌ/')">/ʌ/</button>
             </div>
         </div>
-
-        <button id="next-btn" class="btn" style="background:var(--primary); display:none; margin-top:20px; width:100%;" onclick="nextQuestion()">انتقل للكلمة التالية ⮕</button>
+        <div id="auto-timer" class="auto-msg" style="display:none;">سيتم الانتقال تلقائياً خلال لحظات...</div>
     </div>
 
     <div id="result-page" style="display:none;">
         <h2 style="color:var(--primary);">تقرير الأداء النهائي</h2>
         <p id="score-text" style="font-size:1.8rem; font-weight:bold;"></p>
         <a id="wa-btn" class="wa-link" target="_blank">إرسال النتيجة للأستاذ محمد ✅</a>
-        <div style="margin-top:10px; cursor:pointer; color:var(--primary); text-decoration:underline;" onclick="location.reload()">إعادة المحاولة من جديد 🔄</div>
+        <div style="margin-top:20px; cursor:pointer; color:var(--primary); font-weight:bold;" onclick="location.reload()">🔄 إعادة الاختبار من جديد</div>
     </div>
 </div>
 
 <script>
     const data = [
-        {w: "Cat", t: "قطة", v: "/æ/", h: "تلميح: افتح فمك بشكل واسع (ابتسامة عريضة) عند نطق الـ A."},
-        {w: "Bed", t: "سرير", v: "/ɛ/", h: "تلميح: انطق الـ E بشكل قصير جداً وسريع."},
-        {w: "Sit", t: "يجلس", v: "/ɪ/", h: "تلميح: الـ I هنا كسرة خفيفة جداً وقصيرة."},
-        {w: "Hot", t: "ساخن", v: "/ɒ/", h: "تلميح: افتح فمك بشكل رأسي دائري لنطق الـ O."},
-        {w: "Cup", t: "كوب", v: "/ʌ/", h: "تلميح: الـ U صوت قصير يخرج من الحلق كأنه (أ) مفخمة."},
-        {w: "Map", t: "خريطة", v: "/æ/", h: "تلميح: افتح الفم عرضياً مثل كلمة Cat."},
-        {w: "Pen", t: "قلم جاف", v: "/ɛ/", h: "تلميح: صوت قصير وسريع مثل نطق حرف (إ) باللغة العربية."},
-        {w: "Pig", t: "خنزير", v: "/ɪ/", h: "تلميح: كسرة خفيفة، لا تجعلها ياء طويلة."},
-        {w: "Dog", t: "كلب", v: "/ɒ/", h: "تلميح: صوت O قصير ومفتوح."},
-        {w: "Sun", t: "شمس", v: "/ʌ/", h: "تلميح: مثل نطق (أ) في بداية كلمة (أب) بالسوداني، قصيرة جداً."}
+        {w: "Cat", t: "قطة", v: "/æ/"}, {w: "Bed", t: "سرير", v: "/ɛ/"},
+        {w: "Sit", t: "يجلس", v: "/ɪ/"}, {w: "Hot", t: "ساخن", v: "/ɒ/"},
+        {w: "Cup", t: "كوب", v: "/ʌ/"}, {w: "Map", t: "خريطة", v: "/æ/"},
+        {w: "Pen", t: "قلم جاف", v: "/ɛ/"}, {w: "Pig", t: "خنزير", v: "/ɪ/"},
+        {w: "Dog", t: "كلب", v: "/ɒ/"}, {w: "Sun", t: "شمس", v: "/ʌ/"}
     ];
 
     let idx = 0; let score = 0;
@@ -108,7 +101,7 @@
     function startListening() {
         const status = document.getElementById('status-area');
         status.style.display = "block";
-        status.innerHTML = "جاري الاستماع لمرة واحدة فقط...";
+        status.innerHTML = "جاري الاستماع...";
         status.style.background = "#eee"; status.style.color = "#333";
         rec.start();
     }
@@ -117,38 +110,33 @@
         const heard = e.results[0][0].transcript.toLowerCase();
         const target = data[idx].w.toLowerCase();
         const status = document.getElementById('status-area');
-        const hintBox = document.getElementById('pronounce-hint');
 
         if (heard.includes(target)) {
-            status.innerHTML = `نطق صحيح من أول مرة! ✅`;
+            status.innerHTML = "نطق صحيح! ✅";
             status.style.background = "#d4edda"; status.style.color = "#155724";
-            hintBox.style.display = "none";
-            showVowelQuiz();
-        } else {
-            status.innerHTML = `انتهت المحاولة. قلت "${heard}".<br>الصحيح هو: ${data[idx].w}`;
-            status.style.background = "#f8d7da"; status.style.color = "#721c24";
-            hintBox.innerText = data[idx].h;
-            hintBox.style.display = "block";
             document.getElementById('mic-btn').style.display = "none";
-            document.getElementById('next-btn').style.display = "block";
+            document.getElementById('vowel-quiz').style.display = "block";
+        } else {
+            status.innerHTML = `خطأ ❌ قلت "${heard}".<br>سيتم الانتقال تلقائياً للكلمة التالية...`;
+            status.style.background = "#f8d7da"; status.style.color = "#721c24";
+            document.getElementById('mic-btn').style.display = "none";
+            document.getElementById('auto-timer').style.display = "block";
+            
+            // الانتقال التلقائي بعد 3 ثواني في حال الخطأ
+            setTimeout(nextQuestion, 3000);
         }
     };
-
-    function showVowelQuiz() {
-        document.getElementById('mic-btn').style.display = "none";
-        document.getElementById('vowel-quiz').style.display = "block";
-    }
 
     function checkVowel(v) {
         if (v === data[idx].v) {
             score++;
-            document.getElementById('status-area').innerHTML = "إجابة صحيحة في التمييز الصوتي ✅";
-            document.getElementById('vowel-quiz').style.display = "none";
-            document.getElementById('next-btn').style.display = "block";
+            document.getElementById('status-area').innerHTML = "إجابة صحيحة في الرمز الصوتي ✅";
+            document.getElementById('auto-timer').style.display = "block";
+            setTimeout(nextQuestion, 1500); // انتقال سريع عند الإجابة الصحيحة
         } else {
-            alert("هذا الرمز لا يطابق الصوت، انتقل للكلمة التالية.");
-            document.getElementById('vowel-quiz').style.display = "none";
-            document.getElementById('next-btn').style.display = "block";
+            document.getElementById('status-area').innerHTML = "الرمز الصوتي خطأ ❌ سيتم الانتقال...";
+            document.getElementById('status-area').style.background = "#f8d7da";
+            setTimeout(nextQuestion, 1500);
         }
     }
 
@@ -157,12 +145,11 @@
         if (idx < data.length) {
             document.getElementById('target-word').innerText = data[idx].w;
             document.getElementById('target-trans').innerText = `(${data[idx].t})`;
-            document.getElementById('progress').innerText = `الكلمة ${idx + 1} من 10 | محاولة واحدة فقط`;
+            document.getElementById('progress').innerText = `الكلمة ${idx + 1} من 10`;
             document.getElementById('status-area').style.display = "none";
-            document.getElementById('next-btn').style.display = "none";
             document.getElementById('mic-btn').style.display = "inline-block";
             document.getElementById('vowel-quiz').style.display = "none";
-            document.getElementById('pronounce-hint').style.display = "none";
+            document.getElementById('auto-timer').style.display = "none";
         } else {
             showResult();
         }
@@ -171,11 +158,10 @@
     function showResult() {
         document.getElementById('quiz-body').style.display = "none";
         document.getElementById('result-page').style.display = "block";
-        document.getElementById('score-text').innerText = `النتيجة: ${score} من 10`;
-        const msg = `*منصة البرامج التخصصية*%0Aإدارة: محمد طه عطا المنان%0Aالنتيجة: ${score}/10 (نظام المحاولة الواحدة)`;
+        document.getElementById('score-text').innerText = `النتيجة النهائية: ${score} من 10`;
+        const msg = `*منصة البرامج التخصصية*%0Aإدارة: محمد طه عطا المنان%0Aالنتيجة: ${score}/10 (نظام الانتقال التلقائي)`;
         document.getElementById('wa-btn').href = `https://wa.me/249901946410?text=${msg}`;
     }
 </script>
 </body>
 </html>
-
