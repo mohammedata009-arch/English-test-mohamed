@@ -5,21 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة البرامج التخصصية - إدارة محمد طه</title>
     <style>
-        :root { --primary: #1a5f7a; --secondary: #e67e22; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; }
+        :root { --primary: #1a5f7a; --secondary: #e67e22; --success: #27ae60; --error: #c0392b; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
         .container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 550px; width: 100%; text-align: center; border-top: 10px solid var(--primary); }
-        .platform-header { margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .header { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
         .word-card { background: #fff; border: 2px dashed #ddd; border-radius: 15px; padding: 20px; margin: 15px 0; }
-        .word-main { font-size: 3.5rem; color: var(--primary); font-weight: bold; margin: 0; }
-        .btn { border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 1rem; margin: 5px; transition: 0.2s; font-weight: bold; color: white; }
+        .word-main { font-size: 3.8rem; color: var(--primary); font-weight: bold; margin: 0; }
+        .hint-box { background: #fff3cd; color: #856404; padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-top: 10px; display: none; border: 1px solid #ffeeba; }
+        .btn { border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 1rem; margin: 5px; font-weight: bold; color: white; transition: 0.3s; }
         .btn-listen { background: #3498db; }
-        .btn-speak { background: #e74c3c; }
-        .btn-slow { background: #9b59b6; display: none; }
-        .status-box { margin-top: 15px; padding: 12px; border-radius: 8px; font-weight: bold; min-height: 40px; display: none; }
+        .btn-speak { background: var(--error); width: 80%; font-size: 1.2rem; }
+        .status-box { margin: 15px 0; padding: 12px; border-radius: 8px; font-weight: bold; min-height: 40px; }
         .vowel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
-        .v-btn { border: 2px solid var(--primary); background: none; padding: 8px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .whatsapp-link { background: #25D366; color: white; text-decoration: none; display: block; padding: 15px; border-radius: 10px; margin-top: 20px; }
-        #start-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 95, 122, 0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; border-radius: 20px; z-index: 100; }
+        .v-btn { border: 2px solid var(--primary); background: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .v-btn:hover { background: var(--primary); color: white; }
+        .wa-link { background: #25D366; color: white; text-decoration: none; display: block; padding: 15px; border-radius: 10px; margin-top: 10px; font-weight: bold; }
+        #start-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 95, 122, 0.98); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; border-radius: 20px; z-index: 100; }
     </style>
 </head>
 <body>
@@ -28,87 +29,86 @@
     <div id="start-screen">
         <h1>منصة البرامج التخصصية</h1>
         <p>إدارة: محمد طه عطا المنان</p>
-        <button class="btn" style="background:var(--secondary); padding: 20px 40px; font-size: 1.5rem;" onclick="initQuiz()">ابدأ الاختبار الآن ▶️</button>
-        <p style="font-size: 0.8rem; margin-top: 10px;">(الضغط هنا يفعّل محرك الصوت في متصفحك)</p>
+        <button class="btn" style="background:var(--secondary); padding: 20px 40px; font-size: 1.5rem;" onclick="initQuiz()">ابدأ التدريب (محاولة واحدة) ▶️</button>
     </div>
 
-    <div class="platform-header">
+    <div class="header">
         <h2 style="color:var(--primary); margin:0;">منصة البرامج التخصصية</h2>
         <div style="color:#666;">إدارة: محمد طه عطا المنان</div>
     </div>
 
-    <div id="progress" style="color: #888;">الكلمة 1 من 10</div>
-    
-    <div class="word-card">
-        <div id="target-word" class="word-main">Cat</div>
-        <div id="target-trans" style="color:var(--secondary); font-size: 1.2rem;">(قطة)</div>
-        <button class="btn btn-listen" onclick="playSound(1)">🔊 نطق سريع</button>
-        <button id="slow-btn" class="btn btn-slow" onclick="playSound(0.5)">🐢 نطق بطيء</button>
-    </div>
-
-    <button class="btn btn-speak" id="mic-btn" onclick="startListening()">🎤 اضغط وابدأ النطق</button>
-    
-    <div id="status-area" class="status-box"></div>
-
-    <div id="vowel-quiz" style="display:none; margin-top:15px;">
-        <p>حدد رمز الصوت القصير الصحيح:</p>
-        <div class="vowel-grid">
-            <button class="v-btn" onclick="checkVowel('/æ/')">/æ/</button>
-            <button class="v-btn" onclick="checkVowel('/ɛ/')">/ɛ/</button>
-            <button class="v-btn" onclick="checkVowel('/ɪ/')">/ɪ/</button>
-            <button class="v-btn" onclick="checkVowel('/ɒ/')">/ɒ/</button>
-            <button class="v-btn" onclick="checkVowel('/ʌ/')">/ʌ/</button>
+    <div id="quiz-body">
+        <div id="progress" style="color: #888;">الكلمة 1 من 10 | ⚠️ محاولة واحدة فقط</div>
+        
+        <div class="word-card">
+            <div id="target-word" class="word-main">Cat</div>
+            <div id="target-trans" style="color:var(--secondary); font-size: 1.3rem;">(قطة)</div>
+            <button class="btn btn-listen" onclick="playSound(1)">🔊 اسمع النطق</button>
+            <div id="pronounce-hint" class="hint-box"></div>
         </div>
-    </div>
 
-    <div style="margin-top:20px;">
-        <button id="next-btn" class="btn" style="background:var(--primary); display:none;" onclick="nextStep()">الكلمة التالية ⮕</button>
-        <button id="skip-btn" class="btn" style="background:#95a5a6; display:none;" onclick="nextStep()">تخطي السؤال ↷</button>
+        <button class="btn btn-speak" id="mic-btn" onclick="startListening()">🎤 اضغط وانطق الآن</button>
+        
+        <div id="status-area" class="status-box" style="display:none;"></div>
+
+        <div id="vowel-quiz" style="display:none;">
+            <p style="font-weight: bold;">أحسنت! حدد الرمز الصوتي المناسب:</p>
+            <div class="vowel-grid">
+                <button class="v-btn" onclick="checkVowel('/æ/')">/æ/</button>
+                <button class="v-btn" onclick="checkVowel('/ɛ/')">/ɛ/</button>
+                <button class="v-btn" onclick="checkVowel('/ɪ/')">/ɪ/</button>
+                <button class="v-btn" onclick="checkVowel('/ɒ/')">/ɒ/</button>
+                <button class="v-btn" onclick="checkVowel('/ʌ/')">/ʌ/</button>
+            </div>
+        </div>
+
+        <button id="next-btn" class="btn" style="background:var(--primary); display:none; margin-top:20px; width:100%;" onclick="nextQuestion()">انتقل للكلمة التالية ⮕</button>
     </div>
 
     <div id="result-page" style="display:none;">
-        <h2 style="color:var(--primary);">تم إكمال التدريب!</h2>
-        <p id="score-text" style="font-size:1.5rem; font-weight:bold;"></p>
-        <a id="wa-btn" class="whatsapp-link" target="_blank">إرسال النتيجة للأستاذ محمد ✅</a>
+        <h2 style="color:var(--primary);">تقرير الأداء النهائي</h2>
+        <p id="score-text" style="font-size:1.8rem; font-weight:bold;"></p>
+        <a id="wa-btn" class="wa-link" target="_blank">إرسال النتيجة للأستاذ محمد ✅</a>
+        <div style="margin-top:10px; cursor:pointer; color:var(--primary); text-decoration:underline;" onclick="location.reload()">إعادة المحاولة من جديد 🔄</div>
     </div>
 </div>
 
 <script>
     const data = [
-        {w: "Cat", t: "قطة", v: "/æ/"}, {w: "Bed", t: "سرير", v: "/ɛ/"},
-        {w: "Sit", t: "يجلس", v: "/ɪ/"}, {w: "Hot", t: "ساخن", v: "/ɒ/"},
-        {w: "Cup", t: "كوب", v: "/ʌ/"}, {w: "Map", t: "خريطة", v: "/æ/"},
-        {w: "Pen", t: "قلم جاف", v: "/ɛ/"}, {w: "Pig", t: "خنزير", v: "/ɪ/"},
-        {w: "Dog", t: "كلب", v: "/ɒ/"}, {w: "Sun", t: "شمس", v: "/ʌ/"}
+        {w: "Cat", t: "قطة", v: "/æ/", h: "تلميح: افتح فمك بشكل واسع (ابتسامة عريضة) عند نطق الـ A."},
+        {w: "Bed", t: "سرير", v: "/ɛ/", h: "تلميح: انطق الـ E بشكل قصير جداً وسريع."},
+        {w: "Sit", t: "يجلس", v: "/ɪ/", h: "تلميح: الـ I هنا كسرة خفيفة جداً وقصيرة."},
+        {w: "Hot", t: "ساخن", v: "/ɒ/", h: "تلميح: افتح فمك بشكل رأسي دائري لنطق الـ O."},
+        {w: "Cup", t: "كوب", v: "/ʌ/", h: "تلميح: الـ U صوت قصير يخرج من الحلق كأنه (أ) مفخمة."},
+        {w: "Map", t: "خريطة", v: "/æ/", h: "تلميح: افتح الفم عرضياً مثل كلمة Cat."},
+        {w: "Pen", t: "قلم جاف", v: "/ɛ/", h: "تلميح: صوت قصير وسريع مثل نطق حرف (إ) باللغة العربية."},
+        {w: "Pig", t: "خنزير", v: "/ɪ/", h: "تلميح: كسرة خفيفة، لا تجعلها ياء طويلة."},
+        {w: "Dog", t: "كلب", v: "/ɒ/", h: "تلميح: صوت O قصير ومفتوح."},
+        {w: "Sun", t: "شمس", v: "/ʌ/", h: "تلميح: مثل نطق (أ) في بداية كلمة (أب) بالسوداني، قصيرة جداً."}
     ];
 
     let idx = 0; let score = 0;
     const speech = window.speechSynthesis;
-
-    // تفعيل المحرك عند البدء
-    function initQuiz() {
-        document.getElementById('start-screen').style.display = 'none';
-        // نطق تجريبي صامت لتفعيل المحرك في بعض المتصفحات
-        const silent = new SpeechSynthesisUtterance("");
-        speech.speak(silent);
-    }
-
-    function playSound(speed) {
-        speech.cancel(); // إلغاء أي صوت معلق
-        const utterance = new SpeechSynthesisUtterance(data[idx].w);
-        utterance.lang = 'en-US';
-        utterance.rate = speed;
-        speech.speak(utterance);
-    }
-
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const rec = new Recognition();
     rec.lang = 'en-US';
 
+    function initQuiz() {
+        document.getElementById('start-screen').style.display = 'none';
+        speech.speak(new SpeechSynthesisUtterance(""));
+    }
+
+    function playSound(speed) {
+        speech.cancel();
+        const u = new SpeechSynthesisUtterance(data[idx].w);
+        u.lang = 'en-US'; u.rate = speed;
+        speech.speak(u);
+    }
+
     function startListening() {
         const status = document.getElementById('status-area');
         status.style.display = "block";
-        status.innerHTML = "جاري الاستماع... انطق الآن";
+        status.innerHTML = "جاري الاستماع لمرة واحدة فقط...";
         status.style.background = "#eee"; status.style.color = "#333";
         rec.start();
     }
@@ -117,58 +117,65 @@
         const heard = e.results[0][0].transcript.toLowerCase();
         const target = data[idx].w.toLowerCase();
         const status = document.getElementById('status-area');
-        
+        const hintBox = document.getElementById('pronounce-hint');
+
         if (heard.includes(target)) {
-            status.innerHTML = "نطق صحيح! ✅ حدد الرمز الصوتي الآن";
+            status.innerHTML = `نطق صحيح من أول مرة! ✅`;
             status.style.background = "#d4edda"; status.style.color = "#155724";
-            document.getElementById('vowel-quiz').style.display = "block";
-            document.getElementById('mic-btn').style.display = "none";
+            hintBox.style.display = "none";
+            showVowelQuiz();
         } else {
-            status.innerHTML = `خطأ: سمعت "${heard}"<br>حاول مرة أخرى أو اسمع النطق البطيء.`;
+            status.innerHTML = `انتهت المحاولة. قلت "${heard}".<br>الصحيح هو: ${data[idx].w}`;
             status.style.background = "#f8d7da"; status.style.color = "#721c24";
-            document.getElementById('slow-btn').style.display = "inline-block";
-            document.getElementById('skip-btn').style.display = "inline-block";
+            hintBox.innerText = data[idx].h;
+            hintBox.style.display = "block";
+            document.getElementById('mic-btn').style.display = "none";
+            document.getElementById('next-btn').style.display = "block";
         }
     };
+
+    function showVowelQuiz() {
+        document.getElementById('mic-btn').style.display = "none";
+        document.getElementById('vowel-quiz').style.display = "block";
+    }
 
     function checkVowel(v) {
         if (v === data[idx].v) {
             score++;
-            document.getElementById('status-area').innerHTML = "إجابة صحيحة! تم التسجيل ✅";
-            document.getElementById('next-btn').style.display = "inline-block";
+            document.getElementById('status-area').innerHTML = "إجابة صحيحة في التمييز الصوتي ✅";
             document.getElementById('vowel-quiz').style.display = "none";
+            document.getElementById('next-btn').style.display = "block";
         } else {
-            alert("رمز خطأ، حاول مرة أخرى.");
+            alert("هذا الرمز لا يطابق الصوت، انتقل للكلمة التالية.");
+            document.getElementById('vowel-quiz').style.display = "none";
+            document.getElementById('next-btn').style.display = "block";
         }
     }
 
-    function nextStep() {
+    function nextQuestion() {
         idx++;
         if (idx < data.length) {
             document.getElementById('target-word').innerText = data[idx].w;
             document.getElementById('target-trans').innerText = `(${data[idx].t})`;
-            document.getElementById('progress').innerText = `الكلمة ${idx + 1} من 10`;
+            document.getElementById('progress').innerText = `الكلمة ${idx + 1} من 10 | محاولة واحدة فقط`;
             document.getElementById('status-area').style.display = "none";
             document.getElementById('next-btn').style.display = "none";
-            document.getElementById('skip-btn').style.display = "none";
-            document.getElementById('slow-btn').style.display = "none";
             document.getElementById('mic-btn').style.display = "inline-block";
             document.getElementById('vowel-quiz').style.display = "none";
+            document.getElementById('pronounce-hint').style.display = "none";
         } else {
-            showFinal();
+            showResult();
         }
     }
 
-    function showFinal() {
-        document.querySelector('.platform-header').nextElementSibling.style.display = "none";
-        document.querySelector('.word-card').style.display = "none";
-        document.getElementById('mic-btn').style.display = "none";
-        document.getElementById('status-area').style.display = "none";
+    function showResult() {
+        document.getElementById('quiz-body').style.display = "none";
         document.getElementById('result-page').style.display = "block";
         document.getElementById('score-text').innerText = `النتيجة: ${score} من 10`;
-        const msg = `*تقرير منصة البرامج التخصصية*%0Aالنتيجة: ${score}/10`;
+        const msg = `*منصة البرامج التخصصية*%0Aإدارة: محمد طه عطا المنان%0Aالنتيجة: ${score}/10 (نظام المحاولة الواحدة)`;
         document.getElementById('wa-btn').href = `https://wa.me/249901946410?text=${msg}`;
     }
 </script>
 </body>
 </html>
+
