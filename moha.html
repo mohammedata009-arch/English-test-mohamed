@@ -3,170 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة البرامج التخصصية - اختبار النطق المترجم</title>
+    <title>منصة البرامج التخصصية - مساعد النطق الذكي</title>
     <style>
         :root {
-            --primary-color: #1a5f7a;
-            --accent-color: #25D366;
-            --bg-color: #f8f9fa;
-            --text-dark: #2c3e50;
+            --primary: #1a5f7a;
+            --secondary: #e67e22;
+            --success: #27ae60;
+            --error: #c0392b;
+            --bg: #f4f7f6;
         }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-color); display: flex; justify-content: center; padding: 20px; color: var(--text-dark); }
-        .container { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); max-width: 600px; width: 100%; text-align: center; border-top: 8px solid var(--primary-color); }
-        .platform-title { font-size: 1.8rem; color: var(--primary-color); margin: 0; font-weight: 800; }
-        .manager-name { font-size: 1.1rem; color: #7f8c8d; margin-bottom: 20px; }
-        .word-display { font-size: 3.5rem; color: var(--primary-color); margin: 10px 0; font-weight: bold; }
-        .translation-display { font-size: 1.4rem; color: #e67e22; margin-bottom: 20px; font-weight: bold; }
-        .btn { border: none; padding: 12px 25px; border-radius: 12px; cursor: pointer; font-size: 1rem; margin: 5px; transition: 0.3s; font-weight: 600; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; }
+        .container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 600px; width: 100%; text-align: center; border-top: 10px solid var(--primary); }
+        .platform-header { margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        .word-card { background: #fff; border: 2px dashed #ddd; border-radius: 15px; padding: 20px; margin: 20px 0; }
+        .word-main { font-size: 4rem; color: var(--primary); font-weight: bold; margin: 0; }
+        .word-sub { font-size: 1.5rem; color: var(--secondary); margin-bottom: 10px; }
+        .btn { border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 1rem; margin: 5px; transition: 0.2s; font-weight: bold; }
         .btn-listen { background: #3498db; color: white; }
-        .btn-speak { background: #e74c3c; color: white; }
-        .btn-next { background: var(--primary-color); color: white; display: none; }
-        .btn-skip { background: #95a5a6; color: white; display: none; }
-        .status { margin-top: 15px; font-weight: bold; padding: 10px; border-radius: 8px; min-height: 40px; }
-        .success { background: #d4edda; color: #155724; }
-        .error { background: #f8d7da; color: #721c24; }
-        .vowel-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 20px; }
-        .vowel-btn { background: #fff; border: 2px solid var(--primary-color); color: var(--primary-color); padding: 10px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
-        .vowel-btn:hover { background: var(--primary-color); color: white; }
-        .whatsapp-btn { background: var(--accent-color); color: white; text-decoration: none; display: block; padding: 18px; border-radius: 12px; margin-top: 25px; font-size: 1.2rem; font-weight: bold; }
+        .btn-slow { background: #9b59b6; color: white; display: none; }
+        .btn-speak { background: var(--error); color: white; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(192, 57, 43, 0); } 100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0); } }
+        .status-box { margin-top: 20px; padding: 15px; border-radius: 10px; min-height: 50px; font-weight: bold; }
+        .error-hint { color: var(--error); font-size: 0.9rem; margin-top: 5px; }
+        .vowel-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+        .v-btn { border: 2px solid var(--primary); background: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; color: var(--primary); }
+        .v-btn:hover { background: var(--primary); color: white; }
+        .whatsapp-link { background: #25D366; color: white; text-decoration: none; display: block; padding: 15px; border-radius: 10px; margin-top: 20px; font-size: 1.2rem; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header-section">
-        <h1 class="platform-title">منصة البرامج التخصصية</h1>
-        <div class="manager-name">إدارة: محمد طه عطا المنان</div>
+    <div class="platform-header">
+        <h1 style="color:var(--primary); margin:0;">منصة البرامج التخصصية</h1>
+        <div style="color:#666;">إدارة: محمد طه عطا المنان</div>
     </div>
 
-    <div id="quiz-area">
-        <div id="progress" style="color: #666; margin-bottom: 10px;">المرحلة 1: اختبار النطق (1 من 10)</div>
-        <div id="target-word" class="word-display">Cat</div>
-        <div id="target-translation" class="translation-display">(قطة)</div>
+    <div id="quiz-content">
+        <div id="progress" style="font-size: 0.9rem; color: #888;">الكلمة 1 من 10</div>
         
-        <div id="pronunciation-controls">
-            <button class="btn btn-listen" onclick="speakWord()">🔊 استمع للنطق</button>
-            <button class="btn btn-speak" onclick="startRecognition()">🎤 سجل نطقك</button>
+        <div class="word-card">
+            <div id="target-word" class="word-main">Cat</div>
+            <div id="target-trans" class="word-sub">(قطة)</div>
+            
+            <button class="btn btn-listen" onclick="playSound(1)">🔊 نطق سريع</button>
+            <button id="slow-btn" class="btn btn-slow" onclick="playSound(0.5)">🐢 نطق تعليمي بطيء</button>
         </div>
 
-        <div id="vowel-selection" style="display:none;">
-            <p>اختر رمز الصوت القصير (Short Vowel) الصحيح:</p>
-            <div class="vowel-options">
-                <button class="vowel-btn" onclick="checkVowel('/æ/')">/æ/ (مثل Cat)</button>
-                <button class="vowel-btn" onclick="checkVowel('/ɪ/')">/ɪ/ (مثل Sit)</button>
-                <button class="vowel-btn" onclick="checkVowel('/ɛ/')">/ɛ/ (مثل Bed)</button>
-                <button class="vowel-btn" onclick="checkVowel('/ɒ/')">/ɒ/ (مثل Hot)</button>
-                <button class="vowel-btn" onclick="checkVowel('/ʌ/')">/ʌ/ (مثل Cup)</button>
+        <button class="btn btn-speak" id="mic-btn" onclick="startListening()">🎤 ابدأ النطق الآن</button>
+        
+        <div id="status-area" class="status-box" style="display:none;"></div>
+
+        <div id="vowel-quiz" style="display:none; margin-top:20px; border-top:1px solid #eee; padding-top:10px;">
+            <p>أحسنت النطق! الآن حدد رمز الصوت القصير:</p>
+            <div class="vowel-grid">
+                <button class="v-btn" onclick="checkVowel('/æ/')">/æ/ (Short A)</button>
+                <button class="v-btn" onclick="checkVowel('/ɛ/')">/ɛ/ (Short E)</button>
+                <button class="v-btn" onclick="checkVowel('/ɪ/')">/ɪ/ (Short I)</button>
+                <button class="v-btn" onclick="checkVowel('/ɒ/')">/ɒ/ (Short O)</button>
+                <button class="v-btn" onclick="checkVowel('/ʌ/')">/ʌ/ (Short U)</button>
             </div>
         </div>
 
-        <div id="status-msg" class="status" style="visibility: hidden;"></div>
-        
-        <div style="display: flex; justify-content: center; gap: 10px;">
-            <button id="skip-btn" class="btn btn-skip" onclick="nextQuestion(false)">تخطي السؤال ↷</button>
-            <button id="next-btn" class="btn btn-next" onclick="nextQuestion(true)">الكلمة التالية ⮕</button>
+        <div style="margin-top:20px;">
+            <button id="next-btn" class="btn" style="background:var(--primary); color:white; display:none;" onclick="nextStep()">الكلمة التالية ⮕</button>
+            <button id="skip-btn" class="btn" style="background:#bdc3c7; color:white; display:none;" onclick="nextStep()">تخطي الخطأ ↷</button>
         </div>
     </div>
 
-    <div id="result-area" style="display:none;">
-        <h2 style="color: var(--primary-color);">تم الانتهاء من التدريب!</h2>
-        <p id="final-score" style="font-size: 1.4rem; font-weight: bold;"></p>
-        <a id="whatsapp-link" class="whatsapp-btn" target="_blank">إرسال التقرير للأستاذ محمد ✅</a>
+    <div id="result-page" style="display:none;">
+        <h2 style="color:var(--success);">تم إكمال التدريب بنجاح!</h2>
+        <p id="score-text" style="font-size:1.5rem;"></p>
+        <a id="wa-btn" class="whatsapp-link" target="_blank">إرسال النتيجة للأستاذ محمد ✅</a>
     </div>
 </div>
 
 <script>
-    const quizData = [
-        { word: "Cat", translation: "قطة", vowel: "/æ/" },
-        { word: "Bed", translation: "سرير", vowel: "/ɛ/" },
-        { word: "Sit", translation: "يجلس", vowel: "/ɪ/" },
-        { word: "Hot", translation: "ساخن", vowel: "/ɒ/" },
-        { word: "Cup", translation: "كوب", vowel: "/ʌ/" },
-        { word: "Map", translation: "خريطة", vowel: "/æ/" },
-        { word: "Pen", translation: "قلم جاف", vowel: "/ɛ/" },
-        { word: "Pig", translation: "خنزير", vowel: "/ɪ/" },
-        { word: "Dog", translation: "كلب", vowel: "/ɒ/" },
-        { word: "Sun", translation: "شمس", vowel: "/ʌ/" }
+    const data = [
+        {w: "Cat", t: "قطة", v: "/æ/"}, {w: "Bed", t: "سرير", v: "/ɛ/"},
+        {w: "Sit", t: "يجلس", v: "/ɪ/"}, {w: "Hot", t: "ساخن", v: "/ɒ/"},
+        {w: "Cup", t: "كوب", v: "/ʌ/"}, {w: "Map", t: "خريطة", v: "/æ/"},
+        {w: "Pen", t: "قلم جاف", v: "/ɛ/"}, {w: "Pig", t: "خنزير", v: "/ɪ/"},
+        {w: "Dog", t: "كلب", v: "/ɒ/"}, {w: "Sun", t: "شمس", v: "/ʌ/"}
     ];
 
-    let currentIndex = 0;
-    let score = 0;
-
-    function speakWord() {
-        const msg = new SpeechSynthesisUtterance(quizData[currentIndex].word);
-        msg.lang = 'en-US';
-        window.speechSynthesis.speak(msg);
-    }
-
+    let idx = 0; let score = 0;
+    const speech = window.SpeechSynthesis;
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognizer = new Recognition();
-    recognizer.lang = 'en-US';
+    const rec = new Recognition();
+    rec.lang = 'en-US';
+    rec.interimResults = false;
 
-    function startRecognition() {
-        const status = document.getElementById('status-msg');
-        status.style.visibility = "visible";
-        status.innerText = "جاري الاستماع لتقييم نطقك...";
-        status.className = "status";
-        recognizer.start();
+    function playSound(speed) {
+        speech.cancel();
+        const utterance = new SpeechSynthesisUtterance(data[idx].w);
+        utterance.lang = 'en-US';
+        utterance.rate = speed;
+        speech.speak(utterance);
     }
 
-    recognizer.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase();
-        const target = quizData[currentIndex].word.toLowerCase();
-        const status = document.getElementById('status-msg');
+    function startListening() {
+        const status = document.getElementById('status-area');
+        status.style.display = "block";
+        status.innerHTML = "جاري الاستماع... انطق الكلمة";
+        status.style.background = "#eee"; status.style.color = "#333";
+        rec.start();
+    }
+
+    rec.onresult = (e) => {
+        const heard = e.results[0][0].transcript.toLowerCase();
+        const target = data[idx].w.toLowerCase();
+        const status = document.getElementById('status-area');
         
-        if (transcript.includes(target)) {
-            status.innerText = "نطق رائع ومفهوم! الآن حدد رمز الصوت.";
-            status.className = "status success";
-            document.getElementById('pronunciation-controls').style.display = "none";
-            document.getElementById('vowel-selection').style.display = "block";
-            document.getElementById('skip-btn').style.display = "none";
+        if (heard === target) {
+            status.innerHTML = `نطق مثالي ✅<br><small>سمعتك تقول: ${heard}</small>`;
+            status.style.background = "#d4edda"; status.style.color = "#155724";
+            document.getElementById('vowel-quiz').style.display = "block";
+            document.getElementById('mic-btn').style.display = "none";
+            document.getElementById('slow-btn').style.display = "none";
         } else {
-            status.innerText = `لم يتم التعرف على الكلمة (سمعت: ${transcript}). حاول مجدداً أو تخطَّ.`;
-            status.className = "status error";
+            status.innerHTML = `خطأ في النطق ❌<br><small>أنت قلت "${heard}" ولكن الكلمة هي "${data[idx].w}"</small>`;
+            status.style.background = "#f8d7da"; status.style.color = "#721c24";
+            document.getElementById('slow-btn').style.display = "inline-block";
             document.getElementById('skip-btn').style.display = "inline-block";
         }
     };
 
-    function checkVowel(selectedVowel) {
-        const status = document.getElementById('status-msg');
-        if (selectedVowel === quizData[currentIndex].vowel) {
-            status.innerText = "إجابة صحيحة! تم تسجيل نقطة.";
-            status.className = "status success";
+    function checkVowel(v) {
+        if (v === data[idx].v) {
             score++;
+            document.getElementById('status-area').innerHTML = "إجابة صحيحة! تم تسجيل النقطة ✅";
             document.getElementById('next-btn').style.display = "inline-block";
-            document.getElementById('vowel-selection').style.display = "none";
+            document.getElementById('vowel-quiz').style.display = "none";
         } else {
-            status.innerText = "هذا الرمز الصوتي غير صحيح، حاول مرة أخرى.";
-            status.className = "status error";
+            alert("الرمز الصوتي غير صحيح، حاول مرة أخرى.");
         }
     }
 
-    function nextQuestion(isCorrect) {
-        currentIndex++;
-        if (currentIndex < quizData.length) {
-            document.getElementById('target-word').innerText = quizData[currentIndex].word;
-            document.getElementById('target-translation').innerText = `(${quizData[currentIndex].translation})`;
-            document.getElementById('progress').innerText = `اختبار النطق والتمييز (${currentIndex + 1} من 10)`;
-            document.getElementById('status-msg').style.visibility = "hidden";
+    function nextStep() {
+        idx++;
+        if (idx < data.length) {
+            document.getElementById('target-word').innerText = data[idx].w;
+            document.getElementById('target-trans').innerText = `(${data[idx].t})`;
+            document.getElementById('progress').innerText = `الكلمة ${idx + 1} من 10`;
+            document.getElementById('status-area').style.display = "none";
             document.getElementById('next-btn').style.display = "none";
             document.getElementById('skip-btn').style.display = "none";
-            document.getElementById('pronunciation-controls').style.display = "block";
-            document.getElementById('vowel-selection').style.display = "none";
+            document.getElementById('slow-btn').style.display = "none";
+            document.getElementById('mic-btn').style.display = "inline-block";
+            document.getElementById('vowel-quiz').style.display = "none";
         } else {
-            showFinalResult();
+            showFinal();
         }
     }
 
-    function showFinalResult() {
-        document.getElementById('quiz-area').style.display = "none";
-        document.getElementById('result-area').style.display = "block";
-        document.getElementById('final-score').innerText = `النتيجة النهائية للمتدرب: ${score} من 10`;
-        
-        const phone = "249901946410";
-        const message = `*منصة البرامج التخصصية*%0A*تقرير أداء الطالب*%0A--------------------------%0A*الإدارة:* محمد طه عطا المنان%0A*النشاط:* نطق وتمييز الكلمات المترجمة%0A*النتيجة:* ${score} من 10%0A--------------------------`;
-        document.getElementById('whatsapp-link').href = `https://wa.me/${phone}?text=${message}`;
+    function showFinal() {
+        document.getElementById('quiz-content').style.display = "none";
+        document.getElementById('result-page').style.display = "block";
+        document.getElementById('score-text').innerText = `درجة الإتقان: ${score} من 10`;
+        const msg = `*تقرير منصة البرامج التخصصية*%0A*الإدارة:* محمد طه عطا المنان%0A*النتيجة:* ${score}/10 في اختبار النطق المتقدم.`;
+        document.getElementById('wa-btn').href = `https://wa.me/249901946410?text=${msg}`;
     }
 </script>
+
 </body>
 </html>
