@@ -1,287 +1,174 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>منصة البرامج التخصصية - مساعد النطق</title>
-
-<style>
-:root{
---primary:#1a5f7a;
---secondary:#e67e22;
---success:#27ae60;
---error:#c0392b;
---bg:#f4f7f6;
-}
-
-body{
-font-family:Segoe UI,Tahoma;
-background:var(--bg);
-display:flex;
-justify-content:center;
-padding:20px;
-}
-
-.container{
-background:white;
-padding:30px;
-border-radius:20px;
-box-shadow:0 10px 30px rgba(0,0,0,.1);
-max-width:600px;
-width:100%;
-text-align:center;
-border-top:10px solid var(--primary);
-}
-
-.word-card{
-border:2px dashed #ddd;
-border-radius:15px;
-padding:20px;
-margin:20px 0;
-}
-
-.word-main{
-font-size:4rem;
-color:var(--primary);
-font-weight:bold;
-}
-
-.word-sub{
-font-size:1.4rem;
-color:var(--secondary);
-}
-
-.btn{
-border:none;
-padding:12px 20px;
-border-radius:10px;
-cursor:pointer;
-font-size:1rem;
-margin:5px;
-font-weight:bold;
-}
-
-.btn-listen{background:#3498db;color:white;}
-.btn-slow{background:#9b59b6;color:white;display:none;}
-.btn-speak{background:#c0392b;color:white;}
-
-.status-box{
-margin-top:15px;
-padding:15px;
-border-radius:10px;
-display:none;
-font-weight:bold;
-}
-
-.vowel-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:10px;
-margin-top:10px;
-}
-
-.v-btn{
-border:2px solid var(--primary);
-padding:10px;
-border-radius:8px;
-font-weight:bold;
-cursor:pointer;
-color:var(--primary);
-}
-
-.v-btn:hover{
-background:var(--primary);
-color:white;
-}
-
-.whatsapp-link{
-background:#25D366;
-color:white;
-text-decoration:none;
-display:block;
-padding:15px;
-border-radius:10px;
-margin-top:20px;
-font-size:1.2rem;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة البرامج التخصصية - إدارة محمد طه</title>
+    <style>
+        :root { --primary: #1a5f7a; --secondary: #e67e22; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; }
+        .container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 550px; width: 100%; text-align: center; border-top: 10px solid var(--primary); }
+        .platform-header { margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .word-card { background: #fff; border: 2px dashed #ddd; border-radius: 15px; padding: 20px; margin: 15px 0; }
+        .word-main { font-size: 3.5rem; color: var(--primary); font-weight: bold; margin: 0; }
+        .btn { border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 1rem; margin: 5px; transition: 0.2s; font-weight: bold; color: white; }
+        .btn-listen { background: #3498db; }
+        .btn-speak { background: #e74c3c; }
+        .btn-slow { background: #9b59b6; display: none; }
+        .status-box { margin-top: 15px; padding: 12px; border-radius: 8px; font-weight: bold; min-height: 40px; display: none; }
+        .vowel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
+        .v-btn { border: 2px solid var(--primary); background: none; padding: 8px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .whatsapp-link { background: #25D366; color: white; text-decoration: none; display: block; padding: 15px; border-radius: 10px; margin-top: 20px; }
+        #start-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 95, 122, 0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; border-radius: 20px; z-index: 100; }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="container" style="position: relative;">
+    <div id="start-screen">
+        <h1>منصة البرامج التخصصية</h1>
+        <p>إدارة: محمد طه عطا المنان</p>
+        <button class="btn" style="background:var(--secondary); padding: 20px 40px; font-size: 1.5rem;" onclick="initQuiz()">ابدأ الاختبار الآن ▶️</button>
+        <p style="font-size: 0.8rem; margin-top: 10px;">(الضغط هنا يفعّل محرك الصوت في متصفحك)</p>
+    </div>
 
-<h2 style="color:#1a5f7a">منصة البرامج التخصصية</h2>
-<p>إدارة: محمد طه عطا المنان</p>
+    <div class="platform-header">
+        <h2 style="color:var(--primary); margin:0;">منصة البرامج التخصصية</h2>
+        <div style="color:#666;">إدارة: محمد طه عطا المنان</div>
+    </div>
 
-<div id="progress">الكلمة 1 من 10</div>
+    <div id="progress" style="color: #888;">الكلمة 1 من 10</div>
+    
+    <div class="word-card">
+        <div id="target-word" class="word-main">Cat</div>
+        <div id="target-trans" style="color:var(--secondary); font-size: 1.2rem;">(قطة)</div>
+        <button class="btn btn-listen" onclick="playSound(1)">🔊 نطق سريع</button>
+        <button id="slow-btn" class="btn btn-slow" onclick="playSound(0.5)">🐢 نطق بطيء</button>
+    </div>
 
-<div class="word-card">
+    <button class="btn btn-speak" id="mic-btn" onclick="startListening()">🎤 اضغط وابدأ النطق</button>
+    
+    <div id="status-area" class="status-box"></div>
 
-<div id="target-word" class="word-main">Cat</div>
-<div id="target-trans" class="word-sub">(قطة)</div>
+    <div id="vowel-quiz" style="display:none; margin-top:15px;">
+        <p>حدد رمز الصوت القصير الصحيح:</p>
+        <div class="vowel-grid">
+            <button class="v-btn" onclick="checkVowel('/æ/')">/æ/</button>
+            <button class="v-btn" onclick="checkVowel('/ɛ/')">/ɛ/</button>
+            <button class="v-btn" onclick="checkVowel('/ɪ/')">/ɪ/</button>
+            <button class="v-btn" onclick="checkVowel('/ɒ/')">/ɒ/</button>
+            <button class="v-btn" onclick="checkVowel('/ʌ/')">/ʌ/</button>
+        </div>
+    </div>
 
-<button class="btn btn-listen" onclick="playSound(1)">🔊 سريع</button>
-<button id="slowBtn" class="btn btn-slow" onclick="playSound(0.5)">🐢 بطيء</button>
+    <div style="margin-top:20px;">
+        <button id="next-btn" class="btn" style="background:var(--primary); display:none;" onclick="nextStep()">الكلمة التالية ⮕</button>
+        <button id="skip-btn" class="btn" style="background:#95a5a6; display:none;" onclick="nextStep()">تخطي السؤال ↷</button>
+    </div>
 
-</div>
-
-<button id="micBtn" class="btn btn-speak" onclick="startListen()">🎤 انطق</button>
-
-<div id="status" class="status-box"></div>
-
-<div id="vowelBox" style="display:none">
-
-<p>اختر الرمز الصوتي:</p>
-
-<div class="vowel-grid">
-
-<button class="v-btn" onclick="checkVowel('/æ/')">/æ/</button>
-<button class="v-btn" onclick="checkVowel('/ɛ/')">/ɛ/</button>
-<button class="v-btn" onclick="checkVowel('/ɪ/')">/ɪ/</button>
-<button class="v-btn" onclick="checkVowel('/ɒ/')">/ɒ/</button>
-<button class="v-btn" onclick="checkVowel('/ʌ/')">/ʌ/</button>
-
-</div>
-</div>
-
-<button id="nextBtn" class="btn" style="background:#1a5f7a;color:white;display:none" onclick="next()">التالي</button>
-
-<div id="result" style="display:none">
-
-<h2 style="color:#27ae60">تم الانتهاء ✅</h2>
-<p id="scoreText"></p>
-
-<a id="wa" class="whatsapp-link" target="_blank">إرسال للأستاذ</a>
-
-</div>
-
+    <div id="result-page" style="display:none;">
+        <h2 style="color:var(--primary);">تم إكمال التدريب!</h2>
+        <p id="score-text" style="font-size:1.5rem; font-weight:bold;"></p>
+        <a id="wa-btn" class="whatsapp-link" target="_blank">إرسال النتيجة للأستاذ محمد ✅</a>
+    </div>
 </div>
 
 <script>
+    const data = [
+        {w: "Cat", t: "قطة", v: "/æ/"}, {w: "Bed", t: "سرير", v: "/ɛ/"},
+        {w: "Sit", t: "يجلس", v: "/ɪ/"}, {w: "Hot", t: "ساخن", v: "/ɒ/"},
+        {w: "Cup", t: "كوب", v: "/ʌ/"}, {w: "Map", t: "خريطة", v: "/æ/"},
+        {w: "Pen", t: "قلم جاف", v: "/ɛ/"}, {w: "Pig", t: "خنزير", v: "/ɪ/"},
+        {w: "Dog", t: "كلب", v: "/ɒ/"}, {w: "Sun", t: "شمس", v: "/ʌ/"}
+    ];
 
-const data=[
-{w:"Cat",t:"قطة",v:"/æ/"},
-{w:"Bed",t:"سرير",v:"/ɛ/"},
-{w:"Sit",t:"يجلس",v:"/ɪ/"},
-{w:"Hot",t:"ساخن",v:"/ɒ/"},
-{w:"Cup",t:"كوب",v:"/ʌ/"},
-{w:"Map",t:"خريطة",v:"/æ/"},
-{w:"Pen",t:"قلم",v:"/ɛ/"},
-{w:"Pig",t:"خنزير",v:"/ɪ/"},
-{w:"Dog",t:"كلب",v:"/ɒ/"},
-{w:"Sun",t:"شمس",v:"/ʌ/"}
-];
+    let idx = 0; let score = 0;
+    const speech = window.speechSynthesis;
 
-let i=0;
-let score=0;
+    // تفعيل المحرك عند البدء
+    function initQuiz() {
+        document.getElementById('start-screen').style.display = 'none';
+        // نطق تجريبي صامت لتفعيل المحرك في بعض المتصفحات
+        const silent = new SpeechSynthesisUtterance("");
+        speech.speak(silent);
+    }
 
-const synth=window.speechSynthesis;
+    function playSound(speed) {
+        speech.cancel(); // إلغاء أي صوت معلق
+        const utterance = new SpeechSynthesisUtterance(data[idx].w);
+        utterance.lang = 'en-US';
+        utterance.rate = speed;
+        speech.speak(utterance);
+    }
 
-const Rec=window.SpeechRecognition||window.webkitSpeechRecognition;
-const rec=new Rec();
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const rec = new Recognition();
+    rec.lang = 'en-US';
 
-rec.lang="en-US";
+    function startListening() {
+        const status = document.getElementById('status-area');
+        status.style.display = "block";
+        status.innerHTML = "جاري الاستماع... انطق الآن";
+        status.style.background = "#eee"; status.style.color = "#333";
+        rec.start();
+    }
 
-function playSound(rate){
+    rec.onresult = (e) => {
+        const heard = e.results[0][0].transcript.toLowerCase();
+        const target = data[idx].w.toLowerCase();
+        const status = document.getElementById('status-area');
+        
+        if (heard.includes(target)) {
+            status.innerHTML = "نطق صحيح! ✅ حدد الرمز الصوتي الآن";
+            status.style.background = "#d4edda"; status.style.color = "#155724";
+            document.getElementById('vowel-quiz').style.display = "block";
+            document.getElementById('mic-btn').style.display = "none";
+        } else {
+            status.innerHTML = `خطأ: سمعت "${heard}"<br>حاول مرة أخرى أو اسمع النطق البطيء.`;
+            status.style.background = "#f8d7da"; status.style.color = "#721c24";
+            document.getElementById('slow-btn').style.display = "inline-block";
+            document.getElementById('skip-btn').style.display = "inline-block";
+        }
+    };
 
-synth.cancel();
+    function checkVowel(v) {
+        if (v === data[idx].v) {
+            score++;
+            document.getElementById('status-area').innerHTML = "إجابة صحيحة! تم التسجيل ✅";
+            document.getElementById('next-btn').style.display = "inline-block";
+            document.getElementById('vowel-quiz').style.display = "none";
+        } else {
+            alert("رمز خطأ، حاول مرة أخرى.");
+        }
+    }
 
-let u=new SpeechSynthesisUtterance(data[i].w);
-u.rate=rate;
-u.lang="en-US";
+    function nextStep() {
+        idx++;
+        if (idx < data.length) {
+            document.getElementById('target-word').innerText = data[idx].w;
+            document.getElementById('target-trans').innerText = `(${data[idx].t})`;
+            document.getElementById('progress').innerText = `الكلمة ${idx + 1} من 10`;
+            document.getElementById('status-area').style.display = "none";
+            document.getElementById('next-btn').style.display = "none";
+            document.getElementById('skip-btn').style.display = "none";
+            document.getElementById('slow-btn').style.display = "none";
+            document.getElementById('mic-btn').style.display = "inline-block";
+            document.getElementById('vowel-quiz').style.display = "none";
+        } else {
+            showFinal();
+        }
+    }
 
-synth.speak(u);
-
-}
-
-function startListen(){
-
-status.style.display="block";
-status.innerText="استمع...";
-
-rec.start();
-
-}
-
-rec.onresult=e=>{
-
-let heard=e.results[0][0].transcript.toLowerCase();
-let target=data[i].w.toLowerCase();
-
-if(heard===target){
-
-status.style.background="#d4edda";
-status.style.color="#155724";
-status.innerHTML="ممتاز ✅";
-
-vowelBox.style.display="block";
-micBtn.style.display="none";
-
-}else{
-
-status.style.background="#f8d7da";
-status.style.color="#721c24";
-status.innerHTML="خطأ ❌ قلت: "+heard;
-
-slowBtn.style.display="inline-block";
-
-}
-
-};
-
-function checkVowel(v){
-
-if(v===data[i].v){
-
-score++;
-
-vowelBox.style.display="none";
-nextBtn.style.display="inline-block";
-
-}else{
-alert("حاول مرة أخرى");
-}
-
-}
-
-function next(){
-
-i++;
-
-if(i<data.length){
-
-target-word.innerText=data[i].w;
-
-}else{
-
-showResult();
-
-}
-
-}
-
-function showResult(){
-
-document.querySelector(".container").innerHTML="";
-
-document.querySelector(".container").innerHTML=`
-
-<h2>النتيجة النهائية</h2>
-
-<p>${score} / 10</p>
-
-<a class="whatsapp-link" target="_blank"
-href="https://wa.me/249901946410?text=النتيجة:${score}/10">
-
-إرسال للأستاذ</a>
-
-`;
-
-}
-
+    function showFinal() {
+        document.querySelector('.platform-header').nextElementSibling.style.display = "none";
+        document.querySelector('.word-card').style.display = "none";
+        document.getElementById('mic-btn').style.display = "none";
+        document.getElementById('status-area').style.display = "none";
+        document.getElementById('result-page').style.display = "block";
+        document.getElementById('score-text').innerText = `النتيجة: ${score} من 10`;
+        const msg = `*تقرير منصة البرامج التخصصية*%0Aالنتيجة: ${score}/10`;
+        document.getElementById('wa-btn').href = `https://wa.me/249901946410?text=${msg}`;
+    }
 </script>
-
 </body>
 </html>
