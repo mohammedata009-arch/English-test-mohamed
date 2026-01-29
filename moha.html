@@ -2,169 +2,149 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>اختبار منصة البرامج التخصصية - إدارة محمد طه</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة البرامج التخصصية - اختبار النطق</title>
     <style>
         :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --success: #27ae60;
-            --error: #e74c3c;
-            --bg: #f4f7f6;
+            --primary-color: #1a5f7a; /* لون احترافي مريح للعين */
+            --accent-color: #25D366; /* لون الواتساب */
+            --bg-color: #f8f9fa;
+            --text-dark: #2c3e50;
         }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); display: flex; justify-content: center; padding: 20px; }
-        .quiz-container { background: white; width: 100%; max-width: 600px; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 10px solid var(--secondary); }
-        header { text-align: center; margin-bottom: 20px; }
-        h1 { color: var(--primary); font-size: 24px; margin-bottom: 5px; }
-        .admin-name { color: var(--secondary); font-weight: bold; margin-bottom: 10px; }
-        .progress-bar { width: 100%; height: 10px; background: #eee; border-radius: 5px; margin-bottom: 20px; overflow: hidden; }
-        #progress { height: 100%; background: var(--secondary); width: 0%; transition: 0.3s; }
-        .question { display: none; margin-bottom: 20px; }
-        .question.active { display: block; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .options { list-style: none; padding: 0; }
-        .options li { background: #eee; margin: 10px 0; padding: 15px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: 500; text-align: left; direction: ltr; }
-        .options li:hover { background: #ddd; }
-        .options li.correct { background: var(--success) !important; color: white; }
-        .options li.wrong { background: var(--error) !important; color: white; }
-        .explanation { display: none; background: #e8f4fd; padding: 15px; border-right: 5px solid var(--secondary); margin-top: 15px; border-radius: 5px; font-size: 14px; }
-        .footer { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 15px; }
-        #result-area { text-align: center; display: none; }
-        .btn-whatsapp { background: #25D366; color: white; padding: 15px 25px; border: none; border-radius: 50px; cursor: pointer; font-size: 18px; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 20px; transition: 0.3s; }
-        .btn-whatsapp:hover { background: #128C7E; transform: scale(1.05); }
-        input[type="text"] { width: 100%; padding: 12px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        .speaker-icon { cursor: pointer; color: var(--secondary); font-size: 20px; margin-right: 10px; vertical-align: middle; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: var(--bg-color); 
+            display: flex; 
+            justify-content: center; 
+            padding: 20px;
+            color: var(--text-dark);
+        }
+        .container { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 25px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            max-width: 600px; 
+            width: 100%; 
+            text-align: center;
+            border-top: 8px solid var(--primary-color);
+        }
+        .header-section { margin-bottom: 30px; }
+        .platform-title { font-size: 1.8rem; color: var(--primary-color); margin: 0; font-weight: 800; }
+        .manager-name { font-size: 1.1rem; color: #7f8c8d; margin-top: 5px; }
+        
+        .quiz-box { background: #fdfdfd; padding: 20px; border-radius: 15px; border: 1px solid #eee; }
+        .word-display { font-size: 3.5rem; color: var(--primary-color); margin: 20px 0; font-weight: bold; letter-spacing: 2px; }
+        
+        .btn { border: none; padding: 15px 30px; border-radius: 12px; cursor: pointer; font-size: 1rem; margin: 8px; transition: 0.3s; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-listen { background: #3498db; color: white; }
+        .btn-speak { background: #e74c3c; color: white; }
+        .btn-next { background: var(--primary-color); color: white; display: none; width: 100%; justify-content: center; margin-top: 20px; }
+        
+        .status { margin-top: 15px; font-weight: bold; min-height: 24px; padding: 10px; border-radius: 8px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        
+        .whatsapp-btn { background: var(--accent-color); color: white; text-decoration: none; display: none; padding: 18px; border-radius: 12px; margin-top: 25px; font-size: 1.2rem; font-weight: bold; }
+        .progress-bar { font-size: 0.9rem; color: #95a5a6; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-<div class="quiz-container">
-    <header>
-        <h1>منصة البرامج التخصصية</h1>
-        <div class="admin-name">إدارة: محمد طه عطا المنان</div>
-        <div class="progress-bar"><div id="progress"></div></div>
-    </header>
-
-    <div id="setup-area">
-        <p style="text-align: center;">الرجاء إدخال اسمك للبدء في اختبار الصفات:</p>
-        <input type="text" id="user-name" placeholder="اكتب اسمك الثلاثي هنا...">
-        <button class="btn-whatsapp" style="width:100%" onclick="startQuiz()">ابدأ الاختبار الآن</button>
+<div class="container">
+    <div class="header-section">
+        <h1 class="platform-title">منصة البرامج التخصصية</h1>
+        <div class="manager-name">إدارة: محمد طه عطا المنان</div>
     </div>
 
-    <div id="quiz-area" style="display:none;">
-        <div id="questions-container"></div>
-        <div id="explanation-box" class="explanation"></div>
-        <div class="footer">
-            <span id="score-tracker">النقاط: 0</span>
-            <span id="question-number">السؤال 1 من 10</span>
+    <div id="quiz-area">
+        <div class="progress-bar" id="progress">تمرين رقم 1 من 10</div>
+        <div class="quiz-box">
+            <p style="margin: 0; color: #666;">انطق الكلمة التالية:</p>
+            <div class="word-display" id="target-word">Cat</div>
+            
+            <button class="btn btn-listen" onclick="speakWord()">🔊 استمع</button>
+            <button class="btn btn-speak" id="mic-btn" onclick="startRecognition()">🎤 سجل نطقك</button>
+            
+            <div id="status-msg" class="status" style="visibility: hidden;"></div>
+            <button class="btn btn-next" id="next-btn" onclick="nextQuestion()">الكلمة التالية ⮕</button>
         </div>
     </div>
 
-    <div id="result-area">
-        <h2>اكتمل الاختبار بنجاح!</h2>
-        <p id="final-score" style="font-size: 28px; color: var(--success); font-weight: bold;"></p>
-        <p>اضغط على الزر أدناه لإرسال تقريرك للإدارة</p>
-        <a id="whatsapp-link" href="#" class="btn-whatsapp">إرسال النتيجة عبر واتساب ✅</a>
+    <div id="result-area" style="display:none;">
+        <h2 style="color: var(--primary-color);">اكتمل الاختبار بنجاح!</h2>
+        <p id="final-score" style="font-size: 1.4rem; font-weight: bold;"></p>
+        <p>سيتم إرسال تقرير الأداء المباشر للإدارة.</p>
+        <a id="whatsapp-link" class="whatsapp-btn" target="_blank">إرسال النتيجة للأستاذ محمد ✅</a>
     </div>
 </div>
 
-<audio id="sound-correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
-<audio id="sound-wrong" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
-
 <script>
-    const questions = [
-        { q: "The manager gave a __________ presentation.", options: ["Good", "Compelling", "Well"], correct: 1, exp: "<b>المعنى:</b> قدم المدير عرضاً تقديمياً <b>مقنعاً</b>. نستخدم Compelling لوصف قوة الإقناع." },
-        { q: "We need a __________ analysis.", options: ["Comprehensive", "Comprehensively", "Quickly"], correct: 0, exp: "<b>المعنى:</b> نحن بحاجة لتحليل <b>شامل</b>. نستخدم Comprehensive لوصف الأسماء." },
-        { q: "The developer is very __________.", options: ["Slow", "Diligent", "Diligently"], correct: 1, exp: "<b>المعنى:</b> المطور الجديد <b>مجتهد</b> جداً. Diligent هي صفة احترافية للموظف." },
-        { q: "This is a __________ solution.", options: ["Reliable", "Reliably", "Fastly"], correct: 0, exp: "<b>المعنى:</b> هذا البرنامج يوفر حلاً <b>موثوقاً</b>. الموثوقية أهم صفات البرمجيات." },
-        { q: "The system became more __________.", options: ["Stable", "Stably", "Stability"], correct: 0, exp: "<b>المعنى:</b> أصبح النظام أكثر <b>استقراراً</b>. Stable تصف حالة النظام التقني." },
-        { q: "The team achieved __________ results.", options: ["Exceptional", "Exceptionally", "Bad"], correct: 0, exp: "<b>المعنى:</b> حقق الفريق نتائج <b>استثنائية</b>. تعني نتائج تفوق التوقعات." },
-        { q: "It is __________ to maintain a backup.", options: ["Crucially", "Crucial", "Importance"], correct: 1, exp: "<b>المعنى:</b> من <b>الضروري جداً</b> الاحتفاظ بنسخة احتياطية لتجنب فقدان البيانات." },
-        { q: "She is a __________ leader.", options: ["Vision", "Visionary", "Visionarily"], correct: 1, exp: "<b>المعنى:</b> هي قائدة <b>ذات رؤية</b> ملهمة للمستقبل." },
-        { q: "The support team was very __________.", options: ["Helpfully", "Helpful", "Help"], correct: 1, exp: "<b>المعنى:</b> كان فريق الدعم الفني <b>متعاوناً</b> جداً في حل المشكلة." },
-        { q: "We need a __________ person for this job.", options: ["Competent", "Competently", "Competence"], correct: 0, exp: "<b>المعنى:</b> نحن بحاجة لشخص <b>كفء</b>. Competent تعني لديه المهارة الكافية." }
-    ];
-
-    let currentQ = 0;
+    const words = ["Cat", "Bed", "Sit", "Hot", "Cup", "Map", "Pen", "Pig", "Dog", "Sun"];
+    let currentIndex = 0;
     let score = 0;
-    let userName = "";
 
-    function speak(text) {
-        const msg = new SpeechSynthesisUtterance();
-        msg.text = text.replace("__________", "blank");
+    function speakWord() {
+        const msg = new SpeechSynthesisUtterance(words[currentIndex]);
         msg.lang = 'en-US';
+        msg.rate = 0.8; // سرعة أبطأ قليلاً للوضوح
         window.speechSynthesis.speak(msg);
     }
 
-    function startQuiz() {
-        userName = document.getElementById('user-name').value;
-        if (!userName) { alert("من فضلك أدخل اسمك الثلاثي"); return; }
-        document.getElementById('setup-area').style.display = 'none';
-        document.getElementById('quiz-area').style.display = 'block';
-        showQuestion();
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!Recognition) {
+        alert("متصفحك لا يدعم خاصية التعرف على الصوت. يرجى استخدام متصفح Chrome.");
+    }
+    const recognizer = new Recognition();
+    recognizer.lang = 'en-US';
+
+    function startRecognition() {
+        const status = document.getElementById('status-msg');
+        status.style.visibility = "visible";
+        status.innerText = "جاري الاستماع... تحدث الآن";
+        status.className = "status";
+        recognizer.start();
     }
 
-    function showQuestion() {
-        const container = document.getElementById('questions-container');
-        const expBox = document.getElementById('explanation-box');
-        const q = questions[currentQ];
+    recognizer.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.toLowerCase();
+        const target = words[currentIndex].toLowerCase();
+        const status = document.getElementById('status-msg');
         
-        expBox.style.display = 'none';
-        container.innerHTML = `
-            <div class="question active">
-                <h3 style="direction: ltr; text-align: left;">
-                    <span class="speaker-icon" onclick="speak('${q.q}')">🔊</span>
-                    ${currentQ + 1}. ${q.q}
-                </h3>
-                <ul class="options">
-                    ${q.options.map((opt, i) => `<li onclick="checkAnswer(${i}, this)">${opt}</li>`).join('')}
-                </ul>
-            </div>
-        `;
-        speak(q.q); // نطق الجملة تلقائياً عند ظهورها
-        document.getElementById('question-number').innerText = `السؤال ${currentQ + 1} من ${questions.length}`;
-        document.getElementById('progress').style.width = `${((currentQ) / questions.length) * 100}%`;
-    }
-
-    function checkAnswer(idx, element) {
-        const correctIdx = questions[currentQ].correct;
-        const options = document.querySelectorAll('.options li');
-        const expBox = document.getElementById('explanation-box');
-        
-        options.forEach(li => li.style.pointerEvents = 'none');
-
-        if (idx === correctIdx) {
-            element.classList.add('correct');
+        if (transcript.includes(target)) {
+            status.innerText = `رائع! نطقك لـ "${words[currentIndex]}" صحيح ✅`;
+            status.className = "status success";
             score++;
-            document.getElementById('sound-correct').play();
         } else {
-            element.classList.add('wrong');
-            options[correctIdx].classList.add('correct');
-            document.getElementById('sound-wrong').play();
+            status.innerText = `حاول مرة أخرى، سمعت: "${transcript}" ❌`;
+            status.className = "status error";
         }
+        document.getElementById('next-btn').style.display = "flex";
+    };
 
-        expBox.innerHTML = questions[currentQ].exp;
-        expBox.style.display = 'block';
-        document.getElementById('score-tracker').innerText = `النقاط: ${score}`;
-
-        setTimeout(() => {
-            currentQ++;
-            if (currentQ < questions.length) {
-                showQuestion();
-            } else {
-                document.getElementById('progress').style.width = `100%`;
-                showResult();
-            }
-        }, 3500); // زيادة الوقت قليلاً ليتمكن الطالب من قراءة التوضيح
+    function nextQuestion() {
+        currentIndex++;
+        if (currentIndex < words.length) {
+            document.getElementById('target-word').innerText = words[currentIndex];
+            document.getElementById('progress').innerText = `تمرين رقم ${currentIndex + 1} من 10`;
+            document.getElementById('status-msg').style.visibility = "hidden";
+            document.getElementById('next-btn').style.display = "none";
+        } else {
+            showFinalResult();
+        }
     }
 
-    function showResult() {
-        document.getElementById('quiz-area').style.display = 'none';
-        document.getElementById('result-area').style.display = 'block';
-        document.getElementById('final-score').innerText = `النتيجة: ${score} من 10`;
+    function showFinalResult() {
+        document.getElementById('quiz-area').style.display = "none";
+        document.getElementById('result-area').style.display = "block";
+        document.getElementById('final-score').innerText = `النتيجة النهائية: ${score} من 10`;
         
-        const message = `مرحباً أستاذ محمد طه، أنا المتدرب: ${userName}. لقد أكملت اختبار الصفات بنجاح وحصلت على: (${score}/10) في منصة البرامج التخصصية.`;
-        const whatsappUrl = `https://wa.me/249901946410?text=${encodeURIComponent(message)}`;
-        document.getElementById('whatsapp-link').href = whatsappUrl;
+        const phone = "249901946410";
+        const message = `*تقرير أداء طالب*%0A--------------------------%0A*المنصة:* منصة البرامج التخصصية%0A*الإدارة:* أ. محمد طه عطا المنان%0A*النشاط:* اختبار نطق (Short Vowels)%0A*النتيجة:* ${score} من 10%0A--------------------------%0Aتم الإرسال آلياً عبر النظام.`;
+        
+        const linkElem = document.getElementById('whatsapp-link');
+        linkElem.href = `https://wa.me/${phone}?text=${message}`;
+        linkElem.style.display = "block";
     }
 </script>
 
