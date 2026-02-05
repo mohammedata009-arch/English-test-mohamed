@@ -2,121 +2,292 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>منصة البرامج التخصصية - اختبار</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة البرامج التخصصية - إدارة محمد طه</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; padding: 15px; text-align: right; }
-        .header-box { background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .header-box h2 { margin: 0; font-size: 1.4em; }
-        .header-box p { margin: 5px 0 0; font-size: 1em; opacity: 0.9; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        .user-info { margin-bottom: 25px; padding: 15px; background: #fffbe6; border-radius: 10px; border: 1px solid #ffe58f; }
-        label { font-weight: bold; color: #2c3e50; display: block; margin-bottom: 8px; }
-        input[type="text"] { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1em; box-sizing: border-box; }
-        .question-block { margin-bottom: 25px; padding: 15px; border: 1px solid #eee; border-radius: 10px; background: #fafafa; }
-        .question-text { font-size: 1.1em; font-weight: bold; margin-bottom: 5px; color: #333; }
-        .translation { color: #666; font-size: 0.9em; margin-bottom: 10px; display: block; }
-        .options button { display: block; width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #3498db; border-radius: 8px; background: white; cursor: pointer; transition: 0.3s; font-size: 1em; font-weight: 500; }
-        .options button:hover:not(:disabled) { background: #3498db; color: white; }
-        .feedback { margin-top: 10px; font-weight: bold; padding: 10px; border-radius: 8px; display: none; }
-        .correct { background: #d4edda; color: #155724; }
-        .wrong { background: #f8d7da; color: #721c24; }
-        #final-btn { display: none; width: 100%; padding: 18px; background: #25d366; color: white; border: none; border-radius: 10px; font-size: 1.2em; cursor: pointer; font-weight: bold; margin-top: 20px; transition: 0.3s; }
-        #final-btn:hover { background: #128c7e; transform: scale(1.02); }
+        :root {
+            --primary-color: #1a2a6c;
+            --secondary-color: #b21f1f;
+            --accent-color: #fdbb2d;
+            --bg-color: #f0f4f8;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--white);
+            min-height: 600px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .main-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .main-header h1 { margin: 0; font-size: 1.8rem; }
+        .main-header p { margin: 5px 0 0; opacity: 0.9; font-size: 1.1rem; }
+
+        .screen {
+            padding: 30px;
+            display: none;
+            flex-grow: 1;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .active { display: flex; flex-direction: column; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome-screen { text-align: center; justify-content: center; }
+        .input-group { margin: 30px 0; }
+        input[type="text"] {
+            width: 80%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        .btn:hover { transform: scale(1.05); background: var(--secondary-color); }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        #progress-fill {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0%;
+            transition: 0.4s;
+        }
+        .question-box h2 { font-size: 1.4rem; color: var(--primary-color); margin-bottom: 10px; direction: ltr; text-align: left; }
+        .translation { color: #666; font-style: italic; margin-bottom: 20px; display: block; }
+        .hint-box { background: #fffbe6; padding: 10px; border-radius: 8px; border: 1px solid #ffe58f; margin-bottom: 20px; font-size: 0.9rem; }
+
+        .options-list button {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            background: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: left;
+            direction: ltr;
+        }
+        .options-list button:hover:not(:disabled) { background: #f8f9fa; border-color: var(--primary-color); }
+
+        .certificate {
+            border: 10px double var(--accent-color);
+            padding: 30px;
+            text-align: center;
+            background: #fff;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .cert-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary-color); }
+        .cert-name { font-size: 2rem; color: var(--secondary-color); font-weight: bold; margin: 15px 0; border-bottom: 2px solid #eee; display: inline-block; padding: 0 30px; }
+        
+        .whatsapp-link {
+            background: #25d366;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .correct-opt { background: #d4edda !important; border-color: #28a745 !important; color: #155724; }
+        .wrong-opt { background: #f8d7da !important; border-color: #dc3545 !important; color: #721c24; }
     </style>
 </head>
 <body>
 
-<div class="header-box">
-    <h2>منصة البرامج التخصصية</h2>
-    <p>إدارة: محمد طه عطا المنان</p>
-</div>
+<div class="app-container">
+    <header class="main-header">
+        <h1>منصة البرامج التخصصية</h1>
+        <p>إدارة: محمد طه عطا المنان</p>
+    </header>
 
-<div class="container">
-    <div class="user-info">
-        <label for="studentName">اسم المتدرب المعتمد:</label>
-        <input type="text" id="studentName" placeholder="أدخل اسمك الكامل هنا...">
-    </div>
-    
-    <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
-
-    <div class="question-block">
-        <span class="question-text">1. The apple ________ by Ali yesterday.</span>
-        <span class="translation">(التفاحة أُكِلت بواسطة علي أمس)</span>
-        <div class="options">
-            <button onclick="answer(1, 0, this)">is eaten</button>
-            <button onclick="answer(1, 1, this)">was eaten</button>
+    <div id="welcome-screen" class="screen active">
+        <div class="welcome-screen">
+            <i class="fa-solid fa-graduation-cap" style="font-size: 4rem; color: var(--primary-color); margin-bottom: 20px;"></i>
+            <h2>اختبار إتقان المبني للمجهول</h2>
+            <p>أهلاً بك يا بطل! خض الاختبار الآن واحصل على شهادة نجاحك المعتمدة فوراً.</p>
+            <div class="input-group">
+                <input type="text" id="trainee-name" placeholder="أدخل اسمك الكامل هنا">
+            </div>
+            <button class="btn" onclick="startQuiz()">بدء الاختبار</button>
         </div>
-        <div id="f1" class="feedback"></div>
     </div>
 
-    <div class="question-block">
-        <span class="question-text">2. The room ________ every day.</span>
-        <span class="translation">(الغرفة تُنظف كل يوم)</span>
-        <div class="options">
-            <button onclick="answer(2, 1, this)">is cleaned</button>
-            <button onclick="answer(2, 0, this)">was cleaned</button>
+    <div id="quiz-screen" class="screen">
+        <div class="quiz-header">
+            <span id="q-count">السؤال 1 من 10</span>
+            <span id="score-count" style="font-weight: bold; color: var(--secondary-color);">الدرجة: 0</span>
         </div>
-        <div id="f2" class="feedback"></div>
-    </div>
-
-    <div class="question-block">
-        <span class="question-text">3. The oil ________ changed last week.</span>
-        <span class="translation">(الزيت غُيِّر الأسبوع الماضي)</span>
-        <div class="options">
-            <button onclick="answer(3, 1, this)">was</button>
-            <button onclick="answer(3, 0, this)">is</button>
+        <div class="progress-bar"><div id="progress-fill"></div></div>
+        
+        <div class="question-box">
+            <h2 id="q-text"></h2>
+            <span id="q-trans" class="translation"></span>
+            <div id="q-hint" class="hint-box"></div>
+            <div class="options-list" id="options-container"></div>
         </div>
-        <div id="f3" class="feedback"></div>
     </div>
 
-    <button id="final-btn" onclick="sendToWhatsApp()">✅ إرسال التقرير للأستاذ محمد طه</button>
+    <div id="result-screen" class="screen">
+        <div id="success-area">
+            <div class="certificate">
+                <div class="cert-title">شهادة إنجاز</div>
+                <p>تشهد منصة البرامج التخصصية بأن المتدرب:</p>
+                <div class="cert-name" id="display-name"></div>
+                <p>قد اجتاز اختبار (Passive Voice) بنجاح.</p>
+                <p>الدرجة المستحقة: <strong id="final-score-display"></strong> من 10</p>
+                <div style="margin-top: 15px;">
+                    <p>إدارة: <strong>محمد طه عطا المنان</strong></p>
+                </div>
+            </div>
+            <button class="whatsapp-link" onclick="sendToWhatsApp()">
+                <i class="fa-brands fa-whatsapp"></i> إرسال الشهادة للاعتماد (واتساب)
+            </button>
+            <button class="btn" style="margin-top: 15px; width: 100%; background: #666;" onclick="location.reload()">إعادة الاختبار</button>
+        </div>
+    </div>
 </div>
 
 <script>
+    const questions = [
+        { q: "The milk ________ by the cat every morning.", t: "(الحليب يُشرب بواسطة القطة كل صباح)", h: "تلميح: Every morning تدل على تكرار (مضارع).", o: ["is drunk", "was drunk"], a: 0 },
+        { q: "My car ________ repaired yesterday.", t: "(سيارتي أُصلحت أمس)", h: "تلميح: Yesterday تدل على الماضي.", o: ["is", "was"], a: 1 },
+        { q: "Dinner ________ served at 8 PM daily.", t: "(العشاء يُقدم يومياً الساعة 8)", h: "تلميح: Daily تدل على حقيقة أو نظام.", o: ["is", "was"], a: 0 },
+        { q: "These letters ________ written by Sarah.", t: "(هذه الخطابات كُتبت بواسطة سارة)", h: "تلميح: Letters جمع.", o: ["were", "was"], a: 0 },
+        { q: "Is the homework ________?", t: "(هل الواجب تم إنهاؤه؟)", h: "تلميح: بعد is نحتاج التصريف الثالث.", o: ["finish", "finished"], a: 1 },
+        { q: "Rice ________ grown in Egypt.", t: "(الأرز يُزرع في مصر)", h: "تلميح: هذه حقيقة عامة (مضارع).", o: ["is", "are"], a: 0 },
+        { q: "The window ________ broken last night.", t: "(النافذة كُسرت ليلة أمس)", h: "تلميح: Last night تدل على الماضي.", o: ["was", "is"], a: 0 },
+        { q: "Lessons ________ explained clearly.", t: "(الدروس تُشرح بوضوح)", h: "تلميح: الدروس (Lessons) جمع.", o: ["are", "is"], a: 0 },
+        { q: "Was the oil ________?", t: "(هل تم تغيير الزيت؟)", h: "تلميح: نحتاج التصريف الثالث.", o: ["changed", "change"], a: 0 },
+        { q: "The cake ________ eaten by the kids.", t: "(الكعكة أُكلت بواسطة الأطفال)", h: "تلميح: حدث وقع في الماضي.", o: ["was", "were"], a: 0 }
+    ];
+
+    let currentIdx = 0;
     let score = 0;
-    let questionsAnswered = 0;
-    const totalQuestions = 3;
-    const phone = "249901946410";
+    let traineeName = "";
 
-    function answer(qNum, isCorrect, btn) {
-        const feedback = document.getElementById('f' + qNum);
-        feedback.style.display = 'block';
-        
-        const buttons = btn.parentElement.querySelectorAll('button');
-        buttons.forEach(b => b.disabled = true);
+    function startQuiz() {
+        traineeName = document.getElementById('trainee-name').value;
+        if (!traineeName) { alert("يرجى إدخال اسمك أولاً."); return; }
+        showScreen('quiz-screen');
+        loadQuestion();
+    }
 
-        if (isCorrect) {
-            score++;
-            feedback.innerText = "✅ إجابة صحيحة (Correct)";
-            feedback.className = "feedback correct";
-            btn.style.background = "#2ecc71";
-            btn.style.color = "white";
-        } else {
-            feedback.innerText = "❌ إجابة خاطئة (Wrong)";
-            feedback.className = "feedback wrong";
-            btn.style.background = "#e74c3c";
-            btn.style.color = "white";
-        }
-        
-        questionsAnswered++;
-        if (questionsAnswered === totalQuestions) {
-            document.getElementById('final-btn').style.display = 'block';
-        }
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function loadQuestion() {
+        if (currentIdx >= questions.length) { showResults(); return; }
+        const q = questions[currentIdx];
+        document.getElementById('q-count').innerText = `السؤال ${currentIdx + 1} من 10`;
+        document.getElementById('score-count').innerText = `الدرجة: ${score}`;
+        document.getElementById('progress-fill').style.width = `${(currentIdx / 10) * 100}%`;
+        document.getElementById('q-text').innerText = q.q;
+        document.getElementById('q-trans').innerText = q.t;
+        document.getElementById('q-hint').innerText = q.h;
+        const container = document.getElementById('options-container');
+        container.innerHTML = "";
+        q.o.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(i, btn);
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selectedIdx, btn) {
+        const correctIdx = questions[currentIdx].a;
+        const btns = document.querySelectorAll('#options-container button');
+        btns.forEach(b => b.disabled = true);
+        if (selectedIdx === correctIdx) { score++; btn.classList.add('correct-opt'); } 
+        else { btn.classList.add('wrong-opt'); btns[correctIdx].classList.add('correct-opt'); }
+        setTimeout(() => { currentIdx++; loadQuestion(); }, 1200);
+    }
+
+    function showResults() {
+        showScreen('result-screen');
+        document.getElementById('display-name').innerText = traineeName;
+        document.getElementById('final-score-display').innerText = score;
     }
 
     function sendToWhatsApp() {
-        const name = document.getElementById('studentName').value;
-        if (!name) {
-            alert("عذراً، يرجى كتابة اسمك أولاً ليتم اعتماد النتيجة.");
-            return;
-        }
-        
-        const message = `*منصة البرامج التخصصية*%0A*إدارة الأستاذ: محمد طه عطا المنان*%0A%0Aتقرير اختبار المبني للمجهول:%0A👤 اسم المتدرب: ${name}%0A✅ النتيجة النهائية: ${score} من ${totalQuestions}`;
-        const url = `https://wa.me/${phone}?text=${message}`;
-        window.open(url, '_blank');
+        const phone = "249901946410";
+        const msg = `*منصة البرامج التخصصية*%0A*إدارة الأستاذ: محمد طه عطا المنان*%0A%0Aتقرير المتدرب المعتمد:%0A👤 الاسم: *${traineeName}*%0A✅ الدرجة: ${score} من 10%0A📜 الحالة: تم إصدار الشهادة بنجاح.`;
+        window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
     }
 </script>
 
 </body>
 </html>
+
