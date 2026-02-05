@@ -2,135 +2,121 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <title>منصة البرامج التخصصية - اختبار</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة البرامج التخصصية - إدارة محمد طه</title>
     <style>
-        :root { --primary: #1a5f7a; --secondary: #e67e22; --success: #27ae60; --error: #c0392b; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 20px; }
-        .container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); max-width: 600px; width: 100%; text-align: center; border-top: 10px solid var(--primary); position: relative; }
-        .word-main { font-size: 4.5rem; color: var(--primary); font-weight: bold; margin: 10px 0; }
-        .btn { border: none; padding: 15px 25px; border-radius: 12px; cursor: pointer; font-size: 1.1rem; margin: 8px; font-weight: bold; color: white; transition: 0.3s; }
-        .btn-listen { background: #3498db; width: 100%; font-size: 1.4rem; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3); }
-        .status-box { margin: 20px 0; padding: 15px; border-radius: 10px; font-weight: bold; min-height: 60px; line-height: 1.6; }
-        .vowel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .v-btn { border: 2.5px solid var(--primary); background: white; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 1.2rem; color: var(--primary); }
-        .v-btn:hover { background: var(--primary); color: white; }
-        #start-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; border-radius: 20px; z-index: 100; }
-        .hint-text { color: #e74c3c; font-weight: bold; font-size: 1.1rem; margin: 10px 0; border: 1px dashed #e74c3c; padding: 5px; border-radius: 5px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; padding: 15px; text-align: right; }
+        .header-box { background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .header-box h2 { margin: 0; font-size: 1.4em; }
+        .header-box p { margin: 5px 0 0; font-size: 1em; opacity: 0.9; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .user-info { margin-bottom: 25px; padding: 15px; background: #fffbe6; border-radius: 10px; border: 1px solid #ffe58f; }
+        label { font-weight: bold; color: #2c3e50; display: block; margin-bottom: 8px; }
+        input[type="text"] { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1em; box-sizing: border-box; }
+        .question-block { margin-bottom: 25px; padding: 15px; border: 1px solid #eee; border-radius: 10px; background: #fafafa; }
+        .question-text { font-size: 1.1em; font-weight: bold; margin-bottom: 5px; color: #333; }
+        .translation { color: #666; font-size: 0.9em; margin-bottom: 10px; display: block; }
+        .options button { display: block; width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #3498db; border-radius: 8px; background: white; cursor: pointer; transition: 0.3s; font-size: 1em; font-weight: 500; }
+        .options button:hover:not(:disabled) { background: #3498db; color: white; }
+        .feedback { margin-top: 10px; font-weight: bold; padding: 10px; border-radius: 8px; display: none; }
+        .correct { background: #d4edda; color: #155724; }
+        .wrong { background: #f8d7da; color: #721c24; }
+        #final-btn { display: none; width: 100%; padding: 18px; background: #25d366; color: white; border: none; border-radius: 10px; font-size: 1.2em; cursor: pointer; font-weight: bold; margin-top: 20px; transition: 0.3s; }
+        #final-btn:hover { background: #128c7e; transform: scale(1.02); }
     </style>
 </head>
 <body>
 
+<div class="header-box">
+    <h2>منصة البرامج التخصصية</h2>
+    <p>إدارة: محمد طه عطا المنان</p>
+</div>
+
 <div class="container">
-    <div id="start-screen">
-        <h1>منصة البرامج التخصصية</h1>
-        <p>إدارة: محمد طه عطا المنان</p>
-        <p style="margin-bottom:20px;">دورة إتقان 20 كلمة باللكنة الأمريكية</p>
-        <button class="btn" style="background:var(--secondary); padding: 20px 50px; font-size: 1.6rem;" onclick="initQuiz()">ابدأ التدريب الآن ▶️</button>
+    <div class="user-info">
+        <label for="studentName">اسم المتدرب المعتمد:</label>
+        <input type="text" id="studentName" placeholder="أدخل اسمك الكامل هنا...">
     </div>
-
-    <h2 style="color:var(--primary); margin:0;">منصة البرامج التخصصية</h2>
-    <p id="progress" style="color: #666; font-weight: bold;">الكلمة 1 من 20</p>
     
-    <div id="quiz-content">
-        <div class="word-main" id="target-word">Cat</div>
-        <div id="target-trans" style="color:var(--secondary); font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">(قطة)</div>
-        
-        <button class="btn btn-listen" onclick="playSound()">🔊 اسمع وكرر النطق</button>
-        <p class="hint-text">💡 نصيحة: كرر الكلمة بصوت عالٍ 3 مرات مع الجهاز</p>
+    <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
 
-        <hr style="margin: 20px 0; opacity: 0.2;">
-        
-        <div id="vowel-quiz">
-            <p style="font-weight:bold; font-size: 1.2rem;">ما هو الرمز الصوتي الصحيح؟</p>
-            <div class="vowel-grid" id="vowel-buttons">
-                <button class="v-btn" onclick="handleVowel('/æ/')">/æ/ (أَ مفتوحة)</button>
-                <button class="v-btn" onclick="handleVowel('/ɛ/')">/ɛ/ (إِ قصيرة)</button>
-                <button class="v-btn" onclick="handleVowel('/ɪ/')">/ɪ/ (كسرة خفيفة)</button>
-                <button class="v-btn" onclick="handleVowel('/ɑ/')">/ɑ/ (آ مفخمة)</button>
-                <button class="v-btn" onclick="handleVowel('/ʌ/')">/ʌ/ (أَ مكتومة)</button>
-            </div>
+    <div class="question-block">
+        <span class="question-text">1. The apple ________ by Ali yesterday.</span>
+        <span class="translation">(التفاحة أُكِلت بواسطة علي أمس)</span>
+        <div class="options">
+            <button onclick="answer(1, 0, this)">is eaten</button>
+            <button onclick="answer(1, 1, this)">was eaten</button>
         </div>
-
-        <div id="status-area" class="status-box" style="display:none;"></div>
+        <div id="f1" class="feedback"></div>
     </div>
 
-    <div id="result-page" style="display:none;">
-        <h2 style="color:var(--primary);">اكتمل تدريب الـ 20 كلمة</h2>
-        <p id="score-text" style="font-size:2.5rem; font-weight:bold; color:var(--success);"></p>
-        <a id="wa-btn" style="background:#25D366; color:white; text-decoration:none; display:block; padding:18px; border-radius:12px; font-size:1.2rem; font-weight:bold;" target="_blank">إرسال التقرير للأستاذ محمد ✅</a>
-        <p onclick="location.reload()" style="cursor:pointer; margin-top:20px; color:var(--primary); font-weight:bold;">إعادة التدريب 🔄</p>
+    <div class="question-block">
+        <span class="question-text">2. The room ________ every day.</span>
+        <span class="translation">(الغرفة تُنظف كل يوم)</span>
+        <div class="options">
+            <button onclick="answer(2, 1, this)">is cleaned</button>
+            <button onclick="answer(2, 0, this)">was cleaned</button>
+        </div>
+        <div id="f2" class="feedback"></div>
     </div>
+
+    <div class="question-block">
+        <span class="question-text">3. The oil ________ changed last week.</span>
+        <span class="translation">(الزيت غُيِّر الأسبوع الماضي)</span>
+        <div class="options">
+            <button onclick="answer(3, 1, this)">was</button>
+            <button onclick="answer(3, 0, this)">is</button>
+        </div>
+        <div id="f3" class="feedback"></div>
+    </div>
+
+    <button id="final-btn" onclick="sendToWhatsApp()">✅ إرسال التقرير للأستاذ محمد طه</button>
 </div>
 
 <script>
-    const data = [
-        {w: "Cat", t: "قطة", v: "/æ/", s: "صوت (أَ) عريضة"}, {w: "Bed", t: "سرير", v: "/ɛ/", s: "صوت (إِ) خفيفة"},
-        {w: "Sit", t: "يجلس", v: "/ɪ/", s: "صوت كسرة أمريكية"}, {w: "Hot", t: "ساخن", v: "/ɑ/", s: "صوت (آ) مفخمة"},
-        {w: "Cup", t: "كوب", v: "/ʌ/", s: "صوت (أَ) سريعة"}, {w: "Map", t: "خريطة", v: "/æ/", s: "صوت (أَ) عريضة"},
-        {w: "Pen", t: "قلم", v: "/ɛ/", s: "صوت (إِ) خفيفة"}, {w: "Pig", t: "خنزير", v: "/ɪ/", s: "صوت كسرة أمريكية"},
-        {w: "Dog", t: "كلب", v: "/ɑ/", s: "صوت (آ) مفخمة"}, {w: "Sun", t: "شمس", v: "/ʌ/", s: "صوت (أَ) سريعة"},
-        {w: "Hat", t: "قبعة", v: "/æ/", s: "صوت (أَ) عريضة"}, {w: "Red", t: "أحمر", v: "/ɛ/", s: "صوت (إِ) خفيفة"},
-        {w: "Kid", t: "طفل", v: "/ɪ/", s: "صوت كسرة أمريكية"}, {w: "Box", t: "صندوق", v: "/ɑ/", s: "صوت (آ) مفخمة"},
-        {w: "Bus", t: "حافلة", v: "/ʌ/", s: "صوت (أَ) سريعة"}, {w: "Bag", t: "حقيبة", v: "/æ/", s: "صوت (أَ) عريضة"},
-        {w: "Ten", t: "عشرة", v: "/ɛ/", s: "صوت (إِ) خفيفة"}, {w: "Win", t: "يفوز", v: "/ɪ/", s: "صوت كسرة أمريكية"},
-        {w: "Pot", t: "وعاء", v: "/ɑ/", s: "صوت (آ) مفخمة"}, {w: "Nut", t: "بندق", v: "/ʌ/", s: "صوت (أَ) سريعة"}
-    ];
+    let score = 0;
+    let questionsAnswered = 0;
+    const totalQuestions = 3;
+    const phone = "249901946410";
 
-    let idx = 0; let score = 0;
-    const speech = window.speechSynthesis;
-
-    function initQuiz() { document.getElementById('start-screen').style.display = 'none'; }
-    
-    function playSound() { 
-        speech.cancel(); 
-        const u = new SpeechSynthesisUtterance(data[idx].w); 
-        u.lang = 'en-US'; 
-        u.rate = 0.85; 
-        speech.speak(u); 
-    }
-
-    function handleVowel(v) {
-        const status = document.getElementById('status-area');
-        const vGrid = document.getElementById('vowel-buttons');
-        status.style.display = "block";
-        vGrid.style.pointerEvents = "none"; // منع الضغط المتكرر
+    function answer(qNum, isCorrect, btn) {
+        const feedback = document.getElementById('f' + qNum);
+        feedback.style.display = 'block';
         
-        if (v === data[idx].v) {
+        const buttons = btn.parentElement.querySelectorAll('button');
+        buttons.forEach(b => b.disabled = true);
+
+        if (isCorrect) {
             score++;
-            status.innerHTML = `إجابة صحيحة ✅<br>الرمز ${data[idx].v} يمثل ${data[idx].s} بالعربية.`;
-            status.style.background = "#d4edda"; status.style.color = "#155724";
+            feedback.innerText = "✅ إجابة صحيحة (Correct)";
+            feedback.className = "feedback correct";
+            btn.style.background = "#2ecc71";
+            btn.style.color = "white";
         } else {
-            status.innerHTML = `خطأ ❌ الإجابة الصحيحة هي: ${data[idx].v}<br>وهو يمثل ${data[idx].s} بالعربية.`;
-            status.style.background = "#f8d7da"; status.style.color = "#721c24";
+            feedback.innerText = "❌ إجابة خاطئة (Wrong)";
+            feedback.className = "feedback wrong";
+            btn.style.background = "#e74c3c";
+            btn.style.color = "white";
         }
         
-        setTimeout(() => {
-            vGrid.style.pointerEvents = "auto";
-            autoNext();
-        }, 3000);
-    }
-
-    function autoNext() {
-        idx++;
-        if (idx < data.length) {
-            document.getElementById('target-word').innerText = data[idx].w;
-            document.getElementById('target-trans').innerText = `(${data[idx].t})`;
-            document.getElementById('progress').innerText = `الكلمة ${idx + 1} من 20`;
-            document.getElementById('status-area').style.display = "none";
-        } else {
-            showFinal();
+        questionsAnswered++;
+        if (questionsAnswered === totalQuestions) {
+            document.getElementById('final-btn').style.display = 'block';
         }
     }
 
-    function showFinal() {
-        document.getElementById('quiz-content').style.display = "none";
-        document.getElementById('result-page').style.display = "block";
-        document.getElementById('score-text').innerText = `${score} / 20`;
-        const phone = "249901946410";
-        const message = encodeURIComponent(`*منصة البرامج التخصصية*\nتقرير تدريب الاستماع والتمييز (20 كلمة)\nإدارة: محمد طه عطا المنان\nالنتيجة: ${score}/20`);
-        document.getElementById('wa-btn').href = `https://wa.me/${phone}?text=${message}`;
+    function sendToWhatsApp() {
+        const name = document.getElementById('studentName').value;
+        if (!name) {
+            alert("عذراً، يرجى كتابة اسمك أولاً ليتم اعتماد النتيجة.");
+            return;
+        }
+        
+        const message = `*منصة البرامج التخصصية*%0A*إدارة الأستاذ: محمد طه عطا المنان*%0A%0Aتقرير اختبار المبني للمجهول:%0A👤 اسم المتدرب: ${name}%0A✅ النتيجة النهائية: ${score} من ${totalQuestions}`;
+        const url = `https://wa.me/${phone}?text=${message}`;
+        window.open(url, '_blank');
     }
 </script>
+
 </body>
 </html>
