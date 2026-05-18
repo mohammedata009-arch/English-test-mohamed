@@ -3,205 +3,465 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة البرامج التخصصية - إدارة محمد طه</title>
+    <title>منصة البرامج التخصصية - التحدي الأسطوري</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            --main-bg: #f0f2f5;
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --card-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            --accent-color: #ff9a9e;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary-neon: #818cf8;
+            --accent-gold: #fbbf24;
+            --neon-green: #34d399;
+            --neon-red: #f87171;
+            --text-main: #f8fafc;
         }
 
-        body { 
-            font-family: 'Segoe UI', Tahoma, sans-serif; 
-            background: var(--main-bg); 
-            margin: 0; 
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg-gradient);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 750px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            min-height: 650px;
+            border-radius: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(129, 140, 248, 0.1);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            position: relative;
         }
 
-        header { 
-            background: var(--primary-gradient); 
-            color: white; 
-            padding: 40px 20px; 
-            text-align: center; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            border-radius: 0 0 30px 30px;
-        }
-
-        .container { 
-            max-width: 700px; 
-            margin: -40px auto 40px; 
-            background: white; 
-            padding: 40px; 
-            border-radius: 25px; 
-            box-shadow: var(--card-shadow);
-            z-index: 10;
+        .main-header {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 25px 20px;
             text-align: center;
+            border-bottom: 2px solid rgba(129, 140, 248, 0.2);
         }
 
-        .btn { 
-            background: #fff;
-            color: #764ba2;
-            border: 2px solid #764ba2;
-            padding: 15px 30px; 
-            border-radius: 15px; 
-            cursor: pointer; 
-            font-size: 18px; 
-            font-weight: bold;
-            margin: 10px; 
-            width: 100%;
-            transition: all 0.3s ease;
+        .main-header h1 { margin: 0; font-size: 1.8rem; font-weight: 900; color: var(--primary-neon); text-shadow: 0 0 15px rgba(129, 140, 248, 0.6); }
+        .main-header p { margin: 5px 0 0; opacity: 0.8; font-size: 1.05rem; color: var(--accent-gold); font-weight: 700; }
+
+        .screen {
+            padding: 35px;
+            display: none;
+            flex-grow: 1;
+            animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .btn:hover { 
-            background: var(--primary-gradient);
+        .active { display: flex; flex-direction: column; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px) rotate(-1deg); }
+            75% { transform: translateX(10px) rotate(1deg); }
+        }
+
+        .shake-effect { animation: shake 0.3s ease-in-out; }
+
+        .welcome-screen { text-align: center; justify-content: center; }
+        
+        .pulse-logo {
+            font-size: 5rem;
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+            animation: logoPulse 2s infinite ease-in-out;
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4)); }
+            50% { transform: scale(1.08); filter: drop-shadow(0 0 25px rgba(251, 191, 36, 0.7)); }
+        }
+
+        .input-group { margin: 30px 0; }
+        input[type="text"] {
+            width: 85%;
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid rgba(129, 140, 248, 0.3);
+            border-radius: 14px;
+            font-size: 1.15rem;
             color: white;
-            transform: translateY(-3px);
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: var(--primary-neon);
+            box-shadow: 0 0 20px rgba(129, 140, 248, 0.4);
         }
 
-        .sound-btn { 
-            background: var(--accent-color);
+        .btn {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
             color: white;
-            width: 90px; height: 90px; 
-            border-radius: 50%; 
-            font-size: 40px; 
             border: none;
+            padding: 16px 40px;
+            border-radius: 14px;
+            font-size: 1.25rem;
             cursor: pointer;
-            margin: 20px auto;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 20px rgba(255, 154, 158, 0.4);
-            animation: pulse 2s infinite;
+            transition: 0.2s all;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(79, 70, 229, 0.5); }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        .points-badge {
+            font-weight: 900;
+            color: #fff;
+            background: linear-gradient(135deg, #059669, #10b981);
+            padding: 6px 18px;
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
         }
 
         .progress-bar {
-            height: 10px; background: #eee; border-radius: 5px; margin: 20px 0; overflow: hidden;
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        #inner-bar {
-            height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.5s;
+        #progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            width: 0%;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .footer { margin-top: auto; padding: 20px; color: #7f8c8d; font-size: 14px; text-align: center; }
+        .question-box h2 { font-size: 1.6rem; color: white; margin-bottom: 8px; direction: ltr; text-align: left; font-weight: 700; }
+        .translation { color: #94a3b8; font-style: italic; margin-bottom: 20px; display: block; font-size: 1.05rem; }
+        .hint-box { background: rgba(251, 191, 36, 0.08); padding: 14px; border-radius: 12px; border: 1px solid rgba(251, 191, 36, 0.2); margin-bottom: 25px; font-size: 0.95rem; color: #fde047; }
 
-        #quiz-box, #result-box { display: none; }
+        .options-list button {
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            background: rgba(30, 41, 59, 0.5);
+            color: var(--text-main);
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            direction: ltr;
+        }
+        .options-list button:hover:not(:disabled) { 
+            background: rgba(129, 140, 248, 0.15); 
+            border-color: var(--primary-neon); 
+            transform: scale(1.015);
+        }
 
-        .whatsapp-btn { background: #25D366; color: white; border: none; }
-        .whatsapp-btn:hover { background: #128C7E; }
+        .correct-opt { 
+            background: linear-gradient(135deg, #065f46 0%, #047857 100%) !important; 
+            border-color: var(--neon-green) !important; 
+            color: white !important;
+            box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
+            animation: answerPop 0.25s ease;
+        }
+        .wrong-opt { 
+            background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 100%) !important; 
+            border-color: var(--neon-red) !important; 
+            color: white !important;
+            box-shadow: 0 0 20px rgba(248, 113, 113, 0.4);
+        }
+
+        @keyframes answerPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+            100% { transform: scale(1); }
+        }
+
+        .certificate {
+            border: 4px solid var(--accent-gold);
+            padding: 40px 25px;
+            text-align: center;
+            background: radial-gradient(circle, #1e1b4b 0%, #0f172a 100%);
+            border-radius: 16px;
+            position: relative;
+            margin-bottom: 25px;
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.15);
+        }
+        .cert-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--accent-gold); font-weight: 900; text-shadow: 0 0 10px rgba(251, 191, 36, 0.3); }
+        .cert-name { font-size: 2.3rem; color: #fff; font-weight: 900; margin: 15px 0; border-bottom: 3px dashed var(--primary-neon); display: inline-block; padding: 0 20px; text-shadow: 0 0 8px rgba(255,255,255,0.5); }
+        
+        .rank-badge {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            padding: 8px 25px;
+            border-radius: 50px;
+            font-weight: 900;
+            display: inline-block;
+            margin: 10px 0;
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);
+            font-size: 1.15rem;
+        }
+
+        .whatsapp-link {
+            background: #25d366;
+            color: white;
+            padding: 16px 30px;
+            border-radius: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: bold;
+            font-size: 1.15rem;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+            transition: 0.2s;
+        }
+        .whatsapp-link:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.5); }
     </style>
 </head>
 <body>
 
-<header>
-    <h1 style="margin:0; font-size: 28px;">منصة البرامج التخصصية</h1>
-    <p style="opacity: 0.9; margin-top: 10px;">بإشراف الأستاذ: محمد طه عطا المنان</p>
-</header>
+<div class="app-container" id="game-card">
+    <header class="main-header">
+        <h1>منصة البرامج التخصصية</h1>
+        <p>إدارة المستشار: محمد طه عطا المنان</p>
+    </header>
 
-<div class="container">
-    <div id="start-box">
-        <h2 style="color: #4b6cb7;">اختبار النطق المتطور</h2>
-        <p>اضغط أدناه للبدء في اختبار الـ 26 حرفاً بالصوت</p>
-        <button class="btn" style="background: var(--primary-gradient); color: white;" onclick="initApp()">ابدأ الآن</button>
+    <div id="welcome-screen" class="screen active">
+        <div class="welcome-screen">
+            <div class="pulse-logo"><i class="fa-solid fa-bolt"></i></div>
+            <h2>تحدي النطق اليومي الأسطوري 🔥</h2>
+            <p>مرحباً بكم أعزائي المتدربين! هل أنتم مستعدون لكسر الأرقام القياسية واعتلاء عرش النطق اليوم؟ 15 سؤالاً تفاعلياً بانتظاركم لتفجير طاقتكم اللغوية!</p>
+            <div class="input-group">
+                <input type="text" id="trainee-name" placeholder="أدخلوا اسمكم الأسطوري لتثبيته في لوحة الشرف والشهادة">
+            </div>
+            <button class="btn" onclick="startQuiz()">دخول حلبة التحدي ⚡</button>
+        </div>
     </div>
 
-    <div id="quiz-box">
-        <div class="progress-bar"><div id="inner-bar"></div></div>
-        <p id="q-count" style="font-weight: bold; color: #7f8c8d;">السؤال 1 من 26</p>
-        <button class="sound-btn" onclick="playCurrentWord()">🔊</button>
-        <p>استمع للصوت ثم اختر الكلمة المماثلة:</p>
-        <div id="options"></div>
+    <div id="quiz-screen" class="screen">
+        <div class="quiz-header">
+            <span id="q-count" style="font-weight: 900; color: var(--primary-neon);">السؤال 1 من 15</span>
+            <span id="score-count" class="points-badge">🏆 النقاط: 0</span>
+        </div>
+        <div class="progress-bar"><div id="progress-fill"></div></div>
+        
+        <div class="question-box">
+            <h2 id="q-text"></h2>
+            <span id="q-trans" class="translation"></span>
+            <div id="q-hint" class="hint-box"></div>
+            <div class="options-list" id="options-container"></div>
+        </div>
     </div>
 
-    <div id="result-box">
-        <div style="font-size: 60px;">🏆</div>
-        <h2 style="color: #27ae60;">رائع جداً!</h2>
-        <p>لقد أكملت الاختبار في منصة الأستاذ محمد طه</p>
-        <h1 id="score-display" style="font-size: 50px; color: #764ba2;">0 / 26</h1>
-        <button class="btn whatsapp-btn" onclick="sendWhatsApp()">إرسال النتيجة للرقم الجديد</button>
+    <div id="result-screen" class="screen">
+        <div>
+            <div class="certificate">
+                <div class="cert-title">🏆 شهادة تفوق وسيطرة</div>
+                <p style="margin-top: 15px; color: #94a3b8;">تمنح منصة البرامج التخصصية هذه الرتبة العالية للمتدرب العبقري:</p>
+                <div class="cert-name" id="display-name"></div>
+                <div>الرتبة المكتسبة اليوم:</div>
+                <div class="rank-badge" id="rank-display">جاري الحساب...</div>
+                <p style="font-weight: bold; font-size: 1.15rem;">بعد إتمام اختبار (قواعد اللفظ المخملي والنطق المتقدم للغة الإنجليزية).</p>
+                <p style="color: var(--accent-gold); font-weight: 900;">مجموع نقاط الدوبامين: <span id="final-score-display"></span> من 15</p>
+                <div style="margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; font-size: 0.9rem; color: #94a3b8;">
+                    إشراف واعتماد: <strong>الأستاذ محمد طه عطا المنان</strong>
+                </div>
+            </div>
+            <button class="whatsapp-link" onclick="sendToWhatsApp()">
+                <i class="fa-brands fa-whatsapp" style="font-size: 1.5rem;"></i> صدم الجميع برتبتك واعتمد شهادتك فوراً
+            </button>
+            <button class="btn" style="margin-top: 15px; width: 100%; background: #334155; box-shadow: none;" onclick="location.reload()">تحطيم الرقم القياسي مرة أخرى 🔄</button>
+        </div>
     </div>
 </div>
 
-<footer class="footer">
-    جميع الحقوق محفوظة © منصة البرامج التخصصية - محمد طه عطا المنان 2026
-</footer>
-
 <script>
-    const alphabet = [
-        {l: "A", w: "Apple"}, {l: "B", w: "Ball"}, {l: "C", w: "Cat"}, 
-        {l: "D", w: "Dog"}, {l: "E", w: "Egg"}, {l: "F", w: "Fish"},
-        {l: "G", w: "Goat"}, {l: "H", w: "Hat"}, {l: "I", w: "Ice cream"},
-        {l: "J", w: "Jam"}, {l: "K", w: "Key"}, {l: "L", w: "Lion"},
-        {l: "M", w: "Moon"}, {l: "N", w: "Nose"}, {l: "O", w: "Orange"},
-        {l: "P", w: "Pen"}, {l: "Q", w: "Queen"}, {l: "R", w: "Rabbit"},
-        {l: "S", w: "Sun"}, {l: "T", w: "Tree"}, {l: "U", w: "Umbrella"},
-        {l: "V", w: "Van"}, {l: "W", w: "Watch"}, {l: "X", w: "X-ray"},
-        {l: "Y", w: "Yo-yo"}, {l: "Z", w: "Zebra"}
+    const questions = [
+        { q: "Which of the following is a vowel letter?", t: "(أي من الحروف التالية يُعد حرفاً متحركاً؟)", h: "تلميح للمتدربين: الحروف المتحركة خمسة وهي بمثابة التشكيل في العربية.", o: ["B", "E"], a: 1 },
+        { q: "How do we pronounce the 'CH' in the word 'Chair'?", t: "(كيف ننطق التركيب CH في كلمة Chair؟)", h: "تلميح للمتدربين: ينطق بتاء خفيفة تليها شين كصوت العطس.", o: ["مثل تش", "مثل ش فقط"], a: 0 },
+        { q: "The word 'Photo' starts with a 'PH'. It sounds like:", t: "(الكلمة التي تبدأ بـ PH يكون صوتها مثل حرف:)", h: "تلميح للمتدربين: التركيب PH يتحول كاملاً إلى صوت حرف الفاء.", o: ["P", "F"], a: 1 },
+        { q: "In the word 'City', the letter 'C' is pronounced as:", t: "(في كلمة City، يُنطق حرف C كـ:)", h: "تلميح للمتدربين: تذكروا القاعدة إذا جاء بعد C أحد الحروف الثلاثة (E, I, Y).", o: ["س", "ك"], a: 0 },
+        { q: "In the word 'Car', the letter 'C' is pronounced as:", t: "(في كلمة Car، يُنطق حرف C كـ:)", h: "تلميح للمتدربين: إذا جاء بعد C أي حرف غير الحروف الثلاثة المعروفة يتغير نطقها كلياً.", o: ["ك", "س"], a: 0 },
+        { q: "How many consonant letters are there in English?", t: "(كم عدد الحروف الساكنة في اللغة الإنجليزية؟)", h: "تلميح للمتدربين: اطرحوا الحروف المتحركة الخمسة من العدد الإجمالي للحروف 26.", o: ["21", "5"], a: 0 },
+        { q: "The letter 'E' at the end of the word 'Plane' is:", t: "(حرف E في نهاية كلمة Plane يكون:)", h: "تلميح للمتدربين: حرف E في آخر الكلمة يمد الحرف المتحرك السابق ولكنه صامت.", o: ["يُنطق بوضوح", "صامت لا يُنطق"], a: 1 },
+        { q: "Which word has the 'SH' sound pronounced as 'ش'?", t: "(أي كلمة تحتوي على صوت SH الذي يُنطق ش؟)", h: "تلميح للمتدربين: ابحثوا عن الكلمة التي تعني سفينة.", o: ["Ship", "Chip"], a: 0 },
+        { q: "The letter 'Y' in the word 'Yellow' is pronounced as:", t: "(حرف Y في كلمة Yellow يُنطق مثل حرف:)", h: "تلميح للمتدربين: يلفظ هذا الحرف منفرداً كـ (واي) ولكن داخل هذه الكلمة له نطق آخر.", o: ["ي", "و"], a: 0 },
+        { q: "In the word 'Go', the letter 'G' is pronounced as:", t: "(في كلمة Go، يُنطق حرف G كـ:)", h: "تلميح للمتدربين: ينطق كالجيم المصرية غير المعطشة هنا.", o: ["ج (قاهرة)", "جـ (فصيحة)"], a: 0 },
+        { q: "How do we pronounce 'TH' in the word 'Three'?", t: "(كيف ينطق التركيب TH في كلمة Three؟)", h: "تلميح للمتدربين: هذا التركيب له نطقان، وهنا يعني الرقم ثلاثة.", o: ["ث", "ذ"], a: 0 },
+        { q: "How do we pronounce 'TH' in the word 'This'?", t: "(كيف ينطق التركيب TH في كلمة This؟)", h: "تلميح للمتدربين: هذا اسم إشارة للمفرد القريب، دققوا في نطق الكلمة.", o: ["ث", "ذ"], a: 1 },
+        { q: "The letter 'P' in 'Pen' is pronounced differently from 'B' because:", t: "(حرف P في كلمة Pen ينطق بشكل مختلف عن B لأننا عند نطقه:)", h: "تلميح للمتدربين: حرف P هو حرف انفجاري خفيف يخرج مع الهواء تماماً.", o: ["نخرج نفخة هواء من الفم", "لا نخرج أي هواء"], a: 0 },
+        { q: "The تركيب 'KH' in names like 'Khaled' is used to output the sound:", t: "(التركيب KH في الأسماء مثل Khaled يُستخدم لإخراج صوت حرف:)", h: "تلميح للمتدربين: نستخدمه لتعويض صوت في الأسماء العربية لا يوجد له حرف أصلي بالإنجليزية.", o: ["خ", "ك"], a: 0 },
+        { q: "In the word 'General', the letter 'G' is pronounced as:", t: "(في كلمة General، يُنطق حرف G كـ:)", h: "تلميح للمتدربين: جاء بعد حرف G حرف E، تذكروا الحالات التي تجعلها فصيحة ومعطشة.", o: ["جـ (فصيحة معطشة)", "ج (قاهرة)"], a: 0 }
     ];
 
     let currentIdx = 0;
     let score = 0;
+    let traineeName = "";
 
-    function initApp() {
-        document.getElementById('start-box').style.display = 'none';
-        document.getElementById('quiz-box').style.display = 'block';
-        loadNext();
-    }
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    function playCurrentWord() {
-        let utter = new SpeechSynthesisUtterance(alphabet[currentIdx].w);
-        utter.lang = 'en-US';
-        utter.rate = 0.8;
-        window.speechSynthesis.speak(utter);
-    }
+    function triggerDopamineSound(status) {
+        if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+        const now = audioCtx.currentTime;
 
-    function loadNext() {
-        if (currentIdx >= alphabet.length) {
-            showResult();
-            return;
+        if (status === 'perfect') {
+            // نغمة كسب ذهبية خيالية تصاعدية (Super Win 🌟)
+            const freqs = [523.25, 659.25, 783.99, 1046.50];
+            freqs.forEach((f, idx) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(f, now + (idx * 0.07));
+                gain.gain.setValueAtTime(0.15, now + (idx * 0.07));
+                gain.gain.linearRampToValueAtTime(0, now + (idx * 0.07) + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + (idx * 0.07));
+                osc.stop(now + (idx * 0.07) + 0.3);
+            });
+        } 
+        else if (status === 'fail') {
+            // صوت تنبيه رقمي محرج واحترافي (Buzzer) يشبه مسابقات التلفزيون تماماً عند الإجابة الخاطئة
+            const osc1 = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc1.type = 'square';
+            osc2.type = 'square';
+            
+            // ترددان قريبان من بعضهما لخلق طنين المسابقات الحاد (Buzzer Effect)
+            osc1.frequency.setValueAtTime(130, now);
+            osc2.frequency.setValueAtTime(133, now);
+            
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.linearRampToValueAtTime(0, now + 0.25);
+            
+            osc1.connect(gain);
+            osc2.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc1.start(now);
+            osc2.start(now);
+            osc1.stop(now + 0.25);
+            osc2.stop(now + 0.25);
         }
+        else if (status === 'jackpot') {
+            // سيل نغمات الشهادة الجبار الهرموني
+            for (let i = 0; i < 6; i++) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = i % 2 === 0 ? 'triangle' : 'sine';
+                const f = 440 + (i * 110);
+                osc.frequency.setValueAtTime(f, now + (i * 0.1));
+                gain.gain.setValueAtTime(0.15, now + (i * 0.1));
+                gain.gain.linearRampToValueAtTime(0, now + (i * 0.1) + 0.4);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + (i * 0.1));
+                osc.stop(now + (i * 0.1) + 0.4);
+            }
+        }
+    }
 
-        document.getElementById('inner-bar').style.width = ((currentIdx / 26) * 100) + "%";
-        document.getElementById('q-count').innerText = `الحرف رقم ${currentIdx + 1} من 26`;
-        
-        const optionsDiv = document.getElementById('options');
-        optionsDiv.innerHTML = '';
+    function startQuiz() {
+        traineeName = document.getElementById('trainee-name').value;
+        if (!traineeName) { alert("من فضلك أدخل اسمك لتسجيل رتبتك في خوادم التحدي!"); return; }
+        showScreen('quiz-screen');
+        loadQuestion();
+    }
 
-        let correct = alphabet[currentIdx].w;
-        let wrong = alphabet[(currentIdx + 2) % 26].w;
-        let choices = [correct, wrong].sort(() => Math.random() - 0.5);
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
 
-        choices.forEach(choice => {
-            let b = document.createElement('button');
-            b.className = 'btn';
-            b.innerText = choice;
-            b.onclick = () => {
-                if(choice === correct) score++;
-                currentIdx++;
-                loadNext();
-            };
-            optionsDiv.appendChild(b);
+    function loadQuestion() {
+        if (currentIdx >= questions.length) { showResults(); return; }
+        const q = questions[currentIdx];
+        document.getElementById('q-count').innerText = `السؤال ${currentIdx + 1} من 15`;
+        document.getElementById('score-count').innerText = `🏆 النقاط: ${score}`;
+        document.getElementById('progress-fill').style.width = `${(currentIdx / 15) * 100}%`;
+        document.getElementById('q-text').innerText = q.q;
+        document.getElementById('q-trans').innerText = q.t;
+        document.getElementById('q-hint').innerText = q.h;
+        const container = document.getElementById('options-container');
+        container.innerHTML = "";
+        q.o.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(i, btn);
+            container.appendChild(btn);
         });
-
-        setTimeout(playCurrentWord, 700);
     }
 
-    function showResult() {
-        document.getElementById('quiz-box').style.display = 'none';
-        document.getElementById('result-box').style.display = 'block';
-        document.getElementById('score-display').innerText = `${score} / 26`;
+    function checkAnswer(selectedIdx, btn) {
+        const correctIdx = questions[currentIdx].a;
+        const btns = document.querySelectorAll('#options-container button');
+        const card = document.getElementById('game-card');
+        btns.forEach(b => b.disabled = true);
+        
+        if (selectedIdx === correctIdx) { 
+            score++; 
+            btn.classList.add('correct-opt'); 
+            triggerDopamineSound('perfect');
+        } else { 
+            btn.classList.add('wrong-opt'); 
+            btns[correctIdx].classList.add('correct-opt'); 
+            card.classList.add('shake-effect');
+            triggerDopamineSound('fail');
+            setTimeout(() => card.classList.remove('shake-effect'), 300);
+        }
+        setTimeout(() => { currentIdx++; loadQuestion(); }, 1200);
     }
 
-    function sendWhatsApp() {
-        // الرقم الجديد الذي طلبته
+    function showResults() {
+        showScreen('result-screen');
+        document.getElementById('display-name').innerText = traineeName;
+        document.getElementById('final-score-display').innerText = score;
+        
+        let rank = "";
+        if (score === 15) rank = "🔥 أسطورة اللفظ العالمية (الملك الخارق)";
+        else if (score >= 12) rank = "💎 المتدرب الماسي الفاخر";
+        else if (score >= 8) rank = "🏹 قناص الحروف المخضرم";
+        else rank = "🌱 محارب طموح (تحتاج للثأر غداً!)";
+        
+        document.getElementById('rank-display').innerText = rank;
+        triggerDopamineSound('jackpot');
+    }
+
+    function sendToWhatsApp() {
         const phone = "249901946410";
-        const msg = `*منصة البرامج التخصصية*\n*إشراف الأستاذ: محمد طه عطا المنان*\n\nالنتيجة النهائية للاختبار الصوتي:\nالدرجة: ${score} من 26\nتم الإنجاز بنجاح ✅`;
-        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+        const msg = `*منصة البرامج التخصصية*%0A*إشراف وإدارة: أ. محمد طه عطا المنان*%0A%0A🚀 تفجير هرمون الدوبامين والتحدي الأسطوري اليومي:%0A👤 العبقري الفائز: *${traineeName}*%0A🏅 الرتبة المستحقة: *${document.getElementById('rank-display').innerText}*%0A⭐ مجموع النقاط: ${score} من 15 نقطة ذهبية مرصعة!%0A%0A🎯 تم قفل اللعبة بنجاح وبانتظار التحدي القادم للاستمرار على العرش الفاخر!`;
+        window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
     }
 </script>
 
