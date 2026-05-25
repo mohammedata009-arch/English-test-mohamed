@@ -2,90 +2,46 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>تحدي الـ 20 سؤالاً - منصة البرامج التخصصية</title>
+    <title>اختبار عائلتي - محمد طه</title>
     <style>
-        body { font-family: 'Tajawal', sans-serif; background: #2c3e50; display: flex; justify-content: center; padding: 20px; }
-        #game { background: white; width: 100%; max-width: 500px; padding: 30px; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); text-align: center; }
-        .btn { display: block; width: 100%; padding: 15px; margin: 8px 0; border: none; border-radius: 12px; background: #ecf0f1; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: 0.3s; border-bottom: 4px solid #bdc3c7; }
-        .btn:hover { background: #dcdde1; }
-        .correct { background: #27ae60 !important; color: white; border-bottom: 4px solid #2ecc71; }
-        .wrong { background: #c0392b !important; color: white; border-bottom: 4px solid #e74c3c; }
-        #q-box { font-size: 1.2em; font-weight: bold; margin: 20px 0; color: #2c3e50; }
-        .phonetic { color: #d35400; font-size: 0.9em; display: block; margin-top: 5px; }
-        .wa-btn { background: #25D366; color: white; padding: 20px; border-radius: 15px; text-decoration: none; display: block; margin-top: 20px; font-weight: bold; }
+        body { font-family: 'Tajawal', sans-serif; background: #e0f2fe; display: grid; place-items: center; min-height: 100vh; margin: 0; }
+        .box { background: white; padding: 40px; border-radius: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 450px; text-align: center; }
+        .btn { display: block; background: #166534; color: white; padding: 15px; margin: 10px 0; border-radius: 10px; cursor: pointer; border: none; font-size: 18px; width: 100%; }
     </style>
 </head>
 <body>
 
-<div id="game">
-    <h2>🏆 تحدي صائد الكنوز</h2>
-    <div id="score" style="font-size: 1.2em; color: #f39c12; font-weight: bold;">النقاط: 0</div>
-    <div id="q-box"></div>
-    <div id="a-box"></div>
+<div class="box" id="quiz">
+    <h2 id="q">1. من هو Father؟</h2>
+    <div id="btns">
+        <button class="btn" onclick="next(true)">الأب</button>
+        <button class="btn" onclick="next(false)">الأم</button>
+    </div>
 </div>
 
 <script>
-    const winSound = new Audio("https://actions.google.com/sounds/v1/ui/positive_full.ogg");
-    const loseSound = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
-
+    let score = 0, i = 0;
     const questions = [
-        {q: "ما هو صوت حرف A في كلمة Apple؟", p: "(آبل)", a: ["(أ - A)", "(ب - B)", "(ت - T)"], c: 0},
-        {q: "أي حرف صوته (ب - B)؟", p: "(بي)", a: ["B", "S", "F"], c: 0},
-        {q: "ما هو صوت حرف C في Cat؟", p: "(كات)", a: ["(ك - C)", "(م - M)", "(ن - N)"], c: 0},
-        {q: "ما هو صوت حرف D؟", p: "(دي)", a: ["(د - D)", "(ز - Z)", "(ل - L)"], c: 0},
-        {q: "ما هو صوت حرف E في Egg؟", p: "(إيغ)", a: ["(إي - E)", "(و - W)", "(ي - Y)"], c: 0},
-        {q: "ما هو صوت حرف F؟", p: "(إف)", a: ["(ف - F)", "(ب - B)", "(ج - G)"], c: 0},
-        {q: "أي حرف صوته (هـ - H)؟", p: "(إيتش)", a: ["H", "O", "P"], c: 0},
-        {q: "ما هو صوت حرف I في Ice؟", p: "(آيس)", a: ["(آي - I)", "(ت - T)", "(د - D)"], c: 0},
-        {q: "ماذا نقرأ عند دمج C-A-T؟", p: "(كات)", a: ["كات", "بات", "فـات"], c: 0},
-        {q: "ما هو الدمج الصحيح لـ B-A-T؟", p: "(بات)", a: ["بات", "كات", "هات"], c: 0},
-        {q: "ما هي كلمة C-A-P؟", p: "(كاب)", a: ["كاب", "ماب", "لاب"], c: 0},
-        {q: "ما هو دمج H-A-T؟", p: "(هات)", a: ["هات", "رات", "مات"], c: 0},
-        {q: "ما هو دمج D-A-D؟", p: "(داد)", a: ["داد", "باد", "صاد"], c: 0},
-        {q: "ماذا نقرأ عند دمج M-A-T؟", p: "(مات)", a: ["مات", "كات", "هات"], c: 0},
-        {q: "كيف تقول اسمك بالإنجليزية؟", p: "(ماي نيم إز...)", a: ["My name is...", "I am...", "I live in..."], c: 0},
-        {q: "كيف تقول عمرك (13 سنة)؟", p: "(آي آم ثيرتين...)", a: ["I am 13", "My name is...", "I live in..."], c: 0},
-        {q: "كيف تقول أعيش في السعودية؟", p: "(آي ليف إن سعودي...)", a: ["I live in Saudi", "I am 13", "My name is..."], c: 0},
-        {q: "كيف تسأل عن الاسم؟", p: "(وات إز يور نيم؟)", a: ["What is your name?", "How are you?", "Where do you live?"], c: 0},
-        {q: "كيف تسأل عن العمر؟", p: "(هاو أولد آر يو؟)", a: ["How old are you?", "What is your name?", "Where do you live?"], c: 0},
-        {q: "ماذا تقول للترحيب؟", p: "(هالو!)", a: ["Hello!", "Goodbye!", "Good night!"], c: 0}
+        {q: "1. من هو Father؟", a: true}, {q: "2. من هي Mother؟", a: false},
+        {q: "3. كيف ننطق Father؟ (فا-ذر)", a: true}, {q: "4. من هو Brother؟", a: true},
+        {q: "5. هل Sister تعني أخت؟", a: true}, {q: "6. من هي Grandmother؟", a: false},
+        {q: "7. كيف ننطق Mother؟ (ما-ذر)", a: true}, {q: "8. هل Brother يعني أخ؟", a: true},
+        {q: "9. من هو Grandfather؟", a: true}, {q: "10. هل Sister تعني أب؟", a: false}
     ];
 
-    let idx = 0, score = 0;
-
-    function show() {
-        let q = questions[idx];
-        document.getElementById('q-box').innerHTML = (idx + 1) + ". " + q.q + `<span class="phonetic">${q.p}</span>`;
-        let html = "";
-        q.a.forEach((opt, i) => {
-            html += `<button class="btn" onclick="check(${i}, this)">${opt}</button>`;
-        });
-        document.getElementById('a-box').innerHTML = html;
-    }
-
-    function check(i, btn) {
-        if(i === questions[idx].c) {
-            btn.classList.add('correct');
-            score += 5;
-            winSound.play();
-            document.getElementById('score').innerText = "النقاط: " + score;
+    function next(ans) {
+        if(ans === questions[i].a) score++;
+        i++;
+        if(i < questions.length) {
+            document.getElementById('q').innerText = questions[i].q;
         } else {
-            btn.classList.add('wrong');
-            loseSound.play();
+            let name = prompt("انتهى الاختبار! اكتب اسمك ليرسل نتيجتك للمعلم:");
+            let msg = `أهلاً معلم محمد طه، الطالب ${name} حصل على ${score} من 10 في اختبار العائلة.`;
+            document.getElementById('quiz').innerHTML = 
+                `<h2>انتهى الاختبار!</h2><p>نتيجتك: ${score}/10</p>` +
+                `<a href="https://wa.me/249901946410?text=${encodeURIComponent(msg)}" class="btn" style="text-decoration:none;">إرسال النتيجة إلى واتساب المعلم</a>`;
         }
-        setTimeout(() => {
-            idx++;
-            if(idx < 20) show();
-            else {
-                let name = prompt("رائع يا بطل! اكتب اسمك الثلاثي:");
-                document.getElementById('game').innerHTML = `
-                    <h1>🏆 بطل المنصة: ${score} نقطة</h1>
-                    <a href="https://wa.me/249901946410?text=أنا البطل ${name}، نتيجتي في التحدي هي ${score} نقطة!" class="wa-btn">إرسال النتيجة للإدارة</a>
-                `;
-            }
-        }, 1200);
     }
-    show();
 </script>
 </body>
 </html>
