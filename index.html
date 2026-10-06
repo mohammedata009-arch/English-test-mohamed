@@ -1,500 +1,1620 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بنكك - Bankak</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .phone-container {
-            width: 100%;
-            max-width: 400px;
-            height: 100vh;
-            max-height: 800px;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            overflow: hidden;
-        }
-        @media (min-width: 420px) {
-            .phone-container {
-                border-radius: 35px;
-                border: 12px solid #111;
-                height: 800px;
-            }
-        }
-        /* الهيدر الأحمر العلوي */
-        .header {
-            background-color: #e50914;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-        }
-        .power-btn, .notif-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 22px;
-            cursor: pointer;
-        }
-        .logo-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .logo-text {
-            font-size: 20px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-        .logo-sub {
-            font-size: 10px;
-            color: #ffcc00;
-            margin-top: -4px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بنكك | Bankak</title>
 
-        /* شريط الترحيب */
-        .welcome-bar {
-            background-color: #f4f4f4;
-            padding: 12px 15px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #111;
-            text-align: right;
-        }
+<style>
+:root{
+    --red:#c8102e;
+    --red-dark:#a50d27;
+    --red-soft:#fff3f5;
+    --bg:#f6f7f9;
+    --white:#fff;
+    --text:#202124;
+    --muted:#7b7d82;
+    --border:#e8e9ec;
+    --green:#16864b;
+    --shadow:0 3px 14px rgba(0,0,0,.06);
+}
 
-        /* حاوية الشاشات */
-        .screen {
-            flex: 1;
-            overflow-y: auto;
-            display: none;
-            flex-direction: column;
-            padding: 10px 15px;
-        }
-        .screen.active {
-            display: flex;
-        }
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Tahoma,
+        Arial,
+        sans-serif;
+    -webkit-tap-highlight-color:transparent;
+}
 
-        /* شبكة الأيقونات المربعة الحمراء (مطابقة للصور تماماً) */
-        .grid-3x3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px 10px;
-            padding-top: 5px;
-        }
-        .menu-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-        }
-        .red-box {
-            width: 75px;
-            height: 65px;
-            background: linear-gradient(to bottom, #f33, #b00);
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            border-top: 1px solid rgba(255,255,255,0.4);
-            margin-bottom: 6px;
-        }
-        .red-box span {
-            color: white;
-            font-size: 24px;
-        }
-        .menu-item span.label {
-            font-size: 13px;
-            color: #111;
-            text-align: center;
-            font-weight: 600;
-            line-height: 1.2;
-        }
+body{
+    min-height:100vh;
+    background:#252525;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
 
-        /* شاشات التفاصيل والقوائم الداخلية */
-        .inner-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .inner-header h2 {
-            font-size: 18px;
-            color: #111;
-        }
-        .back-pill {
-            background: white;
-            border: 1px solid #d9534f;
-            color: #d9534f;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
+.phone{
+    width:100%;
+    height:100vh;
+    max-width:414px;
+    max-height:896px;
+    background:var(--bg);
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    position:relative;
+}
 
-        /* البطاقات البيضاء الداخلية */
-        .white-card {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-            margin-bottom: 12px;
-        }
-        .row-line {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 14px;
-        }
-        .row-line:last-child {
-            border-bottom: none;
-        }
-        .text-dark { color: #333; font-weight: 600; }
-        .text-bold { color: #111; font-weight: bold; }
-        .red-text { color: #e50914 !important; font-weight: bold; }
+/* ================= HEADER ================= */
 
-        /* حقول الإدخال والأزرار */
-        .form-group {
-            margin-bottom: 12px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            color: #444;
-            margin-bottom: 4px;
-            font-weight: 600;
-        }
-        .form-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 15px;
-            outline: none;
-            background: #fff;
-        }
-        .form-input:focus {
-            border-color: #e50914;
-        }
-        .confirm-btn {
-            background: linear-gradient(to bottom, #f33, #b00);
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            margin-top: 10px;
-        }
+.header{
+    height:68px;
+    flex-shrink:0;
+    background:var(--red);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 17px;
+    box-shadow:0 2px 8px rgba(0,0,0,.16);
+    position:relative;
+    z-index:10;
+}
 
-        /* الشاشة الخضراء للنجاح (مطابقة للصورة 11)[span_11](start_span)[span_11](end_span) */
-        .success-bg {
-            background: linear-gradient(to bottom, #4caf50, #2e7d32);
-            color: white;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        .green-check-circle {
-            width: 70px;
-            height: 70px;
-            background: white;
-            color: #2e7d32;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 36px;
-            font-weight: bold;
-            margin: 15px 0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        .success-box {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 8px;
-            width: 100%;
-            padding: 10px 15px;
-            margin-top: 10px;
-        }
-        .success-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            font-size: 14px;
-        }
-        .success-row:last-child {
-            border-bottom: none;
-        }
-        .footer-links {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin-top: 25px;
-            border-top: 1px solid rgba(255,255,255,0.3);
-            padding-top: 15px;
-        }
-        .f-link {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 13px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
+.header-side{
+    width:38px;
+    height:38px;
+    border:0;
+    background:rgba(255,255,255,.13);
+    color:white;
+    border-radius:50%;
+    font-size:18px;
+    cursor:pointer;
+}
 
-        /* فوتر الشاشة السفلي */
-        .app-footer {
-            text-align: center;
-            font-size: 11px;
-            color: #666;
-            padding: 6px;
-            background: #e0e0e0;
-        }
-    </style>
+.logo{
+    text-align:center;
+    line-height:1;
+}
+
+.logo-ar{
+    display:block;
+    font-size:21px;
+    font-weight:900;
+}
+
+.logo-en{
+    display:block;
+    font-size:8px;
+    letter-spacing:2px;
+    margin-top:4px;
+    opacity:.9;
+}
+
+/* ================= SCREENS ================= */
+
+.screen{
+    display:none;
+    flex:1;
+    overflow-y:auto;
+    background:var(--bg);
+}
+
+.screen.active{
+    display:block;
+}
+
+.screen::-webkit-scrollbar{
+    display:none;
+}
+
+/* ================= HOME ================= */
+
+.home{
+    padding-bottom:20px;
+}
+
+.account-banner{
+    background:white;
+    padding:18px 18px 20px;
+    border-bottom:1px solid var(--border);
+}
+
+.hello{
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:4px;
+}
+
+.name{
+    font-size:20px;
+    font-weight:900;
+    color:var(--text);
+}
+
+.balance-card{
+    margin:14px 15px 5px;
+    background:
+        linear-gradient(135deg,
+        #c8102e,
+        #a70c27);
+    color:white;
+    border-radius:17px;
+    padding:17px;
+    box-shadow:0 8px 20px rgba(200,16,46,.20);
+    position:relative;
+    overflow:hidden;
+}
+
+.balance-card:after{
+    content:"";
+    position:absolute;
+    width:145px;
+    height:145px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.08);
+    left:-50px;
+    bottom:-75px;
+}
+
+.balance-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.balance-label{
+    font-size:11px;
+    opacity:.85;
+}
+
+.balance-eye{
+    border:0;
+    background:rgba(255,255,255,.12);
+    color:white;
+    border-radius:8px;
+    width:31px;
+    height:27px;
+}
+
+.balance{
+    font-size:25px;
+    font-weight:900;
+    margin-top:9px;
+    direction:ltr;
+    text-align:right;
+}
+
+.currency{
+    font-size:11px;
+    margin-right:4px;
+}
+
+.account-number{
+    margin-top:11px;
+    font-size:10px;
+    opacity:.82;
+    direction:ltr;
+    text-align:right;
+}
+
+/* ================= SECTION ================= */
+
+.section-head{
+    padding:18px 17px 10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.section-head h3{
+    font-size:14px;
+    font-weight:900;
+}
+
+.section-head span{
+    color:var(--red);
+    font-size:10px;
+    font-weight:800;
+}
+
+/* ================= QUICK ACTIONS ================= */
+
+.quick-actions{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:9px;
+    padding:0 13px;
+}
+
+.quick{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:13px;
+    min-height:78px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.025);
+}
+
+.quick:active{
+    transform:scale(.96);
+}
+
+.icon{
+    width:37px;
+    height:37px;
+    border-radius:11px;
+    background:var(--red-soft);
+    color:var(--red);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    margin-bottom:6px;
+}
+
+.quick span{
+    font-size:9px;
+    font-weight:800;
+    color:#333;
+}
+
+/* ================= SERVICE LIST ================= */
+
+.services{
+    padding:0 14px;
+}
+
+.service{
+    background:white;
+    min-height:61px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    margin-bottom:8px;
+    padding:8px 11px;
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+}
+
+.service-icon{
+    width:42px;
+    height:42px;
+    flex-shrink:0;
+    border-radius:12px;
+    background:var(--red-soft);
+    color:var(--red);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+}
+
+.service-content{
+    flex:1;
+    margin-right:11px;
+}
+
+.service-title{
+    font-size:12px;
+    font-weight:900;
+    color:#292929;
+}
+
+.service-description{
+    color:#999;
+    font-size:9px;
+    margin-top:3px;
+}
+
+.service-arrow{
+    color:#aaa;
+    font-size:19px;
+}
+
+/* ================= SUB HEADER ================= */
+
+.sub-header{
+    height:58px;
+    background:white;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 16px;
+}
+
+.sub-title{
+    font-size:15px;
+    font-weight:900;
+}
+
+.back{
+    border:0;
+    background:var(--red-soft);
+    color:var(--red);
+    padding:7px 13px;
+    border-radius:18px;
+    font-size:11px;
+    font-weight:900;
+}
+
+/* ================= CONTENT ================= */
+
+.content{
+    padding:14px;
+}
+
+.card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:16px;
+    box-shadow:var(--shadow);
+}
+
+/* ================= ACCOUNT DETAILS ================= */
+
+.account-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-bottom:13px;
+    border-bottom:1px solid #f1f1f1;
+}
+
+.account-name{
+    font-size:13px;
+    font-weight:900;
+    color:var(--red);
+}
+
+.account-symbol{
+    width:42px;
+    height:42px;
+    background:var(--red-soft);
+    color:var(--red);
+    border-radius:12px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:19px;
+}
+
+.info-row{
+    min-height:45px;
+    border-bottom:1px solid #f0f0f0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.info-row:last-child{
+    border-bottom:0;
+}
+
+.info-label{
+    color:#818181;
+    font-size:11px;
+}
+
+.info-value{
+    font-size:12px;
+    font-weight:900;
+    direction:ltr;
+    text-align:left;
+}
+
+.red{
+    color:var(--red);
+}
+
+.green{
+    color:var(--green);
+}
+
+/* ================= TRANSFERS ================= */
+
+.transfer-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:11px;
+    margin-bottom:9px;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+}
+
+.transfer-card:active{
+    transform:scale(.98);
+}
+
+.transfer-icon{
+    width:45px;
+    height:45px;
+    flex-shrink:0;
+    background:var(--red-soft);
+    color:var(--red);
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+}
+
+.transfer-content{
+    flex:1;
+}
+
+.transfer-title{
+    font-size:12px;
+    font-weight:900;
+}
+
+.transfer-description{
+    font-size:9px;
+    color:#999;
+    margin-top:3px;
+}
+
+.arrow{
+    color:#aaa;
+}
+
+/* ================= FORM ================= */
+
+.notice{
+    background:var(--red);
+    color:white;
+    padding:8px;
+    border-radius:9px;
+    text-align:center;
+    font-size:11px;
+    font-weight:900;
+    margin-bottom:11px;
+}
+
+.field{
+    margin-bottom:13px;
+}
+
+.field label{
+    display:block;
+    color:#444;
+    font-size:11px;
+    font-weight:800;
+    margin-bottom:6px;
+}
+
+.input{
+    width:100%;
+    height:43px;
+    border:1px solid #dcdde0;
+    border-radius:9px;
+    outline:none;
+    padding:0 11px;
+    background:white;
+    font-size:12px;
+}
+
+.input:focus{
+    border-color:var(--red);
+    box-shadow:0 0 0 3px rgba(200,16,46,.07);
+}
+
+.input.readonly{
+    background:#f4f4f4;
+    color:#666;
+    direction:ltr;
+    text-align:left;
+}
+
+/* ================= BENEFICIARY ================= */
+
+.beneficiary{
+    display:none;
+    background:#fafafa;
+    border:1px solid #e4e4e4;
+    border-radius:10px;
+    padding:8px 10px;
+    margin-top:-3px;
+    margin-bottom:13px;
+}
+
+.beneficiary .info-row{
+    min-height:33px;
+}
+
+.beneficiary .info-label{
+    font-size:9px;
+}
+
+.beneficiary .info-value{
+    font-size:10px;
+}
+
+.confirm{
+    width:100%;
+    height:44px;
+    border:0;
+    border-radius:10px;
+    background:var(--red);
+    color:white;
+    font-size:13px;
+    font-weight:900;
+    cursor:pointer;
+    box-shadow:0 5px 13px rgba(200,16,46,.2);
+}
+
+/* ================= SUCCESS ================= */
+
+.success{
+    display:none;
+    flex:1;
+    overflow-y:auto;
+    background:#f6f7f9;
+}
+
+.success.active{
+    display:block;
+}
+
+.success-top{
+    background:var(--green);
+    color:white;
+    text-align:center;
+    padding:28px 15px 34px;
+    border-bottom-left-radius:25px;
+    border-bottom-right-radius:25px;
+}
+
+.success-check{
+    width:65px;
+    height:65px;
+    background:white;
+    color:var(--green);
+    border-radius:50%;
+    margin:0 auto 12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    font-weight:900;
+}
+
+.success-title{
+    font-size:18px;
+    font-weight:900;
+}
+
+.success-subtitle{
+    font-size:10px;
+    opacity:.85;
+    margin-top:4px;
+}
+
+.receipt{
+    margin:-17px 14px 0;
+    background:white;
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:8px 15px;
+    position:relative;
+    box-shadow:0 5px 17px rgba(0,0,0,.07);
+}
+
+.receipt-row{
+    min-height:45px;
+    border-bottom:1px solid #eee;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+}
+
+.receipt-row:last-child{
+    border-bottom:0;
+}
+
+.receipt-label{
+    font-size:10px;
+    color:#888;
+}
+
+.receipt-value{
+    font-size:10px;
+    font-weight:900;
+    direction:ltr;
+    text-align:left;
+}
+
+.receiver{
+    color:var(--red);
+    direction:rtl;
+}
+
+.success-actions{
+    padding:15px;
+}
+
+.success-ok{
+    width:100%;
+    height:44px;
+    border:0;
+    border-radius:10px;
+    background:var(--red);
+    color:white;
+    font-weight:900;
+}
+
+.receipt-tools{
+    display:flex;
+    justify-content:space-around;
+    margin-top:16px;
+}
+
+.tool{
+    background:white;
+    border:0;
+    color:#555;
+    font-size:10px;
+    font-weight:800;
+}
+
+.tool-icon{
+    display:block;
+    color:var(--red);
+    font-size:19px;
+    margin-bottom:4px;
+}
+
+/* ================= FOOTER ================= */
+
+.footer{
+    height:28px;
+    flex-shrink:0;
+    background:white;
+    border-top:1px solid var(--border);
+    color:#999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:8px;
+}
+
+@media(min-width:450px){
+    .phone{
+        height:896px;
+        border:8px solid #292929;
+        border-radius:35px;
+        box-shadow:0 25px 70px rgba(0,0,0,.45);
+    }
+}
+</style>
 </head>
+
 <body>
 
-<div class="phone-container">
-    <!-- الهيدر العلوي الثابت -->
-    <div class="header">
-        <button class="power-btn" onclick="goToScreen('screenMain1')">⏻</button>
-        <div class="logo-box">
-            <div class="logo-text">بنكـك</div>
-            <div class="logo-sub">bankak</div>
-        </div>
-        <button class="notif-btn">🔔</button>
+<div class="phone">
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <button class="header-side"
+            onclick="goHome()">
+        ⌂
+    </button>
+
+    <div class="logo">
+        <span class="logo-ar">بنكـك</span>
+        <span class="logo-en">BANKAK</span>
     </div>
 
-    <!-- 1. الشاشة الرئيسية الأولى (مطابقة للصورة 1)[span_12](start_span)[span_12](end_span) -->
-    <div id="screenMain1" class="screen active">
-        <div class="welcome-bar">مساء الخير، Mohamed Taha</div>
-        <div class="grid-3x3">
-            <div class="menu-item" onclick="goToScreen('screenAccountDetails')">
-                <div class="red-box"><span>👤</span></div>
-                <span class="label">تفاصيل<br>الحساب</span>
-            </div>
-            <div class="menu-item" onclick="goToScreen('screenTransfersMenu')">
-                <div class="red-box"><span>🔄</span></div>
-                <span class="label">تحويلات</span>
-            </div>
-            <div class="menu-item">
-                <div class="red-box"><span>📄</span></div>
-                <span class="label">دفع<br>فواتير</span>
-            </div>
-            <div class="menu-item">
-                <div class="red-box"><span>📱</span></div>
-                <span class="label">PAYبنكك</span>
-            </div>
-            <div class="menu-item">
-                <div class="red-box"><span>💳</span></div>
-                <span class="label">سحب<br>بدون بطاقة</span>
-            </div>
-            <div class="menu-item">
-                <div class="red-box"><span>💰</span></div>
-                <span class="label">طلب الودائع<br>الأستثمارية</span>
-            </div>
-            <div class="menu-item">
-                <div class="red-box"><span>👥</span></div>
-                <span class="label">إدارة<br>المستفيدين</span>
-            </div>
-            <div class="menu-item">
-                <div class="red-box"><span>📅</span></div>
-                <span class="label">المعاملات<br>السابقة</span>
-            </div>
-            <div class="menu-item">
-                <div class="red-box"><span>💳</span></div>
-                <span class="label">إدارة<br>البطاقات</span>
-            </div>
+    <button class="header-side"
+            onclick="alert('لا توجد إشعارات جديدة')">
+        ♧
+    </button>
+
+</header>
+
+
+<!-- ================= HOME ================= -->
+
+<main id="homeScreen" class="screen active home">
+
+    <section class="account-banner">
+
+        <div class="hello">
+            مساء الخير
         </div>
+
+        <div class="name">
+            Monzer
+        </div>
+
+    </section>
+
+
+    <section class="balance-card">
+
+        <div class="balance-top">
+
+            <span class="balance-label">
+                الرصيد المتاح
+            </span>
+
+            <button class="balance-eye"
+                    onclick="toggleBalance()">
+                ◉
+            </button>
+
+        </div>
+
+        <div id="balance"
+             class="balance">
+            442,332.93
+            <span class="currency">جنيه</span>
+        </div>
+
+        <div class="account-number">
+            حساب توفير •••• 68866
+        </div>
+
+    </section>
+
+
+    <div class="section-head">
+
+        <h3>
+            الخدمات السريعة
+        </h3>
+
+        <span>
+            كل الخدمات
+        </span>
+
     </div>
 
-    <!-- 2. تفاصيل الحساب (مطابقة للصورة 4 مع تعديل رقم الحساب للون الأحمر)[span_13](start_span)[span_13](end_span) -->
-    <div id="screenAccountDetails" class="screen">
-        <div class="inner-header">
-            <h2>تفاصيل الحساب</h2>
-            <button class="back-pill" onclick="goToScreen('screenMain1')">رجوع ⟨</button>
+
+    <section class="quick-actions">
+
+        <div class="quick"
+             onclick="switchScreen('transfersMenuScreen')">
+
+            <div class="icon">⇄</div>
+            <span>تحويل</span>
+
         </div>
-        <div class="white-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <span style="font-weight: bold; color: #e50914;">حساب توفير</span>
-                <span style="font-size: 24px;">💰</span>
-            </div>
-            <div class="row-line">
-                <span class="text-dark">الحساب-</span>
-                <span class="red-text">35_68866</span>
-            </div>
-            <div class="row-line">
-                <span class="text-dark">الرصيد</span>
-                <span class="text-bold" style="color: #2e7d32;">442,332.93 جنيه</span>
-            </div>
-            <div class="row-line">
-                <span class="text-dark">IBAN-</span>
-                <span class="text-bold" style="font-size: 12px;">SD7204024733680001</span>
-            </div>
+
+
+        <div class="quick">
+
+            <div class="icon">▣</div>
+            <span>Bankak PAY</span>
+
         </div>
+
+
+        <div class="quick">
+
+            <div class="icon">▤</div>
+            <span>فواتير</span>
+
+        </div>
+
+
+        <div class="quick">
+
+            <div class="icon">▰</div>
+            <span>سحب نقدي</span>
+
+        </div>
+
+    </section>
+
+
+    <div class="section-head">
+
+        <h3>
+            خدمات بنكك
+        </h3>
+
+        <span>
+            المزيد
+        </span>
+
     </div>
 
-    <!-- 3. قائمة التحويلات (مطابقة للصورة 5)[span_14](start_span)[span_14](end_span) -->
-    <div id="screenTransfersMenu" class="screen">
-        <div class="inner-header">
-            <h2>تحويلات</h2>
-            <button class="back-pill" onclick="goToScreen('screenMain1')">رجوع ⟨</button>
+
+    <section class="services">
+
+        <div class="service"
+             onclick="switchScreen('accountDetailsScreen')">
+
+            <div class="service-icon">◉</div>
+
+            <div class="service-content">
+
+                <div class="service-title">
+                    تفاصيل الحساب
+                </div>
+
+                <div class="service-description">
+                    الرصيد ومعلومات الحساب وكشف الحساب
+                </div>
+
+            </div>
+
+            <div class="service-arrow">
+                ‹
+            </div>
+
         </div>
-        <div class="white-card" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="goToScreen('screenTransferForm')">
-            <span class="text-bold">تحويل لحسابات بنك الخرطوم</span>
-            <span style="color: #e50914; font-size: 20px;">🏛️</span>
+
+
+        <div class="service"
+             onclick="switchScreen('transfersMenuScreen')">
+
+            <div class="service-icon">⇄</div>
+
+            <div class="service-content">
+
+                <div class="service-title">
+                    التحويلات
+                </div>
+
+                <div class="service-description">
+                    تحويل إلى الحسابات والموبايل والبنوك الأخرى
+                </div>
+
+            </div>
+
+            <div class="service-arrow">
+                ‹
+            </div>
+
         </div>
-        <div class="white-card" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-            <span class="text-bold">الدفع عبر الموبايل</span>
-            <span style="color: #e50914; font-size: 20px;">📱</span>
+
+
+        <div class="service">
+
+            <div class="service-icon">♙</div>
+
+            <div class="service-content">
+
+                <div class="service-title">
+                    إدارة المستفيدين
+                </div>
+
+                <div class="service-description">
+                    حفظ وإدارة المستفيدين
+                </div>
+
+            </div>
+
+            <div class="service-arrow">
+                ‹
+            </div>
+
         </div>
+
+
+        <div class="service">
+
+            <div class="service-icon">◷</div>
+
+            <div class="service-content">
+
+                <div class="service-title">
+                    المعاملات السابقة
+                </div>
+
+                <div class="service-description">
+                    مراجعة والبحث في معاملاتك السابقة
+                </div>
+
+            </div>
+
+            <div class="service-arrow">
+                ‹
+            </div>
+
+        </div>
+
+
+        <div class="service">
+
+            <div class="service-icon">▰</div>
+
+            <div class="service-content">
+
+                <div class="service-title">
+                    إدارة البطاقات
+                </div>
+
+                <div class="service-description">
+                    إدارة بطاقات بنك الخرطوم
+                </div>
+
+            </div>
+
+            <div class="service-arrow">
+                ‹
+            </div>
+
+        </div>
+
+
+        <div class="service">
+
+            <div class="service-icon">◉</div>
+
+            <div class="service-content">
+
+                <div class="service-title">
+                    الودائع الاستثمارية
+                </div>
+
+                <div class="service-description">
+                    إنشاء وإدارة الودائع
+                </div>
+
+            </div>
+
+            <div class="service-arrow">
+                ‹
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= ACCOUNT ================= -->
+
+<main id="accountDetailsScreen"
+      class="screen">
+
+    <div class="sub-header">
+
+        <div class="sub-title">
+            تفاصيل الحساب
+        </div>
+
+        <button class="back"
+                onclick="goHome()">
+            رجوع
+        </button>
+
     </div>
 
-    <!-- 4. نموذج التحويل (إدخال الرقم 7707659 لجلب الاسم تلقائياً)[span_15](start_span)[span_15](end_span) -->
-    <div id="screenTransferForm" class="screen">
-        <div class="inner-header">
-            <h2 style="font-size: 15px;">تحويل لحسابات بنك الخرطوم</h2>
-            <button class="back-pill" onclick="goToScreen('screenTransfersMenu')">رجوع ⟨</button>
+
+    <div class="content">
+
+        <div class="card">
+
+            <div class="account-head">
+
+                <div class="account-name">
+                    حساب توفير
+                </div>
+
+                <div class="account-symbol">
+                    ◉
+                </div>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    رقم الحساب
+                </span>
+
+                <span class="info-value red">
+                    35_68866
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    الرصيد
+                </span>
+
+                <span class="info-value green">
+                    442,332.93 جنيه
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    IBAN
+                </span>
+
+                <span class="info-value">
+                    SD7204024733680001
+                </span>
+
+            </div>
+
         </div>
-        <div style="background: #e50914; color: white; padding: 6px; text-align: center; font-size: 13px; font-weight: bold; border-radius: 4px; margin-bottom: 10px;">
+
+    </div>
+
+</main>
+
+
+<!-- ================= TRANSFERS ================= -->
+
+<main id="transfersMenuScreen"
+      class="screen">
+
+    <div class="sub-header">
+
+        <div class="sub-title">
+            التحويلات
+        </div>
+
+        <button class="back"
+                onclick="goHome()">
+            رجوع
+        </button>
+
+    </div>
+
+
+    <div class="content">
+
+        <div class="transfer-card"
+             onclick="switchScreen('transferFormScreen')">
+
+            <div class="transfer-icon">
+                ⇄
+            </div>
+
+            <div class="transfer-content">
+
+                <div class="transfer-title">
+                    حسابات بنك الخرطوم
+                </div>
+
+                <div class="transfer-description">
+                    تحويل إلى حسابات بنك الخرطوم
+                </div>
+
+            </div>
+
+            <div class="arrow">
+                ‹
+            </div>
+
+        </div>
+
+
+        <div class="transfer-card">
+
+            <div class="transfer-icon">
+                ◉
+            </div>
+
+            <div class="transfer-content">
+
+                <div class="transfer-title">
+                    حساب الموبايل
+                </div>
+
+                <div class="transfer-description">
+                    تحويل باستخدام رقم الهاتف
+                </div>
+
+            </div>
+
+            <div class="arrow">
+                ‹
+            </div>
+
+        </div>
+
+
+        <div class="transfer-card">
+
+            <div class="transfer-icon">
+                ▰
+            </div>
+
+            <div class="transfer-content">
+
+                <div class="transfer-title">
+                    بنك آخر
+                </div>
+
+                <div class="transfer-description">
+                    تحويل إلى حساب بنكي آخر
+                </div>
+
+            </div>
+
+            <div class="arrow">
+                ‹
+            </div>
+
+        </div>
+
+
+        <div class="transfer-card">
+
+            <div class="transfer-icon">
+                ♙
+            </div>
+
+            <div class="transfer-content">
+
+                <div class="transfer-title">
+                    المستفيدون
+                </div>
+
+                <div class="transfer-description">
+                    اختيار مستفيد محفوظ
+                </div>
+
+            </div>
+
+            <div class="arrow">
+                ‹
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- ================= TRANSFER FORM ================= -->
+
+<main id="transferFormScreen"
+      class="screen">
+
+    <div class="sub-header">
+
+        <div class="sub-title">
+            تحويل لحسابات بنك الخرطوم
+        </div>
+
+        <button class="back"
+                onclick="switchScreen('transfersMenuScreen')">
+            رجوع
+        </button>
+
+    </div>
+
+
+    <div class="content">
+
+        <div class="notice">
             دفع مباشر
         </div>
-        <div class="white-card">
-            <div class="form-group">
-                <label>أدخل رقم الحساب/الرقم...</label>
-                <input type="text" id="accountInput" class="form-input" placeholder="أدخل الرقم هنا..." oninput="handleAccountInput()">
+
+
+        <div class="card">
+
+            <div class="field">
+
+                <label>
+                    رقم الحساب / الرقم المختصر
+                </label>
+
+                <input
+                    id="accountInput"
+                    class="input"
+                    type="text"
+                    placeholder="مثال: 7707659"
+                    oninput="handleAccountInput()"
+                >
+
             </div>
 
-            <!-- معلومات الحساب المستفيد التي تظهر تلقائياً -->
-            <div id="dynamicAccountInfo" style="display: none; background: #f9f9f9; padding: 8px; border-radius: 5px; border: 1px solid #ddd; margin-bottom: 10px;">
-                <div class="row-line">
-                    <span class="text-dark">الرقم كاملاً:</span>
-                    <span class="text-bold">0943 0770 7659 0001</span>
+
+            <div id="fetchedInfoBox"
+                 class="beneficiary">
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        رقم الحساب كاملاً
+                    </span>
+
+                    <span class="info-value">
+                        0943 0770 7659 0001
+                    </span>
+
                 </div>
-                <div class="row-line">
-                    <span class="text-dark">الاسم:</span>
-                    <span id="fetchedName" class="red-text"></span>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        اسم المستفيد
+                    </span>
+
+                    <span id="targetNameSpan"
+                          class="info-value red">
+                    </span>
+
                 </div>
-                <div class="row-line">
-                    <span class="text-dark">الفرع:</span>
-                    <span class="text-bold">كريمة</span>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        الفرع
+                    </span>
+
+                    <span class="info-value">
+                        كريمة
+                    </span>
+
                 </div>
+
             </div>
 
-            <div class="form-group">
-                <label>اختر الحساب</label>
-                <input type="text" class="form-input" value="0063024733680001" readonly style="background:#eee; font-size:12px;">
+
+            <div class="field">
+
+                <label>
+                    الحساب المحول منه
+                </label>
+
+                <input
+                    class="input readonly"
+                    value="0063024733680001"
+                    readonly
+                >
+
             </div>
-            <div class="form-group">
-                <label>رقم الهاتف للرسالة النصية</label>
-                <input type="text" class="form-input" value="249" readonly style="background:#eee;">
+
+
+            <div class="field">
+
+                <label>
+                    رقم الهاتف للرسالة النصية
+                </label>
+
+                <input
+                    class="input readonly"
+                    value="249"
+                    readonly
+                >
+
             </div>
-            <div class="form-group">
-                <label>أدخل المبلغ</label>
-                <input type="number" id="amountField" class="form-input" value="1">
+
+
+            <div class="field">
+
+                <label>
+                    المبلغ بالجنيه
+                </label>
+
+                <input
+                    id="amountInput"
+                    class="input"
+                    type="number"
+                    value="1"
+                    min="1"
+                >
+
             </div>
-            <button class="confirm-btn" onclick="submitTransfer()">تأكيد</button>
+
+
+            <button class="confirm"
+                    onclick="executeTransfer()">
+                تأكيد
+            </button>
+
         </div>
+
     </div>
 
-    <!-- 5. شاشة الإيصال الأخضر الناجح (مطابقة للصورة 11)[span_16](start_span)[span_16](end_span) -->
-    <div id="screenSuccess" class="success-bg">
-        <div class="green-check-circle">✓</div>
-        <h2 style="font-size: 18px; margin-bottom: 5px;">تحويلات</h2>
+</main>
 
-        <div class="success-box">
-            <div class="success-row">
-                <span>من حساب</span>
-                <span style="font-weight: bold;">0063 0247 3368 0001</span>
-            </div>
-            <div class="success-row">
-                <span>الى حساب</span>
-                <span style="font-weight: bold;">0943 0770 7659 0001</span>
-            </div>
-            <div class="success-row">
-                <span>إسم المستفيد</span>
-                <span id="finalBeneficiaryName" style="font-weight: bold;">شاهيناز عبد العظيم عبد الغني طه</span>
-            </div>
+
+<!-- ================= SUCCESS ================= -->
+
+<section id="successScreen"
+         class="success">
+
+    <div class="success-top">
+
+        <div class="success-check">
+            ✓
         </div>
 
-        <button class="confirm-btn" style="background: white; color: #2e7d32; margin-top: 15px;" onclick="goToScreen('screenMain1')">موافق</button>
-
-        <div class="footer-links">
-            <button class="f-link" onclick="alert('جاري التحميل...')">📥 تحميل</button>
-            <button class="f-link" onclick="alert('جاري الطباعة...')">🖨️ طباعة</button>
-            <button class="f-link" onclick="alert('جاري المشاركة...')">📤 مشاركة</button>
+        <div class="success-title">
+            تمت العملية بنجاح
         </div>
+
+        <div class="success-subtitle">
+            تم تنفيذ التحويل بنجاح
+        </div>
+
     </div>
 
-    <!-- الفوتر السفلي -->
-    <div class="app-footer">
-        ©2026 بنك الخرطوم | بنكك حساب
+
+    <div class="receipt">
+
+        <div class="receipt-row">
+
+            <span class="receipt-label">
+                من حساب
+            </span>
+
+            <span class="receipt-value">
+                0063 0247 3368 0001
+            </span>
+
+        </div>
+
+
+        <div class="receipt-row">
+
+            <span class="receipt-label">
+                إلى حساب
+            </span>
+
+            <span class="receipt-value">
+                0943 0770 7659 0001
+            </span>
+
+        </div>
+
+
+        <div class="receipt-row">
+
+            <span class="receipt-label">
+                اسم المستفيد
+            </span>
+
+            <span id="finalReceiverName"
+                  class="receipt-value receiver">
+                شاهيناز عبد العظيم عبد الغني طه
+            </span>
+
+        </div>
+
     </div>
+
+
+    <div class="success-actions">
+
+        <button class="success-ok"
+                onclick="goHome()">
+            موافق
+        </button>
+
+
+        <div class="receipt-tools">
+
+            <button class="tool"
+                    onclick="alert('جاري تجهيز الإيصال')">
+
+                <span class="tool-icon">
+                    ↓
+                </span>
+
+                تحميل
+
+            </button>
+
+
+            <button class="tool"
+                    onclick="window.print()">
+
+                <span class="tool-icon">
+                    ▣
+                </span>
+
+                طباعة
+
+            </button>
+
+
+            <button class="tool"
+                    onclick="alert('فتح المشاركة')">
+
+                <span class="tool-icon">
+                    ↑
+                </span>
+
+                مشاركة
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer class="footer">
+    ©2026 بنك الخرطوم | بنكك
+</footer>
+
 </div>
 
+
 <script>
-    function goToScreen(screenId) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
+
+/* ================= NAVIGATION ================= */
+
+function switchScreen(id){
+
+    document.querySelectorAll('.screen')
+        .forEach(screen=>{
+            screen.classList.remove('active');
+        });
+
+    document
+        .getElementById('successScreen')
+        .classList.remove('active');
+
+    if(id === 'successScreen'){
+
+        document
+            .getElementById('successScreen')
+            .classList.add('active');
+
+    }else{
+
+        document
+            .getElementById(id)
+            .classList.add('active');
     }
 
-    function handleAccountInput() {
-        const val = document.getElementById('accountInput').value.trim();
-        const infoDiv = document.getElementById('dynamicAccountInfo');
-        const nameSpan = document.getElementById('fetchedName');
+    document
+        .querySelectorAll('.screen')
+        .forEach(screen=>{
+            screen.scrollTop=0;
+        });
+}
 
-        // عند إدخال الرقم المطلوب يتم جلب الاسم فوراً بشكل عملي واحترافي
-        if (val.includes('7707659')) {
-            nameSpan.innerText = "شاهيناز عبد العظيم عبد الغني طه";
-            infoDiv.style.display = 'block';
-        } else {
-            infoDiv.style.display = 'none';
-        }
+
+function goHome(){
+    switchScreen('homeScreen');
+}
+
+
+/* ================= BALANCE ================= */
+
+let balanceVisible=true;
+
+function toggleBalance(){
+
+    const balance=
+        document.getElementById('balance');
+
+    if(balanceVisible){
+
+        balance.innerHTML=
+            "•••••••• <span class='currency'>جنيه</span>";
+
+        balanceVisible=false;
+
+    }else{
+
+        balance.innerHTML=
+            "442,332.93 <span class='currency'>جنيه</span>";
+
+        balanceVisible=true;
+    }
+}
+
+
+/* ================= BENEFICIARY ================= */
+
+function handleAccountInput(){
+
+    const value=
+        document
+        .getElementById('accountInput')
+        .value
+        .trim();
+
+    const box=
+        document
+        .getElementById('fetchedInfoBox');
+
+    const name=
+        document
+        .getElementById('targetNameSpan');
+
+    if(value.includes('7707659')){
+
+        name.innerText=
+            "شاهيناز عبد العظيم عبد الغني طه";
+
+        box.style.display='block';
+
+    }else{
+
+        name.innerText='';
+        box.style.display='none';
+    }
+}
+
+
+/* ================= TRANSFER ================= */
+
+function executeTransfer(){
+
+    const account=
+        document
+        .getElementById('accountInput')
+        .value
+        .trim();
+
+    const amount=
+        document
+        .getElementById('amountInput')
+        .value
+        .trim();
+
+    if(!account){
+
+        alert(
+            'الرجاء إدخال رقم الحساب أو الرقم المختصر أولاً'
+        );
+
+        return;
     }
 
-    function submitTransfer() {
-        const val = document.getElementById('accountInput').value.trim();
-        if (!val) {
-            alert('الرجاء إدخال رقم الحساب');
-            return;
-        }
-        if (val.includes('7707659')) {
-            document.getElementById('finalBeneficiaryName').innerText = "شاهيناز عبد العظيم عبد الغني طه";
-        }
-        goToScreen('screenSuccess');
+    if(!amount || Number(amount)<=0){
+
+        alert(
+            'الرجاء إدخال مبلغ صحيح'
+        );
+
+        return;
     }
+
+    if(account.includes('7707659')){
+
+        document
+        .getElementById('finalReceiverName')
+        .innerText=
+            "شاهيناز عبد العظيم عبد الغني طه";
+    }
+
+    switchScreen('successScreen');
+}
+
 </script>
 
 </body>
