@@ -2,46 +2,518 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>اختبار عائلتي - محمد طه</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بنكك - Bankak</title>
     <style>
-        body { font-family: 'Tajawal', sans-serif; background: #e0f2fe; display: grid; place-items: center; min-height: 100vh; margin: 0; }
-        .box { background: white; padding: 40px; border-radius: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 450px; text-align: center; }
-        .btn { display: block; background: #166534; color: white; padding: 15px; margin: 10px 0; border-radius: 10px; cursor: pointer; border: none; font-size: 18px; width: 100%; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .phone-container {
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            max-height: 850px;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        @media (min-width: 430px) {
+            .phone-container {
+                border-radius: 30px;
+                border: 10px solid #222;
+                height: 850px;
+            }
+        }
+        /* الهيدر العلوي */
+        .header {
+            background-color: #e50914;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .header .logo-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header img, .header .bank-title {
+            height: 28px;
+            font-weight: bold;
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+        .header .bank-sub {
+            font-size: 10px;
+            color: #ffcc00;
+            margin-top: -4px;
+        }
+        .header-icon {
+            font-size: 22px;
+            cursor: pointer;
+        }
+        
+        /* شريط الترحيب */
+        .welcome-bar {
+            background-color: #fff;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* محتوى الشاشات */
+        .screen {
+            flex: 1;
+            overflow-y: auto;
+            display: none;
+            padding: 15px;
+        }
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* شبكة الخدمات (الرئيسية) */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding-top: 10px;
+        }
+        .grid-item {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+        .grid-item:active {
+            transform: scale(0.96);
+            background: #fafafa;
+        }
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #e50914, #b20710);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            box-shadow: 0 3px 6px rgba(229, 9, 20, 0.3);
+            margin-bottom: 8px;
+            font-size: 22px;
+        }
+        .grid-item span {
+            font-size: 13px;
+            text-align: center;
+            color: #111;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        /* عناوين الشاشات الفرعية */
+        .sub-screen-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .sub-screen-header h2 {
+            font-size: 18px;
+            color: #111;
+        }
+        .back-btn {
+            background: white;
+            border: 1px solid #e50914;
+            color: #e50914;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* بطاقة التفاصيل والتحويلات */
+        .card-box {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 15px;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 15px;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .label {
+            color: #555;
+            font-weight: 600;
+        }
+        .value {
+            color: #111;
+            font-weight: bold;
+            text-align: left;
+        }
+        .red-highlight {
+            color: #e50914 !important;
+            font-weight: bold;
+        }
+
+        /* الحقول والأزرار */
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #333;
+            font-weight: 600;
+        }
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            background: #fff;
+        }
+        .input-field:focus {
+            border-color: #e50914;
+        }
+        .action-btn {
+            background: linear-gradient(135deg, #e50914, #b20710);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(229, 9, 20, 0.3);
+            margin-top: 10px;
+        }
+        .action-btn:active {
+            opacity: 0.9;
+        }
+
+        /* شاشة النجاح (إيصال المعاملة) */
+        .success-screen {
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            flex: 1;
+        }
+        .success-icon {
+            width: 70px;
+            height: 70px;
+            background: white;
+            color: #2e7d32;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 35px;
+            font-weight: bold;
+            margin: 15px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .success-card {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        .success-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+        }
+        .success-row:last-child {
+            border-bottom: none;
+        }
+        .receipt-buttons {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            padding-top: 15px;
+        }
+        .receipt-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* الفوتر السفلي للشاشات */
+        .footer-copyright {
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+            padding: 8px;
+            background: #e0e0e0;
+        }
     </style>
 </head>
 <body>
 
-<div class="box" id="quiz">
-    <h2 id="q">1. من هو Father؟</h2>
-    <div id="btns">
-        <button class="btn" onclick="next(true)">الأب</button>
-        <button class="btn" onclick="next(false)">الأم</button>
+<div class="phone-container">
+    <!-- الهيدر الثابت -->
+    <div class="header">
+        <div class="header-icon">⏻</div>
+        <div class="logo-area">
+            <div class="bank-title">بنكـك</div>
+            <div class="bank-sub">bankak</div>
+        </div>
+        <div class="header-icon">🔔</div>
+    </div>
+
+    <!-- شاشة الرئيسية -->
+    <div id="mainScreen" class="screen active">
+        <div class="welcome-bar">
+            <span>مساء الخير، Mohamed Taha</span>
+        </div>
+        <div class="grid-container">
+            <div class="grid-item" onclick="showScreen('accountDetailsScreen')">
+                <div class="icon-box">👤</div>
+                <span>تفاصيل الحساب</span>
+            </div>
+            <div class="grid-item" onclick="showScreen('transfersScreen')">
+                <div class="icon-box">🔄</div>
+                <span>تحويلات</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box">📄</div>
+                <span>دفع فواتير</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box">📱</div>
+                <span>PAYبنكك</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box">💳</div>
+                <span>سحب بدون بطاقة</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box">💰</div>
+                <span>طلب الودائع الاستثمارية</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box">👥</div>
+                <span>إدارة المستفيدين</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box">📅</div>
+                <span>المعاملات السابقة</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box">💳</div>
+                <span>إدارة البطاقات</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة تفاصيل الحساب -->
+    <div id="accountDetailsScreen" class="screen">
+        <div class="sub-screen-header">
+            <h2>تفاصيل الحساب</h2>
+            <button class="back-btn" onclick="showScreen('mainScreen')">رجوع ⟨</button>
+        </div>
+        <div class="card-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <span style="font-weight: bold; color: #e50914; font-size: 16px;">حساب توفير</span>
+                <span style="font-size: 28px;">💰</span>
+            </div>
+            <div class="detail-row">
+                <span class="label">الحساب</span>
+                <span class="value red-highlight">35_68866</span>
+            </div>
+            <div class="detail-row">
+                <span class="label">الرصيد</span>
+                <span class="value" style="color: #2e7d32;">442,332.93 جنيه</span>
+            </div>
+            <div class="detail-row">
+                <span class="label">IBAN</span>
+                <span class="value" style="font-size: 13px;">SD7204024733680001</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة التحويلات -->
+    <div id="transfersScreen" class="screen">
+        <div class="sub-screen-header">
+            <h2>تحويلات</h2>
+            <button class="back-btn" onclick="showScreen('mainScreen')">رجوع ⟨</button>
+        </div>
+        <div class="card-box" style="cursor: pointer;" onclick="showScreen('transferFormScreen')">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: bold; font-size: 15px;">تحويل لحسابات بنك الخرطوم</span>
+                <span style="font-size: 22px; color: #e50914;">🏛️</span>
+            </div>
+        </div>
+        <div class="card-box">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: bold; font-size: 15px;">الدفع عبر الموبايل</span>
+                <span style="font-size: 22px; color: #e50914;">📱</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة نموذج تحويل حسابات بنك الخرطوم -->
+    <div id="transferFormScreen" class="screen">
+        <div class="sub-screen-header">
+            <h2>تحويل لحسابات بنك الخرطوم</h2>
+            <button class="back-btn" onclick="showScreen('transfersScreen')">رجوع ⟨</button>
+        </div>
+        <div class="card-box">
+            <div class="input-group">
+                <label>أدخل رقم الحساب/الرقم...</label>
+                <input type="text" id="accInput" class="input-field" placeholder="أدخل الرقم هنا (مثال: 7707659)" oninput="checkAccountName()">
+            </div>
+            <div id="accountInfoResult" style="margin-top: 15px; display: none; background: #f9f9f9; padding: 10px; border-radius: 5px; border: 1px solid #ddd;">
+                <div class="detail-row">
+                    <span class="label">الاسم:</span>
+                    <span class="value" id="resName" style="color: #e50914; font-weight: bold;"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">نوع الحساب:</span>
+                    <span class="value">حساب توفير</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">الفرع:</span>
+                    <span class="value">كريمة</span>
+                </div>
+            </div>
+            <div class="input-group" style="margin-top: 15px;">
+                <label>أدخل المبلغ</label>
+                <input type="number" class="input-field" value="1" id="amountInput">
+            </div>
+            <button class="action-btn" onclick="executeTransfer()">إرسال / تأكيد</button>
+        </div>
+    </div>
+
+    <!-- شاشة نجاح التحويل والإيصال -->
+    <div id="successScreen" class="success-screen">
+        <div class="success-icon">✓</div>
+        <h2 style="font-size: 20px; margin-bottom: 10px;">تحويلات</h2>
+        
+        <div class="success-card">
+            <div class="success-row">
+                <span>رقم العملية</span>
+                <span id="transNo" style="font-weight: bold;">20457030296</span>
+            </div>
+            <div class="success-row">
+                <span>من حساب</span>
+                <span>0063 0247 3368 0001</span>
+            </div>
+            <div class="success-row">
+                <span>الى حساب</span>
+                <span id="targetAccDisplay">0943 0770 7659 0001</span>
+            </div>
+            <div class="success-row">
+                <span>إسم المستفيد</span>
+                <span id="targetNameDisplay" style="font-weight: bold;">شاهيناز عبد العظيم عبد الغني طه</span>
+            </div>
+        </div>
+
+        <button class="action-btn" style="background: white; color: #2e7d32; margin-top: 20px;" onclick="showScreen('mainScreen')">موافق</button>
+
+        <div class="receipt-buttons">
+            <button class="receipt-btn">📥 تحميل</button>
+            <button class="receipt-btn">🖨️ طباعة</button>
+            <button class="receipt-btn">📤 مشاركة</button>
+        </div>
+    </div>
+
+    <!-- حقوق الفوتر -->
+    <div class="footer-copyright">
+        ©2026 بنك الخرطوم | بنكك حساب
     </div>
 </div>
 
 <script>
-    let score = 0, i = 0;
-    const questions = [
-        {q: "1. من هو Father؟", a: true}, {q: "2. من هي Mother؟", a: false},
-        {q: "3. كيف ننطق Father؟ (فا-ذر)", a: true}, {q: "4. من هو Brother؟", a: true},
-        {q: "5. هل Sister تعني أخت؟", a: true}, {q: "6. من هي Grandmother؟", a: false},
-        {q: "7. كيف ننطق Mother؟ (ما-ذر)", a: true}, {q: "8. هل Brother يعني أخ؟", a: true},
-        {q: "9. من هو Grandfather؟", a: true}, {q: "10. هل Sister تعني أب؟", a: false}
-    ];
+    function showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+    }
 
-    function next(ans) {
-        if(ans === questions[i].a) score++;
-        i++;
-        if(i < questions.length) {
-            document.getElementById('q').innerText = questions[i].q;
+    function checkAccountName() {
+        const val = document.getElementById('accInput').value.trim();
+        const resultDiv = document.getElementById('accountInfoResult');
+        const resName = document.getElementById('resName');
+        
+        // التحقق من الرقم المطلوب بدقة
+        if (val.includes('7707659')) {
+            resName.innerText = "شاهيناز عبد العظيم عبد الغني طه";
+            resultDiv.style.display = 'block';
         } else {
-            let name = prompt("انتهى الاختبار! اكتب اسمك ليرسل نتيجتك للمعلم:");
-            let msg = `أهلاً معلم محمد طه، الطالب ${name} حصل على ${score} من 10 في اختبار العائلة.`;
-            document.getElementById('quiz').innerHTML = 
-                `<h2>انتهى الاختبار!</h2><p>نتيجتك: ${score}/10</p>` +
-                `<a href="https://wa.me/249901946410?text=${encodeURIComponent(msg)}" class="btn" style="text-decoration:none;">إرسال النتيجة إلى واتساب المعلم</a>`;
+            resultDiv.style.display = 'none';
         }
     }
+
+    function executeTransfer() {
+        const val = document.getElementById('accInput').value.trim();
+        if (val === '') {
+            alert('الرجاء إدخال رقم الحساب');
+            return;
+        }
+        if (val.includes('7707659')) {
+            document.getElementById('targetNameDisplay').innerText = "شاهيناز عبد العظيم عبد الغني طه";
+        }
+        showScreen('successScreen');
+    }
 </script>
+
 </body>
 </html>
