@@ -52,8 +52,7 @@
             flex-direction: column;
             align-items: center;
         }
-        .header img, .header .bank-title {
-            height: 28px;
+        .header .bank-title {
             font-weight: bold;
             font-size: 20px;
             letter-spacing: 1px;
@@ -64,7 +63,7 @@
             margin-top: -4px;
         }
         .header-icon {
-            font-size: 22px;
+            font-size: 20px;
             cursor: pointer;
         }
         
@@ -72,7 +71,7 @@
         .welcome-bar {
             background-color: #fff;
             padding: 10px 15px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: #222;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -97,7 +96,7 @@
         .grid-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 12px;
             padding-top: 10px;
         }
         .grid-item {
@@ -108,7 +107,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 15px 5px;
+            padding: 12px 5px;
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             transition: 0.2s;
@@ -118,8 +117,8 @@
             background: #fafafa;
         }
         .icon-box {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             background: linear-gradient(135deg, #e50914, #b20710);
             border-radius: 8px;
             display: flex;
@@ -127,15 +126,33 @@
             align-items: center;
             color: white;
             box-shadow: 0 3px 6px rgba(229, 9, 20, 0.3);
-            margin-bottom: 8px;
-            font-size: 22px;
+            margin-bottom: 6px;
+            font-size: 20px;
         }
         .grid-item span {
-            font-size: 13px;
+            font-size: 12px;
             text-align: center;
             color: #111;
             font-weight: 600;
             line-height: 1.2;
+        }
+
+        /* أسهم التنقل بين صفحات القائمة الرئيسية */
+        .pagination-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+        }
+        .dot.active {
+            background: #e50914;
         }
 
         /* عناوين الشاشات الفرعية */
@@ -144,27 +161,50 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         .sub-screen-header h2 {
-            font-size: 18px;
+            font-size: 16px;
             color: #111;
         }
         .back-btn {
             background: white;
             border: 1px solid #e50914;
             color: #e50914;
-            padding: 5px 12px;
+            padding: 4px 10px;
             border-radius: 5px;
             font-weight: bold;
             cursor: pointer;
+            font-size: 13px;
+        }
+
+        /* القوائم الطولية (مثل التحويلات) */
+        .list-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border-right: 4px solid #e50914;
+        }
+        .list-card span {
             font-size: 14px;
+            font-weight: bold;
+            color: #222;
         }
 
         /* بطاقة التفاصيل والتحويلات */
         .card-box {
             background: white;
             border-radius: 8px;
-            padding: 20px;
+            padding: 15px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             margin-bottom: 15px;
         }
@@ -174,7 +214,7 @@
             align-items: center;
             padding: 10px 0;
             border-bottom: 1px solid #eee;
-            font-size: 15px;
+            font-size: 14px;
         }
         .detail-row:last-child {
             border-bottom: none;
@@ -195,21 +235,21 @@
 
         /* الحقول والأزرار */
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         .input-group label {
             display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
+            margin-bottom: 4px;
+            font-size: 13px;
             color: #333;
             font-weight: 600;
         }
         .input-field {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 15px;
             outline: none;
             background: #fff;
         }
@@ -223,39 +263,37 @@
             width: 100%;
             padding: 12px;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 3px 6px rgba(229, 9, 20, 0.3);
             margin-top: 10px;
         }
-        .action-btn:active {
-            opacity: 0.9;
-        }
 
-        /* شاشة النجاح (إيصال المعاملة) */
+        /* شاشة النجاح (إيصال المعاملة الأخضر) */
         .success-screen {
             background: linear-gradient(135deg, #2e7d32, #1b5e20);
             color: white;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
             flex: 1;
+            overflow-y: auto;
         }
         .success-icon {
-            width: 70px;
-            height: 70px;
+            width: 65px;
+            height: 65px;
             background: white;
             color: #2e7d32;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 35px;
+            font-size: 32px;
             font-weight: bold;
-            margin: 15px 0;
+            margin: 10px 0;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         .success-card {
@@ -263,15 +301,15 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 8px;
             width: 100%;
-            padding: 15px;
-            margin-top: 10px;
+            padding: 12px;
+            margin-top: 5px;
         }
         .success-row {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 7px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 14px;
+            font-size: 13px;
         }
         .success-row:last-child {
             border-bottom: none;
@@ -280,28 +318,28 @@
             display: flex;
             justify-content: space-around;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 15px;
             border-top: 1px solid rgba(255,255,255,0.3);
-            padding-top: 15px;
+            padding-top: 12px;
         }
         .receipt-btn {
             background: none;
             border: none;
             color: white;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
-        /* الفوتر السفلي للشاشات */
+        /* الفوتر السفلي */
         .footer-copyright {
             text-align: center;
             font-size: 11px;
             color: #666;
-            padding: 8px;
+            padding: 6px;
             background: #e0e0e0;
         }
     </style>
@@ -311,7 +349,7 @@
 <div class="phone-container">
     <!-- الهيدر الثابت -->
     <div class="header">
-        <div class="header-icon">⏻</div>
+        <div class="header-icon" onclick="showScreen('mainScreen1')">⏻</div>
         <div class="logo-area">
             <div class="bank-title">بنكـك</div>
             <div class="bank-sub">bankak</div>
@@ -319,8 +357,8 @@
         <div class="header-icon">🔔</div>
     </div>
 
-    <!-- شاشة الرئيسية -->
-    <div id="mainScreen" class="screen active">
+    <!-- الشاشة الرئيسية الأولى (مطابقة للصور 1 و 2)[span_10](start_span)[span_10](end_span)[span_11](start_span)[span_11](end_span) -->
+    <div id="mainScreen1" class="screen active">
         <div class="welcome-bar">
             <span>مساء الخير، Mohamed Taha</span>
         </div>
@@ -329,7 +367,7 @@
                 <div class="icon-box">👤</div>
                 <span>تفاصيل الحساب</span>
             </div>
-            <div class="grid-item" onclick="showScreen('transfersScreen')">
+            <div class="grid-item" onclick="showScreen('transfersMenuScreen')">
                 <div class="icon-box">🔄</div>
                 <span>تحويلات</span>
             </div>
@@ -362,69 +400,112 @@
                 <span>إدارة البطاقات</span>
             </div>
         </div>
+        <div class="pagination-dots">
+            <div class="dot active" onclick="showScreen('mainScreen1')"></div>
+            <div class="dot" onclick="showScreen('mainScreen2')"></div>
+        </div>
     </div>
 
-    <!-- شاشة تفاصيل الحساب -->
+    <!-- الشاشة الرئيسية الثانية (مطابقة للصورة الثانية)[span_12](start_span)[span_12](end_span) -->
+    <div id="mainScreen2" class="screen">
+        <div class="welcome-bar">
+            <span>مساء الخير، Mohamed Taha</span>
+        </div>
+        <div class="grid-container">
+            <div class="grid-item">
+                <div class="icon-box">📋</div>
+                <span>طلبات</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box">⚙️</div>
+                <span>الضبط</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box">📑</div>
+                <span>أمر دفع دائم</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box">🛒</div>
+                <span>التجارة الإلكترونية</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box">💱</div>
+                <span>خدمات العملات الأجنبية</span>
+            </div>
+        </div>
+        <div class="pagination-dots">
+            <div class="dot" onclick="showScreen('mainScreen1')"></div>
+            <div class="dot active" onclick="showScreen('mainScreen2')"></div>
+        </div>
+    </div>
+
+    <!-- شاشة تفاصيل الحساب (مطابقة للصورة 4)[span_13](start_span)[span_13](end_span) -->
     <div id="accountDetailsScreen" class="screen">
         <div class="sub-screen-header">
             <h2>تفاصيل الحساب</h2>
-            <button class="back-btn" onclick="showScreen('mainScreen')">رجوع ⟨</button>
+            <button class="back-btn" onclick="showScreen('mainScreen1')">رجوع ⟨</button>
         </div>
         <div class="card-box">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <span style="font-weight: bold; color: #e50914; font-size: 16px;">حساب توفير</span>
-                <span style="font-size: 28px;">💰</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="font-weight: bold; color: #e50914; font-size: 15px;">حساب توفير</span>
+                <span style="font-size: 26px;">💰</span>
             </div>
             <div class="detail-row">
-                <span class="label">الحساب</span>
-                <span class="value red-highlight">35_68866</span>
+                <span class="label">الحساب-</span>
+                <span class="value red-highlight" style="font-size: 13px; line-height: 1.4; text-align: left;">35_68866</span>
             </div>
             <div class="detail-row">
                 <span class="label">الرصيد</span>
                 <span class="value" style="color: #2e7d32;">442,332.93 جنيه</span>
             </div>
             <div class="detail-row">
-                <span class="label">IBAN</span>
-                <span class="value" style="font-size: 13px;">SD7204024733680001</span>
+                <span class="label">IBAN-</span>
+                <span class="value" style="font-size: 12px;">SD7204024733680001</span>
             </div>
         </div>
     </div>
 
-    <!-- شاشة التحويلات -->
-    <div id="transfersScreen" class="screen">
+    <!-- قائمة التحويلات (مطابقة للصورة 5)[span_14](start_span)[span_14](end_span) -->
+    <div id="transfersMenuScreen" class="screen">
         <div class="sub-screen-header">
             <h2>تحويلات</h2>
-            <button class="back-btn" onclick="showScreen('mainScreen')">رجوع ⟨</button>
+            <button class="back-btn" onclick="showScreen('mainScreen1')">رجوع ⟨</button>
         </div>
-        <div class="card-box" style="cursor: pointer;" onclick="showScreen('transferFormScreen')">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-weight: bold; font-size: 15px;">تحويل لحسابات بنك الخرطوم</span>
-                <span style="font-size: 22px; color: #e50914;">🏛️</span>
-            </div>
+        <div class="list-card" onclick="showScreen('transferFormScreen')">
+            <span>تحويل لحسابات بنك الخرطوم</span>
+            <span style="color: #e50914; font-size: 18px;">🏛️</span>
         </div>
-        <div class="card-box">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-weight: bold; font-size: 15px;">الدفع عبر الموبايل</span>
-                <span style="font-size: 22px; color: #e50914;">📱</span>
-            </div>
+        <div class="list-card">
+            <span>الدفع عبر الموبايل</span>
+            <span style="color: #e50914; font-size: 18px;">📱</span>
+        </div>
+        <div class="list-card">
+            <span>تحويل لبنك آخر (باستخدام رقم البطاقة)</span>
+            <span style="color: #e50914; font-size: 18px;">💳</span>
         </div>
     </div>
 
-    <!-- شاشة نموذج تحويل حسابات بنك الخرطوم -->
+    <!-- شاشة إدخال رقم الحساب للتحويل (مطابقة للصور 6، 7، 8)[span_15](start_span)[span_15](end_span)[span_16](start_span)[span_16](end_span)[span_17](start_span)[span_17](end_span) -->
     <div id="transferFormScreen" class="screen">
         <div class="sub-screen-header">
-            <h2>تحويل لحسابات بنك الخرطوم</h2>
-            <button class="back-btn" onclick="showScreen('transfersScreen')">رجوع ⟨</button>
+            <h2>تحويل لحسابات بنك الخرطوم - دفع مباشر</h2>
+            <button class="back-btn" onclick="showScreen('transfersMenuScreen')">رجوع ⟨</button>
         </div>
         <div class="card-box">
             <div class="input-group">
                 <label>أدخل رقم الحساب/الرقم...</label>
                 <input type="text" id="accInput" class="input-field" placeholder="أدخل الرقم هنا (مثال: 7707659)" oninput="checkAccountName()">
             </div>
-            <div id="accountInfoResult" style="margin-top: 15px; display: none; background: #f9f9f9; padding: 10px; border-radius: 5px; border: 1px solid #ddd;">
+            
+            <!-- معلومات الحساب المستفيد التي تظهر تلقائياً عند إدخال الرقم المطلوب -->
+            <div id="accountInfoResult" style="margin-top: 10px; display: none; background: #f9f9f9; padding: 10px; border-radius: 5px; border: 1px solid #ddd;">
+                <div class="detail-row">
+                    <span class="label">رقم الحساب:</span>
+                    <span class="value">0943 0770 7659 0001</span>
+                </div>
                 <div class="detail-row">
                     <span class="label">الاسم:</span>
-                    <span class="value" id="resName" style="color: #e50914; font-weight: bold;"></span>
+                    <span class="value" id="resName" style="color: #e50914;"></span>
                 </div>
                 <div class="detail-row">
                     <span class="label">نوع الحساب:</span>
@@ -435,31 +516,40 @@
                     <span class="value">كريمة</span>
                 </div>
             </div>
-            <div class="input-group" style="margin-top: 15px;">
+
+            <div class="input-group" style="margin-top: 10px;">
+                <label>اختر الحساب</label>
+                <input type="text" class="input-field" value="0063024733680001" readonly style="background:#eee; color:#442; font-size:13px;">
+            </div>
+            <div class="input-group">
+                <label>رقم الهاتف للرسالة النصية</label>
+                <input type="text" class="input-field" value="249" readonly style="background:#eee; font-size:13px;">
+            </div>
+            <div class="input-group">
                 <label>أدخل المبلغ</label>
                 <input type="number" class="input-field" value="1" id="amountInput">
             </div>
-            <button class="action-btn" onclick="executeTransfer()">إرسال / تأكيد</button>
+            <div class="input-group">
+                <label>ملاحظات</label>
+                <input type="text" class="input-field" placeholder="اختياري">
+            </div>
+            <button class="action-btn" onclick="executeTransfer()">تأكيد</button>
         </div>
     </div>
 
-    <!-- شاشة نجاح التحويل والإيصال -->
+    <!-- شاشة نجاح التحويل والإيصال الأخضر (مطابقة للصورة 11)[span_18](start_span)[span_18](end_span) -->
     <div id="successScreen" class="success-screen">
         <div class="success-icon">✓</div>
-        <h2 style="font-size: 20px; margin-bottom: 10px;">تحويلات</h2>
+        <h2 style="font-size: 18px; margin-bottom: 5px;">تحويلات</h2>
         
         <div class="success-card">
             <div class="success-row">
-                <span>رقم العملية</span>
-                <span id="transNo" style="font-weight: bold;">20457030296</span>
-            </div>
-            <div class="success-row">
                 <span>من حساب</span>
-                <span>0063 0247 3368 0001</span>
+                <span style="font-weight: bold;">0063 0247 3368 0001</span>
             </div>
             <div class="success-row">
                 <span>الى حساب</span>
-                <span id="targetAccDisplay">0943 0770 7659 0001</span>
+                <span style="font-weight: bold;">0943 0770 7659 0001</span>
             </div>
             <div class="success-row">
                 <span>إسم المستفيد</span>
@@ -467,12 +557,12 @@
             </div>
         </div>
 
-        <button class="action-btn" style="background: white; color: #2e7d32; margin-top: 20px;" onclick="showScreen('mainScreen')">موافق</button>
+        <button class="action-btn" style="background: white; color: #2e7d32; margin-top: 15px;" onclick="showScreen('mainScreen1')">موافق</button>
 
         <div class="receipt-buttons">
-            <button class="receipt-btn">📥 تحميل</button>
-            <button class="receipt-btn">🖨️ طباعة</button>
-            <button class="receipt-btn">📤 مشاركة</button>
+            <button class="receipt-btn" onclick="alert('جاري تحميل الإيصال...')">📥 تحميل</button>
+            <button class="receipt-btn" onclick="alert('جاري طباعة الإيصال...')">🖨️ طباعة</button>
+            <button class="receipt-btn" onclick="alert('جاري مشاركة الإيصال...')">📤 مشاركة</button>
         </div>
     </div>
 
@@ -493,7 +583,7 @@
         const resultDiv = document.getElementById('accountInfoResult');
         const resName = document.getElementById('resName');
         
-        // التحقق من الرقم المطلوب بدقة
+        // عند إدخال الرقم 7707659 يتم جلب الاسم بنفس الطريقة العملية والاحترافية
         if (val.includes('7707659')) {
             resName.innerText = "شاهيناز عبد العظيم عبد الغني طه";
             resultDiv.style.display = 'block';
@@ -505,7 +595,7 @@
     function executeTransfer() {
         const val = document.getElementById('accInput').value.trim();
         if (val === '') {
-            alert('الرجاء إدخال رقم الحساب');
+            alert('الرجاء إدخال رقم الحساب أو الرقم المختصر');
             return;
         }
         if (val.includes('7707659')) {
